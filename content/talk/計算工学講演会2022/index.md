@@ -23,7 +23,7 @@ all_day: false
 # Schedule page publish date (NOT talk date).
 # publishDate: 2020-08-30T00:34:30+02:00
 
-authors: []
+authors: [才田 大聖, 西尾 真由子]
 tags: [surrogate model, Gaussian process, machine learning]
 
 # Is this a featured talk? (true/false)

@@ -27,7 +27,7 @@ all_day: false
 # Schedule page publish date (NOT talk date).
 # publishDate: 2020-08-30T00:34:30+02:00
 
-authors: []
+authors: [Taisei Saida, Mayuko Nishio]
 tags: [surrogate model, Gaussian process, machine learning]
 
 # Is this a featured talk? (true/false)

@@ -71,7 +71,7 @@ diagram = false
 # Privacy pack
 #   Show a cookie consent message to visitors
 #   Anonymize IP in Google Analytics (if enabled)
-privacy_pack = true
+privacy_pack = false#true
 
 # Enable visitors to edit pages?
 #   `repo` defines the repository URL. `editable` defines which page types can be edited.
@@ -154,7 +154,7 @@ main_menu = {align = "r", show_logo = true, highlight_active_link = true, show_l
 reading_time = true
 
 # Display next/previous section pager? (true/false)
-section_pager = false
+section_pager = true#false
 docs_section_pager = true  # Display pager in Docs layout (e.g. tutorials)?
 
 # Enable in-built social sharing buttons? (true/false)
@@ -274,7 +274,7 @@ plugins_js  = []
 ## Marketing
 ############################
 [marketing]
-  google_analytics = "UA-18106941-1"
+  google_analytics = ""
   google_tag_manager = ""
 
 ############################
