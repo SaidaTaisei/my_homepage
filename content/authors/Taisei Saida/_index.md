@@ -18,6 +18,9 @@ social:
   - icon: github
     icon_pack: fab
     link: https://github.com/SaidaTaisei
+  - icon: orcid
+    icon_pack: fab
+    link: https://orcid.org/0000-0002-2678-5286
 
 interests:
 - 🤖 Surrogate Modeling
