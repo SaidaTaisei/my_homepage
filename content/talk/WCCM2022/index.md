@@ -46,18 +46,16 @@ image:
 links:
 - name: web site
   url: https://www.wccm2022.org/index.html
-- name: slide pdf
-  url: talk/wccm2022/slide.pdf
-- name: video
-  url: https://drive.google.com/file/d/1GAWWMp4frYk9hrEyiXackXeshtxU3lCh/view?usp=share_link
+# - name: video
+#   url: https://drive.google.com/file/d/1GAWWMp4frYk9hrEyiXackXeshtxU3lCh/view?usp=share_link
 #   icon_pack: fab
 #   icon: twitter
 
 # Optional filename of your slides within your talk's folder or a URL.
-url_slides: #https://osf.io/dztvq/
+url_slides: slide.pdf
 url_code:
 url_pdf:
-url_video: #https://youtu.be/0uCG3Fl6ugE
+url_video: https://youtu.be/VHAkXa10BGA
 
 # Markdown Slides (optional).
 #   Associate this talk with Markdown slides.

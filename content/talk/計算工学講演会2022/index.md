@@ -48,7 +48,7 @@ links:
 - name: web site
   url: https://confit.atlas.jp/guide/event/jsces27/subject/C-08-01/advanced
 # Optional filename of your slides within your talk's folder or a URL.
-url_slides: https://profile.tsaida.net/talk/計算工学講演会2022/slide.ppt
+url_slides: slide.pdf
 url_code:
 url_pdf:
 url_video: #https://youtu.be/0uCG3Fl6ugE

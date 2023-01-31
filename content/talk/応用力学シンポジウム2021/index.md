@@ -42,15 +42,13 @@ image:
 links:
 - name: web site
   url: https://confit.atlas.jp/guide/event/jsceam2021/subject/S01A-06/advanced
-- name: pdf
-  url: https://confit.atlas.jp/guide/event-img/jsceam2021/S01A-06/public/pdf?type=in
 #   icon_pack: fab
 #   icon: twitter
 
 # Optional filename of your slides within your talk's folder or a URL.
 url_slides: #https://osf.io/dztvq/
 url_code:
-url_pdf:
+url_pdf: https://confit.atlas.jp/guide/event-img/jsceam2021/S01A-06/public/pdf?type=in
 url_video: #https://youtu.be/0uCG3Fl6ugE
 
 # Markdown Slides (optional).
