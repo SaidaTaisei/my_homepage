@@ -21,6 +21,9 @@ social:
   - icon: orcid
     icon_pack: fab
     link: https://orcid.org/0000-0002-2678-5286
+  - icon: cv
+    icon_pack: ai
+    link: author/taisei-saida/cv.pdf
 
 interests:
 - 🤖 Surrogate Modeling
@@ -28,10 +31,10 @@ interests:
 - 🌉 Structural Reliability
 education:
   courses:
-    - course: Master of Engineerling
+    - course: Master of Engineering
       institution: University of Tsukuba, Tsukuba in Japan
       year: Current
-    - course: Bachelor of Engineerling
+    - course: Bachelor of Engineering
       institution: University of Tsukuba, Tsukuba in Japan
       year: 2021
 ---
