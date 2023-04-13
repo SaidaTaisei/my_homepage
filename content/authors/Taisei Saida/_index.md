@@ -31,9 +31,12 @@ interests:
 - 🌉 Structural Reliability
 education:
   courses:
-    - course: Master of Engineering
+    - course: Ph.D. in Engineering
       institution: University of Tsukuba, Tsukuba in Japan
       year: Current
+    - course: Master of Engineering
+      institution: University of Tsukuba, Tsukuba in Japan
+      year: 2023
     - course: Bachelor of Engineering
       institution: University of Tsukuba, Tsukuba in Japan
       year: 2021
