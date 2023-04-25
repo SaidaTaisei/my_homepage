@@ -26,7 +26,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2023-03-20'
+publishDate: '2023-04-25'
 publication_types:
 - 2
 abstract: "In this paper, a Gaussian process regression surrogate model with transfer learning (TL-GPRSM) is introduced to reduce the computational cost of structural reliability analysis by using the input–output relationship of the source analysis having similarities with that of the target analysis. In addition, automatic relevance determination (ARD) is introduced for providing the explainability of the constructed model and confidence assurance of transfer learning. Two verifications were conducted: (i) the surrogate modeling of the live-load performance analysis of a steel bridge with corrosion by applying the source analysis in the undamaged condition and (ii) seismic performance analysis of a bridge pier, which required nonlinear time-history analyses for various earthquake loads. The results showed that TL-GPRSM was especially effective in surrogate modeling of the performance analysis with linear numerical calculations. Moreover, it was shown that the effectiveness of transfer learning in each modeling and explainability of the constructed model could be discussed based on the contributions of the model parameters estimated through ARD." 
