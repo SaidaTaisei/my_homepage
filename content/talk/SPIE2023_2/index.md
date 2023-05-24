@@ -50,7 +50,7 @@ links:
 #   icon: twitter
 
 # Optional filename of your slides within your talk's folder or a URL.
-# url_slides: slide.pdf
+url_slides: slide.pdf
 # url_code:
 # url_pdf:
 # url_video: https://youtu.be/VHAkXa10BGA
