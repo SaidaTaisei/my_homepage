@@ -24,6 +24,9 @@ social:
   - icon: cv
     icon_pack: ai
     link: author/taisei-saida/cv.pdf
+  - icon: researchgate
+    icon_pack: ai
+    link: https://www.researchgate.net/profile/Taisei-Saida
 
 interests:
 - 🤖 Surrogate Modeling
