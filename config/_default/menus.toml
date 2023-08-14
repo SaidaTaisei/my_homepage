@@ -19,6 +19,18 @@
   weight = 30
 
 [[main]]
+  name = "Jounal Articles"
+  parent = "Publications"
+  url = "#jounal_articles"
+  weight = 31
+
+[[main]]
+  name = "Conference Papers"
+  parent = "Publications"
+  url = "#conference_paper"
+  weight = 32
+
+[[main]]
   name = "Conferences"
   url = "/talk/"
   weight = 40

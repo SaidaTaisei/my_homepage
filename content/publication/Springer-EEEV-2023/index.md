@@ -37,5 +37,6 @@ abstract: Buildings undergo various kinds of structural damage during earthquake
 publication: '[Earthquake Engineering and Engineering Vibration](https://www.springer.com/journal/11803) (**Impact Factor: 2.810**)'
 doi: 10.1007/s11803-023-2174-z
 url_pdf: https://link.springer.com/content/pdf/10.1007/s11803-023-2174-z.pdf
+summary: "Earthquake Engineering and Engineering Vibration (**Impact Factor: 2.810** in 2021)"
 ---
 <a href="https://www.scimagojr.com/journalsearch.php?q=27879&amp;tip=sid&amp;exact=no" title="SCImago Journal &amp; Country Rank"><img border="0" src="https://www.scimagojr.com/journal_img.php?id=27879" alt="SCImago Journal &amp; Country Rank"  /></a>

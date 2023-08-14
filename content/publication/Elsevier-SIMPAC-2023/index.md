@@ -33,5 +33,6 @@ abstract: "This paper presents a software for the Transfer Learning Gaussian Pro
 publication: '[Software Impacts](https://www.sciencedirect.com/journal/software-impacts) (**Impact Factor: 2.1**)'
 doi: 10.1016/j.simpa.2023.100515
 url_pdf: https://www.sciencedirect.com/science/article/pii/S2665963823000520/pdfft?md5=d2d36954c2cf6a66d3230b1a5957bf18&pid=1-s2.0-S2665963823000520-main.pdf
+summary: "Software Impacts (**Impact Factor: 2.1** in 2022)"
 ---
 <a href="https://www.scimagojr.com/journalsearch.php?q=21101060167&amp;tip=sid&amp;exact=no" title="SCImago Journal &amp; Country Rank"><img border="0" src="https://www.scimagojr.com/journal_img.php?id=21101060167" alt="SCImago Journal &amp; Country Rank"  /></a>
