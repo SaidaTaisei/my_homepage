@@ -1,10 +1,10 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "高次元不確定性を扱う構造信頼性解析を効率化するガウス過程ベース代替モデル構築（招待講演）"
-event: "計算工学会 マルチメソッド・新数値解析手法開拓研究会 第5回研究会"
-event_url: "https://www.jsces.org/activity/research/multimethod/archives.html"
-location: Online
+title: "橋梁の地震フラジリティ解析効率化のためのガウス過程回帰代替モデル構築（招待講演）"
+event: "JSCES 夏季学生講演会 2023"
+event_url: "https://sites.google.com/view/jscescamp2023"
+location: Tsukuba in Japan
 address:
   street:
   city:
@@ -16,7 +16,7 @@ abstract: ""
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: 2023-06-12T13:45:00
+date: 2023-09-23T13:30:00
 # date_end: 2020-07-30T13:00:00+02:00
 all_day: false
 
@@ -24,7 +24,7 @@ all_day: false
 # publishDate: 2020-08-30T00:34:30+02:00
 
 authors: [才田 大聖]
-tags: [surrogate model, Gaussian process, machine learning]
+tags: [surrogate model, machine learning]
 
 # Is this a featured talk? (true/false)
 featured: false
@@ -44,7 +44,9 @@ image:
 #   url: https://twitter.com
 #   icon_pack: fab
 #   icon: twitter
-
+links:
+- name: web site
+  url: https://sites.google.com/view/jscescamp2023#:~:text=%E6%A9%8B%E6%A2%81%E3%81%AE%E5%9C%B0%E9%9C%87%E3%83%95%E3%83%A9%E3%82%B8%E3%83%AA%E3%83%86%E3%82%A3%E8%A7%A3%E6%9E%90%E5%8A%B9%E7%8E%87%E5%8C%96%E3%81%AE%E3%81%9F%E3%82%81%E3%81%AE%E3%82%AC%E3%82%A6%E3%82%B9%E9%81%8E%E7%A8%8B%E5%9B%9E%E5%B8%B0%E4%BB%A3%E6%9B%BF%E3%83%A2%E3%83%87%E3%83%AB%E6%A7%8B%E7%AF%89
 # Optional filename of your slides within your talk's folder or a URL.
 url_slides: 
 url_code:

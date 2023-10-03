@@ -18,6 +18,16 @@ date_format = "Jan 2006"
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 [[experience]]
+  title = "JSPS Research Fellowship DC2"
+  company = "Japan Society for the Promotion of Science"
+  company_url = "https://www.jsps.go.jp/english/e-pd/"
+  location = "Japan"
+  date_start = "2024-04-01"
+  date_end = "2026-03-31"
+  description = """
+  """
+
+[[experience]]
   title = "Data Science Summer Institute (Research Internship)"
   company = "Lawrence Livermore National Laboratories"
   company_url = "https://www.llnl.gov/"
