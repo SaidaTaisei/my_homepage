@@ -27,6 +27,9 @@ social:
   - icon: researchgate
     icon_pack: ai
     link: https://www.researchgate.net/profile/Taisei-Saida
+  - icon: publons
+    icon_pack: ai
+    link: https://www.webofscience.com/wos/author/record/JRY-4837-2023
 
 interests:
 - 🤖 Surrogate Modeling
@@ -46,3 +49,5 @@ education:
 ---
 Taisei Saida is doctor's student in University of Tsukuba. I am primarily working on surrogate models. Topics of interest will be structural reliability, structural health monitoring, and machine learning.  
 - Reserch Map: [https://researchmap.jp/taisei_saida](https://researchmap.jp/taisei_saida)
+- Google Scholar: [https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ](https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ)
+- Publons: [https://www.webofscience.com/wos/author/record/JRY-4837-2023](https://www.webofscience.com/wos/author/record/JRY-4837-2023)
