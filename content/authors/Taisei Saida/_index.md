@@ -51,3 +51,4 @@ Taisei Saida is doctor's student in University of Tsukuba. I am primarily workin
 - Reserch Map: [https://researchmap.jp/taisei_saida](https://researchmap.jp/taisei_saida)
 - Google Scholar: [https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ](https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ)
 - Publons: [https://www.webofscience.com/wos/author/record/JRY-4837-2023](https://www.webofscience.com/wos/author/record/JRY-4837-2023)
+- CV: [PDF](author/taisei-saida/cv.pdf)
