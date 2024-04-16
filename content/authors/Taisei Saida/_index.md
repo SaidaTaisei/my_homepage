@@ -1,6 +1,6 @@
 ---
 title: Taisei Saida
-role: Doctor's Student
+role: Ph.D Student (JSPS DC2 Researcher)
 organizations:
   - name: University of Tsukuba (Lab's url)
     url: "https://www.kz.tsukuba.ac.jp/~nishio/"
