@@ -16,7 +16,7 @@ abstract: "本研究では、地震リスク解析の計算コストを削減す
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: 2024-05-28T10:25:00
+date: 2023-05-28T10:25:00
 # date_end: 2020-07-30T13:00:00+02:00
 all_day: false
 
