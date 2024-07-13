@@ -16,7 +16,7 @@ abstract: "This study presents a regularized Deep Kernel Learning (DKL) model fo
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: 2023-05-26T10:15:00
+date: 2024-05-26T10:15:00
 # date_end: 2020-07-30T13:00:00+02:00
 all_day: false
 
