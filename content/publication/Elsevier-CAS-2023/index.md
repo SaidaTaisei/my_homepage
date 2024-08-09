@@ -20,6 +20,9 @@ image:
   focal_point: ""
   preview_only: false
 
+links:
+- name: PDF (Accepted version)
+  url: publication/elsevier-cas-2023//CAS_Accepted.pdf
 # Projects (optional).
 #   Associate this post with one or more of your projects.
 #   Simply enter your project's folder or file name without extension.
