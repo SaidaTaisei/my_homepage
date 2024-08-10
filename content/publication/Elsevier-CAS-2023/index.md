@@ -114,6 +114,10 @@ First, the data sets of function input-output relationships for source domain $f
         <td><img src='fig2_a.png' alt=''></td>
         <td><img src='fig2_b.png' alt=''></td>
     </tr>
+    <tr>
+        <td>(a) Source domain (data samples $N_S$ =100)</td>
+        <td>(b) Target domain (data samples $N_T$ =10)</td>
+    </tr>
 </table>
 
 " 
