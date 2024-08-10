@@ -46,21 +46,16 @@ In this paper, the overviews of GPR and TL are presented, and the TL-GPRSM is fo
 
 <h2>2. Transfer training in GPR surrogate modeling</h2>
 <h2>2.1 GPR with ARD kernel</h2>
-GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix D with number of data N is defined as shown below.<br>
-$$\mathbf{D}=\{(\mathbf{x}_{1},y_{1}),(\mathbf{x}_{2},y_{2}),...,(\mathbf{x}_{N},y_{N})\}^{T}$$
+GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix D with number of data N is defined as shown below.
+$$
+\textbf{D}=(x_{1},y_{1}),(x_{2},y_{2}),...,(x_{N},y_{N})^{T}
+$$
 where x is a vector of the input parameters with length of L, and y is the output. The input–output relationship is described as
 $$
 y=f(x).
 $$
 Suppose that y is standardized to the zero-mean variable, and f is supposed to be generated from the following GP with zero mean.
-$$
-f\sim\mathrm{GP}(\mathbf{0},k(\mathbf{x},\mathbf{x}')).
-$$
-Here, GP represents the Gaussian process and k is a kernel function used to calculate the kernel matrix K, which has N rows and N columns.
-$$
-K_{nm}=k(\mathbf{x}_{n},\mathbf{x}_{m}),
-$$
-where Knm is the element of K with n rows and m columns. Because f in Eq. (2) follows the GP, as shown in Eq. (3), the output vector y=(y_1,y_2,…,y_N )^T also follows the Gaussian distribution with zero mean and covariance matrix K.
+
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
 doi: 10.1016/j.compstruc.2023.107014
