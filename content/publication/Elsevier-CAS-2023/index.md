@@ -58,6 +58,23 @@ Suppose that $y$ is standardized to the zero-mean variable, and $f$ is supposed 
 $$
 f\\sim\\mathrm{GP}\\big(\\mathbf{0},k(\\mathbf{x},\\mathbf{x}^{\\prime})\\big).
 $$
+Here, GP represents the Gaussian process and $k$ is a kernel function used to calculate the kernel matrix $\\mathbf{K}$, which has $N$ rows and $N$ columns.
+$$
+K_{nm}=k(\\mathbf{x}_{n},\\mathbf{x}_{m}),
+$$
+where $K_{nm}$ is the element of $\\mathbf{K}$ with $n$ rows and $m$ columns. Because $f$ in Eq. (2) follows the $GP$, as shown in Eq. (3), the output vector $y=(y_1,y_2,…,y_N )^T$ also follows the Gaussian distribution with zero mean and covariance matrix $\\mathbf{K}$.
+$$
+\\mathbf{y}\\sim\\mathcal{N}(\\mathbf{0},\\mathbf{K}).
+$$
+In this paper, we used the autoregressive relevance determination (ARD) kernel function [29]. In the ARD, the input parameters that contribute to the output can be determined automatically. Further, the performance of regression in GPR depends on the selection of the kernel function. For instance, if the Matern5/2 kernel is selected, ARD is applied as
+$$
+k(r,\\mathbf{\\theta})=\\sigma^2\\left(1+\\sqrt{5}r+\\frac{5}{3}r^2\\right)\\exp(-\\sqrt{5}r), \\mathrm{where} r(\\mathbf{x}_n,\\mathbf{x}_m)=\\sqrt{\\sum_{i=1}^L\\frac{(x_{ni}-x_{mi})^2}{l_i^2}}.
+$$
+Here, $L$ is the number of dimensions of the input parameter vector, and $\\mathbf{\\theta}$ is a vector of the hyperparameters $\\sigma$ and $l_i$. Among these hyperparameters, $l_i$ is called the length-scale, which indicates the contribution of the input parameter $x_i$ in the ARD. The smaller the estimation of the length-scale $l_i$, the larger is the contribution of $x_i$ to the output $y$. The estimator of GPR with ARD is thus the hyperparameter $\\mathbf{\\theta}$, which includes the length-scale $l_i$. To verify the contribution of each parameter, index $c_i$ was defined, which was the index converted from the length-scale $l_i$ to the relative percentage contribution in each input dimension $i$, as below.
+$$
+c_i=\\frac{1/l_i}{\\sum_{j=1}^L(1/l_j)}\\times100\\quad(i=1,2,\\cdots,L)
+$$
+In this study, the maximum likelihood estimation was used for estimating the hyperparameters of GPR model $\\mathbf{\\theta}$ by adopting the limited-memory Broyden–Fletcher–Goldfarb–Shanno (L-BFGS) method [31] as the optimization method. The GPR model construction was implemented using the Python library GPy [32].
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
 doi: 10.1016/j.compstruc.2023.107014
