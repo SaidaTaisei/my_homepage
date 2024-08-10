@@ -33,7 +33,7 @@ publishDate: '2023-05-10'
 publication_types:
 - 2
 abstract: "In this paper, a Gaussian process regression surrogate model with transfer learning (TL-GPRSM) is introduced to reduce the computational cost of structural reliability analysis by using the input–output relationship of the source analysis having similarities with that of the target analysis. In addition, automatic relevance determination (ARD) is introduced for providing the explainability of the constructed model and confidence assurance of transfer learning. Two verifications were conducted: (i) the surrogate modeling of the live-load performance analysis of a steel bridge with corrosion by applying the source analysis in the undamaged condition and (ii) seismic performance analysis of a bridge pier, which required nonlinear time-history analyses for various earthquake loads. The results showed that TL-GPRSM was especially effective in surrogate modeling of the performance analysis with linear numerical calculations. Moreover, it was shown that the effectiveness of transfer learning in each modeling and explainability of the constructed model could be discussed based on the contributions of the model parameters estimated through ARD.
-<h1>Accepted Version Manuscript</h1><br>
+<h2>Accepted Version Manuscript</h2>
 (Published Version: https://doi.org/10.1016/j.compstruc.2023.107014)
 <h2>1. Introduction</h2>
 Structural performance evaluation requires reliability analysis wherein the limit state capacity is statistically derived. It is useful to evaluate the performances of existing structures by considering the actual structure conditions to develop maintenance plans or implement reinforcement/retrofit activities in disaster events. Statistical performance analysis requires the consideration of the uncertainties of the structural properties using Monte Carlo (MC) calculations. The MC calculations require several to ten thousands of numerical calculations with a random sampling of the input parameter space. In modeling an existing structure with deteriorations or damages, a detailed model is required to represent the damage to the structural member; therefore, the number of model parameters becomes large. Moreover, the properties to consider the uncertainties due to the deterioration or damage should be included in addition to the uncertainties of the nominal model properties. In the case of performance evaluation under a disaster load such as an earthquake load, the MC calculations of multiple input load cases should be combined to consider the input load uncertainty. Therefore, high calculation effort is required to assess the structural performance.<br>
@@ -47,9 +47,7 @@ In this paper, the overviews of GPR and TL are presented, and the TL-GPRSM is fo
 <h2>2. Transfer training in GPR surrogate modeling</h2>
 <h2>2.1 GPR with ARD kernel</h2>
 GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix D with number of data N is defined as shown below.<br>
-$$
-\mathbf{D}=\{(\mathbf{x}_{1},y_{1}),(\mathbf{x}_{2},y_{2}),...,(\mathbf{x}_{N},y_{N})\}^{T}
-$$
+![alt text](image.png)
 where x is a vector of the input parameters with length of L, and y is the output. The input–output relationship is described as
 $$
 y=f(\mathbf{x}).
