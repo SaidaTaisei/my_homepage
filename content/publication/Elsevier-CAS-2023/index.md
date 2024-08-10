@@ -174,190 +174,191 @@ The numerical analysis as the target of surrogate modeling in this paper was the
 In the TL-GPRSM, the increase in the uncertainties in the structural properties due to damages is considered through TL. The parameter uncertainties were determined both in the initial FE model as the source model and in the damaged-condition FE model as the target model. In the initial FE model, sixteen parameters #1–#16 were considered, and their uncertainties were represented by the uniform distributions with nominal mean and coefficient of variation (COV), as shown in Table 1. Here, the mean and COV values were determined based on the statistical properties reported in previous research papers and surveys, as summarized in the authors’ previous study [35]. For the damaged-condition FE model, three parameters #17–#19 were added to represent the effect of corrosion, that is, the thickness reduction at the corroded areas. In addition, the probability distribution of the friction coefficient #8 (Cf) was changed to represent the decrease in the moving function due to the corrosion, and the distribution of the Young’s modulus of the concrete slab #3 (Ec) was changed to consider the effect of cracks.<br>
 Figure 6 shows the distributions of the maximum Mises stress near the ends of the girders for the performance evaluation using MC calculations with 500 samples from the space of uncertain model parameters in the initial- and damaged-condition FE models. Here, the 500 samples were generated through LHS. The maximum Mises stress in the damaged-condition FE model is distributed in the range of higher stress values when compared with the distribution in the initial FE model. It can be said that the limit state capacity of yield stress is reduced owing to the damages. The distribution of the maximum Mises stress in the damaged-condition FE model is the target output of the surrogate modeling using the TL-GPRSM. The surrogate model for the initial FE model with sixteen uncertain model parameters as the inputs is the source domain, and that for the damaged-condition FE model with nineteen parameters as the inputs is the target domain. Although the number of input parameters is different between the source and target domains, the TL-GPRSM is applied by data expansion with 16 dimensions for the common part, 16 dimensions for the source part, and 19 dimensions for the target part.
 
-<table border='1'>
+<table border='1' cellspacing='0' cellpadding='5'>
   <tr>
-    <th rowspan='2' colspan='3'>FE model parameter (Unit)</th>
-    <th colspan='2'>Initial (Source)</th>
-    <th colspan='2'>Damaged (Target)</th>
+    <th rowspan='2' colspan='3' style='text-align: center;'>FE model parameter (Unit)</th>
+    <th colspan='2' style='text-align: center;'>Initial (Source)</th>
+    <th colspan='2' style='text-align: center;'>Damaged (Target)</th>
   </tr>
   <tr>
-    <th>Nominal</th>
-    <th>COV</th>
-    <th>Nominal</th>
-    <th>COV</th>
+    <th style='text-align: center;'>Nominal</th>
+    <th style='text-align: center;'>COV</th>
+    <th style='text-align: center;'>Nominal</th>
+    <th style='text-align: center;'>COV</th>
   </tr>
   <tr>
     <td>#1</td>
     <td>$D_c$</td>
     <td>Density of concrete slab (kg/m³)</td>
-    <td>2400</td>
-    <td>0.0171</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>2400</td>
+    <td style='text-align: center;'>0.0171</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#2</td>
     <td>$E_s$</td>
     <td>Young's modulus of steel main girders (GPa)</td>
-    <td>200</td>
-    <td>0.0450</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>200</td>
+    <td style='text-align: center;'>0.0450</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#3</td>
     <td>$E_c$</td>
     <td>Young's modulus of concrete slab (GPa)</td>
-    <td>25</td>
-    <td>0.0167</td>
-    <td>22.5</td>
-    <td>0.0333</td>
+    <td style='text-align: center;'>25</td>
+    <td style='text-align: center;'>0.0167</td>
+    <td style='text-align: center;'>22.5</td>
+    <td style='text-align: center;'>0.0333</td>
   </tr>
   <tr>
     <td>#4</td>
     <td>$E_b$</td>
     <td>Young's modulus of steel bearings (GPa)</td>
-    <td>200</td>
-    <td>0.0450</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>200</td>
+    <td style='text-align: center;'>0.0450</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#5</td>
     <td>$V_s$</td>
     <td>Poisson's ratio of steel main girder</td>
-    <td>0.3</td>
-    <td>0.0910</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.3</td>
+    <td style='text-align: center;'>0.0910</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#6</td>
     <td>$V_c$</td>
     <td>Poisson's ratio of concrete slab</td>
-    <td>0.2</td>
-    <td>0.0167</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.2</td>
+    <td style='text-align: center;'>0.0167</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#7</td>
     <td>$V_b$</td>
     <td>Poisson's ratio of steel bearing</td>
-    <td>0.3</td>
-    <td>0.0910</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.3</td>
+    <td style='text-align: center;'>0.0910</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#8</td>
     <td>$C_f$</td>
     <td>Friction coefficient of steel bearing</td>
-    <td>0.2</td>
-    <td>0.0167</td>
-    <td>0.9</td>
-    <td>0.0333</td>
+    <td style='text-align: center;'>0.2</td>
+    <td style='text-align: center;'>0.0167</td>
+    <td style='text-align: center;'>0.9</td>
+    <td style='text-align: center;'>0.0333</td>
   </tr>
   <tr>
     <td>#9</td>
     <td>$T_{uf1}$</td>
     <td>Thickness of upper flange of steel girder at near-end section (m)</td>
-    <td>0.0190</td>
-    <td>0.0121</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.0190</td>
+    <td style='text-align: center;'>0.0121</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#10</td>
     <td>$T_{uf2}$</td>
     <td>Thickness of upper flange of steel girder at mid-span section (m)</td>
-    <td>0.0300</td>
-    <td>0.0121</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.0300</td>
+    <td style='text-align: center;'>0.0121</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#11</td>
     <td>$T_w$</td>
     <td>Thickness of web plate of steel girder (m)</td>
-    <td>0.0090</td>
-    <td>0.0121</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.0090</td>
+    <td style='text-align: center;'>0.0121</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#12</td>
     <td>$T_{lf1}$</td>
     <td>Thickness of lower flange of steel girder at near-end section (m)</td>
-    <td>0.0270</td>
-    <td>0.0121</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.0270</td>
+    <td style='text-align: center;'>0.0121</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#13</td>
     <td>$T_{lf2}$</td>
     <td>Thickness of lower flange of steel girder at mid-span section (m)</td>
-    <td>0.0300</td>
-    <td>0.0121</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.0300</td>
+    <td style='text-align: center;'>0.0121</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#14</td>
     <td>$T_{st1}$</td>
     <td>Thickness of stiffener of steel girder at near-end section (m)</td>
-    <td>0.0130</td>
-    <td>0.0121</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.0130</td>
+    <td style='text-align: center;'>0.0121</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#15</td>
     <td>$T_{st2}$</td>
     <td>Thickness of stiffener of steel girder at mid-span section (m)</td>
-    <td>0.0100</td>
-    <td>0.0121</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.0100</td>
+    <td style='text-align: center;'>0.0121</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#16</td>
     <td>$T_{stn}$</td>
     <td>Thickness of stiffener of steel girder at other sections (m)</td>
-    <td>0.0065</td>
-    <td>0.0121</td>
-    <td>*</td>
-    <td>*</td>
+    <td style='text-align: center;'>0.0065</td>
+    <td style='text-align: center;'>0.0121</td>
+    <td style='text-align: center;'>*</td>
+    <td style='text-align: center;'>*</td>
   </tr>
   <tr>
     <td>#17</td>
     <td>$T_{lf-d}$</td>
     <td>Thickness of corroded area in lower flange of steel girder at near-end section (m)</td>
-    <td>-</td>
-    <td>-</td>
-    <td>0.025</td>
-    <td>0.0270</td>
+    <td style='text-align: center;'>−</td>
+    <td style='text-align: center;'>−</td>
+    <td style='text-align: center;'>0.025</td>
+    <td style='text-align: center;'>0.0270</td>
   </tr>
   <tr>
     <td>#18</td>
     <td>$T_{w-d}$</td>
     <td>Thickness of corroded area in web plate of steel girder (m)</td>
-    <td>-</td>
-    <td>-</td>
-    <td>0.008</td>
-    <td>0.0162</td>
+    <td style='text-align: center;'>−</td>
+    <td style='text-align: center;'>−</td>
+    <td style='text-align: center;'>0.008</td>
+    <td style='text-align: center;'>0.0162</td>
   </tr>
   <tr>
     <td>#19</td>
     <td>$T_{st-d}$</td>
     <td>Thickness of corroded area in stiffener of steel girder at near-end section (m)</td>
-    <td>-</td>
-    <td>-</td>
-    <td>0.012</td>
-    <td>0.0162</td>
+    <td style='text-align: center;'>−</td>
+    <td style='text-align: center;'>−</td>
+    <td style='text-align: center;'>0.012</td>
+    <td style='text-align: center;'>0.0162</td>
   </tr>
 </table>
+
 
 
 " 
