@@ -62,7 +62,7 @@ Here, GP represents the Gaussian process and $k$ is a kernel function used to ca
 $$
 K_{nm}=k(\\mathbf{x}_{n},\\mathbf{x}_{m}),
 $$
-where $K_{nm}$ is the element of $\\mathbf{K}$ with $n$ rows and $m$ columns. Because $f$ in Eq. (2) follows the $GP$, as shown in Eq. (3), the output vector $y=(y_1,y_2,…,y_N )^T$ also follows the Gaussian distribution with zero mean and covariance matrix $\\mathbf{K}$.
+where $K_{nm}$ is the element of $\\mathbf{K}$ with $n$ rows and $m$ columns. Because $f$ in Eq. (2) follows the $GP$, as shown in Eq. (3), the output vector $\\mathbf{y}=(y_1,y_2,…,y_N )^T$ also follows the Gaussian distribution with zero mean and covariance matrix $\\mathbf{K}$.
 $$
 \\mathbf{y}\\sim\\mathcal{N}(\\mathbf{0},\\mathbf{K}).
 $$
