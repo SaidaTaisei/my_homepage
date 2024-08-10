@@ -46,35 +46,35 @@ In this paper, the overviews of GPR and TL are presented, and the TL-GPRSM is fo
 
 <h2>2. Transfer training in GPR surrogate modeling</h2>
 <h2>2.1 GPR with ARD kernel</h2>
-<p>GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix $D$ with number of data $N$ is defined as shown below.</p>
-    <p>$$
-    D = \\{(x_1,y_1 ),(x_2,y_2 ),\\ldots,(x_N,y_N )\\}^T
-    $$</p>
-    <p>where $x$ is a vector of the input parameters with length of $L$, and $y$ is the output. The input–output relationship is described as</p>
-    <p>$$
-    y = f(x)
-    $$</p>
-    <p>Suppose that $y$ is standardized to the zero-mean variable, and $f$ is supposed to be generated from the following GP with zero mean.</p>
-    <p>$$
-    f \\sim \\mathcal{GP}(0,k(x,x'))
-    $$</p>
-    <p>Here, GP represents the Gaussian process and $k$ is a kernel function used to calculate the kernel matrix $K$, which has $N$ rows and $N$ columns.</p>
-    <p>$$
-    K_{nm} = k(x_n,x_m)
-    $$</p>
-    <p>where $K_{nm}$ is the element of $K$ with $n$ rows and $m$ columns. Because $f$ in Eq. (2) follows the GP, as shown in Eq. (3), the output vector $y = (y_1, y_2, \\ldots, y_N )^T$ also follows the Gaussian distribution with zero mean and covariance matrix $K$.</p>
-    <p>$$
-    y \\sim \\mathcal{N}(0,K)
-    $$</p>
-    <p>In this paper, we used the autoregressive relevance determination (ARD) kernel function [29]. In the ARD, the input parameters that contribute to the output can be determined automatically. Further, the performance of regression in GPR depends on the selection of the kernel function. For instance, if the Matern5/2 kernel is selected, ARD is applied as</p>
-    <p>$$
-    k(r,\\theta) = \\sigma^2 \\left(1 + \\sqrt{5} \\, r + \\frac{5}{3} r^2 \\right) \\exp(-\\sqrt{5} \\, r), \\quad \\text{where} \\quad r(x_n,x_m) = \\sqrt{\\sum_{i=1}^L \\frac{(x_{ni} - x_{mi})^2}{l_i^2}}
-    $$</p>
-    <p>Here, $L$ is the number of dimensions of the input parameter vector, and $\\theta$ is a vector of the hyperparameters $\\sigma$ and $l_i$. Among these hyperparameters, $l_i$ is called the length-scale, which indicates the contribution of the input parameter $x_i$ in the ARD. The smaller the estimation of the length-scale $l_i$, the larger is the contribution of $x_i$ to the output $y$. The estimator of GPR with ARD is thus the hyperparameter $\\theta$, which includes the length-scale $l_i$. To verify the contribution of each parameter, index $c_i$ was defined, which was the index converted from the length-scale $l_i$ to the relative percentage contribution in each input dimension $i$, as below.</p>
-    <p>$$
-    c_i = \\frac{1 / l_i}{\\sum_{j=1}^L (1 / l_j)} \\times 100 \\quad (i = 1,2,\\ldots,L)
-    $$</p>
-    <p>In this study, the maximum likelihood estimation was used for estimating the hyperparameters of GPR model $\\theta$ by adopting the limited-memory Broyden–Fletcher–Goldfarb–Shanno (L-BFGS) method [31] as the optimization method. The GPR model construction was implemented using the Python library GPy [32].</p>
+GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix $\\mathbf{D}$ with number of data $N$ is defined as shown below.
+$$
+\\mathbf{D}=\\{(\\mathbf{x}_1,y_1),(\\mathbf{x}_2,y_2),...,(\\mathbf{x}_N,y_N)\\}^T,
+$$
+where $\\mathbf{x}$ is a vector of the input parameters with length of $L$, and $y$ is the output. The input–output relationship is described as
+$$
+y=f(\\mathbf{x}).
+$$
+Suppose that $y$ is standardized to the zero-mean variable, and $f$ is supposed to be generated from the following GP with zero mean.
+$$
+f\\sim\\mathrm{GP}\\big(\\mathbf{0},k(\\mathbf{x},\\mathbf{x}^{\\prime})\\big).
+$$
+Here, GP represents the Gaussian process and $k$ is a kernel function used to calculate the kernel matrix $\\mathbf{K}$, which has $N$ rows and $N$ columns.
+$$
+K_{nm}=k(\\mathbf{x}_{n},\\mathbf{x}_{m}),
+$$
+where $K_{nm}$ is the element of $\\mathbf{K}$ with $n$ rows and $m$ columns. Because $f$ in Eq. (2) follows the $GP$, as shown in Eq. (3), the output vector $y=(y_1,y_2,…,y_N )^T$ also follows the Gaussian distribution with zero mean and covariance matrix $\\mathbf{K}$.
+$$
+\\mathbf{y}\\sim\\mathcal{N}(\\mathbf{0},\\mathbf{K}).
+$$
+In this paper, we used the autoregressive relevance determination (ARD) kernel function [29]. In the ARD, the input parameters that contribute to the output can be determined automatically. Further, the performance of regression in GPR depends on the selection of the kernel function. For instance, if the Matern5/2 kernel is selected, ARD is applied as
+$$
+k(r,\\mathbf{\\theta})=\\sigma^2\\left(1+\\sqrt{5}r+\\frac{5}{3}r^2\\right)\\exp(-\\sqrt{5}r), \\mathrm{where}\\space r(\\mathbf{x}_n,\\mathbf{x}_m)=\\sqrt{\\sum_{i=1}^L\\frac{(x_{ni}-x_{mi})^2}{l_i^2}}.
+$$
+Here, $L$ is the number of dimensions of the input parameter vector, and $\\mathbf{\\theta}$ is a vector of the hyperparameters $\\sigma$ and $l_i$. Among these hyperparameters, $l_i$ is called the length-scale, which indicates the contribution of the input parameter $x_i$ in the ARD. The smaller the estimation of the length-scale $l_i$, the larger is the contribution of $x_i$ to the output $y$. The estimator of GPR with ARD is thus the hyperparameter $\\mathbf{\\theta}$, which includes the length-scale $l_i$. To verify the contribution of each parameter, index $c_i$ was defined, which was the index converted from the length-scale $l_i$ to the relative percentage contribution in each input dimension $i$, as below.
+$$
+c_i=\\frac{1/l_i}{\\sum_{j=1}^L(1/l_j)}\\times100\\quad(i=1,2,\\cdots,L)
+$$
+In this study, the maximum likelihood estimation was used for estimating the hyperparameters of GPR model $\\mathbf{\\theta}$ by adopting the limited-memory Broyden–Fletcher–Goldfarb–Shanno (L-BFGS) method [31] as the optimization method. The GPR model construction was implemented using the Python library GPy [32].
 
 <h2>2.2 TL in TL-GPRSM</h2>
 TL in TL-GPRSM is implemented by the data expansion proposed by Daumé [33]. This method can apply to TL in most machine learning models including GPR by expanding the matrix of input parameters in training data to the common, source, and target parts. This makes possible to implement TL without losing advantages of GPR, applicability to nonlinear and nonparametric regressions. Furthermore, as the ARD kernel can be applied straightforward, the explainability of constructed TL-GPRSM is introduced including the effectiveness of TL.<br>
@@ -421,7 +421,7 @@ The numerical model of a seismic isolation RC pier used in this verification cor
     <td rowspan='8' style='text-align: center; vertical-align: middle;'>± 10 %</td>
   </tr>
   <tr>
-    <td rowspan='3'>Seismic isolation bearing</td>
+    <td rowspan='3' style='text-align: center; vertical-align: middle;'>Seismic isolation bearing</td>
     <td>Primary stiffness (Kb1)</td>
     <td>40023.2 kN/m</td>
   </tr>
@@ -434,7 +434,7 @@ The numerical model of a seismic isolation RC pier used in this verification cor
     <td>1117.2 kN</td>
   </tr>
   <tr>
-    <td rowspan='4'>RC Pier</td>
+    <td rowspan='4' style='text-align: center; vertical-align: middle;'>RC Pier</td>
     <td>Mass (Mrc)</td>
     <td>346300 kg</td>
   </tr>
@@ -452,8 +452,61 @@ The numerical model of a seismic isolation RC pier used in this verification cor
   </tr>
 </table>
 
-
-
+<h2>4.2 Input earthquake loads and nonlinear time-history analysis</h2>
+The input earthquake loads for the target domain in the TL-GPRSM were the designed ground motion in the design standard [39] and two observed earthquake ground motions recorded as JMA Kobe for the Kobe earthquake in 1995 and KAIHOKUBASHI for the Tohoku earthquake in 2011, as shown in Table 3. As the source domain, the designed earthquake ground motion, called Level-2 ground motion, was adopted, which was used for evaluation based on the time-history analysis. Two types of Level-2 ground motions were considered, namely, Type-1 for the plate boundary type earthquake and Type-2 for the inland earthquake. In the design standard [39], three ground motions were prepared for each of Type-1, Type-2, and three ground classifications. Here, the seismic isolation bridge was allowed to be constructed on hard ground; hence, the earthquake ground motions for the corresponding ground classification were used: Type1-1-1/2/3 and Type2-1-1/2/3. For the source domain in all cases, the first ground motions of the two types, Type1-1-1 and Type2-1-1, were adopted. As shown in Table 3, the second ground motion of Type-2, Type2-1-2, was set for the target domain in Case #1. One of the purposes of this verification was to investigate how the similarity in the input earthquake ground motion affected the performance of the TL-GPRSM. It should be noted that JMA KOBE was classified as an inland earthquake (Type-2) and KAIHOKUBASHI as a plate boundary type earthquake (Type-1). The acceleration response spectra for all ground motions for the target and source domains are shown in Fig. 12. In Type-1 ground motion, high response was observed in the low-range period of less than 0.3 s, and the dominant period in Type-2 ranged from approximately 0.3 to 0.8 s. For the nonlinear time-history analysis, the time increment was set to 0.001 s, and the Newmark-β method (γ = 0.5 m, β = 0.25) was adopted for the numerical integration. The structural damping was assumed to be Rayleigh damping with the component damping coefficient of 0% for the seismic isolation bearing and 2% for the RC pier.<br>
+Figure 13(a) and (b) show the response hysteresis of the RC pier and seismic rubber bearing obtained from the results of the time-history analysis for the input cases of JMA KOBE and KAIHOKUBASHI, respectively. Although both earthquake inputs had the same intensity level as the designed input earthquake for each earthquake type, and both showed the maximum displacements in the pier and bearing, the occurrences of nonlinearity were different. In Fig. 13 (a) for JMA KOBE, not only the rubber bearing but also the RC pier showed plasticized responses. However, the RC pier response was in the elastic range by utilizing the rubber bearing in Fig. 13(b) corresponding to KAIHOKUBASHI. It is well known that the nonlinear response of each member strongly depends on the input ground motion. The TL is expected to effectively consider the input–output relationship of each earthquake type trained in the source domain, in the target domain training.<br>
+<table>
+    <tr>
+        <th>Case #</th>
+        <th>Target domain</th>
+        <th>Source domain</th>
+    </tr>
+    <tr>
+        <td>Case #1</td>
+        <td>Level2 Type2-1-2</td>
+        <td>
+            Level2 Type1-1-1 (200 data)<br>
+            Level2 Type2-1-1 (200 data)
+        </td>
+    </tr>
+    <tr>
+        <td>Case #2</td>
+        <td>JMA KOBE (Type-2)</td>
+        <td>
+            Level2 Type1-1-1 (200 data)<br>
+            Level2 Type2-1-1 (200 data)
+        </td>
+    </tr>
+    <tr>
+        <td>Case #3</td>
+        <td>KAIHOKUBASHI (Type-1)</td>
+        <td>
+            Level2 Type1-1-1 (200 data)<br>
+            Level2 Type2-1-1 (200 data)
+        </td>
+    </tr>
+</table>
+<br>
+<center><img src='fig14.png' alt=''></center>
+<center>Fig. 12 Response spectra of earthquake ground motions</center>
+<br>
+<table>
+    <tr>
+        <td><center><img src='fig13_a1.png' alt=''></center></td>
+        <td><center><img src='fig13_a2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(a)	JMA KOBE (left: pier, right: bearing)</center></td>
+    </tr>
+    <tr>
+        <td><center><img src='fig13_b1.png' alt=''></center></td>
+        <td><center><img src='fig13_b2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(b)	KAIHOKUBASHI (left: pier, right: bearing)</center></td>
+    </tr>
+</table>
+<center>Fig. 13 Response hysteresis with input earthquake ground motions in target domain in Cases #2 and #3</center>
 
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
