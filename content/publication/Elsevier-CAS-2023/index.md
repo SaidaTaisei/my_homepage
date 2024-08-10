@@ -122,7 +122,7 @@ $$\\mathbf D^t=\\{\\bigl(\\mathbf x_1^t,f_t(\\mathbf x_1^t)\\bigr),\\bigl(\\math
     </tr>
 </table>
 <center>Fig. 2 Function field of source and target domain models and created training data (described in “×”)</center>
-
+<br><br>
 Then, the expanded input vectors for implementing TL are configured following Eq. (10), as:
 $$\\hat{\\mathbf{x}}_i^s=(\\mathbf{x}_i^s,\\mathbf{x}_i^s,\\mathbf{0}_{\\mathbf{1}\\times\\mathbf{3}})(i=1-100) \\mathrm{and} \\hat{\\mathbf{x}}_j^t=(\\mathbf{x}_j^t,\\mathbf{0}_{\\mathbf{1}\\times\\mathbf{3}},\\mathbf{x}_j^t) (j=1-10).$$
 The data matrix for TL-GPRSM is given as follows:
@@ -149,9 +149,215 @@ The effect of TL can be determined by the summation of contribution $c_j$ in eac
     </tr>
 </table>
 <center>Fig. 3 Prediction performance of constructed surrogate models for target function model $f_t$</center>
+<br><br>
 <center><img src='fig4.png' alt='' /></center>
 <center>Fig. 4 Estimated contributions of model parameter uncertainties<br>
 (Left: Common part, Center: Source part, Right: Target part)</center>
+
+<h2>3. Live-load capacity evaluation of plate girder bridge</h2>
+TL-GPRSM is expected to be applicable to the case wherein the number of input parameters and their uncertainties change in the source and target domains of the TL. In existing structures, the number of uncertain parameters and their degrees of uncertainties may change from those at the time of new construction owing to damage or deterioration. In this case, if TL-GPRSM is effective, the computational cost of the reliability analysis can be reduced by using the data saved in the design phase. In this section, we use the analytical model of a steel plate girder bridge with damaged sections. The surrogate model was constructed by applying TL-GPRSM to the data before and after the damage, and its effectiveness in reducing the computational cost was verified. The effectiveness of TL and adaptation to the sparsity of input parameters using ARD contribution estimation were also verified.
+<h2>3.1 FE modeling and evaluation analysis</h2>
+The numerical analysis as the target of surrogate modeling in this paper was the structural reliability analysis of a simply supported steel plate girder bridge considering the damage of corrosion at the end of the main girder, which was conducted in a previous study by the authors [35]. The bridge is a testbed structure for the numerical study designed based on the Japanese design standard [36]. The bridge consists of five main I-shape steel girders, a reinforced concrete (RC) slab, and steel bearings with a span length of 20.0 m and width of 10.7 m. The FE model of the bridge was constructed using the general-purpose FE analysis software Abaqus 6.14. Figure 5(a) shows the overall view of the constructed whole-bridge FE model. Here, the five main girders and concrete slab were modeled using the shell element, and the members of the steel bearings were described using the solid element. The output response for the performance evaluation was the maximum Mises stress at the region near the ends of each main girder under static loading of the designed live load introduced in the Japanese design standard [36]. The convergence of the mesh size to the output response was verified to determine the mesh size configuration for the whole-bridge model; however, the determined number of elements became excessively large. Therefore, the half-girder model was prepared to reduce the computational cost, as shown in Fig. 5(a). Here, the previously determined mesh configuration was retained, and the continuity condition at the mid-span cross-section was applied with symmetry preservation. In addition, the input live load was adjusted to obtain the stress distribution at the main girder as the output, which was consistent with that obtained in the whole-bridge model analysis. The total number of elements in the half-girder model was 104,799. Most parameters of the initial model without damages were determined based on the nominal properties of steel and RC used in the bridge design. The friction coefficient of the contact surface between the upper and lower parts of the steel bearing was set to 0.2, which is the generally used value of the coefficient for metal contact surfaces. In the constructed initial FE model, the static deflection under the designed live load satisfied the requirement for the limit state in the design standard [36]. Then, the FE model for the performance evaluation under the damaged condition was constructed. The corrosion at the main girders and bearings was represented by setting the individual areas in the main girders, as shown in Fig. 5(b), to reduce the thickness at the corroded areas and by increasing the friction coefficients at the corroded bearings, respectively. The effect of cracks at the concrete slab was considered by reducing the Young’s modulus of the elements of the slab. The input–output relationship of the initial FE model is the source domain, and that of the FE model with damages is the target domain in the TL-GPRSM.
+<table>
+    <tr>
+        <td><center><img src='fig5_a.png' alt=''></center></td>
+        <td><center><img src='fig5_b.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td><center>(a) Full bridge model and its half-girder model</center></td>
+        <td><center>(b) Corroded area</center></td>
+    </tr>
+</table>
+<center>Fig. 5 Testbed bridge FE model for verification</center>
+
+<h2>3.2 Uncertainties of model parameters</h2>
+In the TL-GPRSM, the increase in the uncertainties in the structural properties due to damages is considered through TL. The parameter uncertainties were determined both in the initial FE model as the source model and in the damaged-condition FE model as the target model. In the initial FE model, sixteen parameters #1–#16 were considered, and their uncertainties were represented by the uniform distributions with nominal mean and coefficient of variation (COV), as shown in Table 1. Here, the mean and COV values were determined based on the statistical properties reported in previous research papers and surveys, as summarized in the authors’ previous study [35]. For the damaged-condition FE model, three parameters #17–#19 were added to represent the effect of corrosion, that is, the thickness reduction at the corroded areas. In addition, the probability distribution of the friction coefficient #8 (Cf) was changed to represent the decrease in the moving function due to the corrosion, and the distribution of the Young’s modulus of the concrete slab #3 (Ec) was changed to consider the effect of cracks.<br>
+Figure 6 shows the distributions of the maximum Mises stress near the ends of the girders for the performance evaluation using MC calculations with 500 samples from the space of uncertain model parameters in the initial- and damaged-condition FE models. Here, the 500 samples were generated through LHS. The maximum Mises stress in the damaged-condition FE model is distributed in the range of higher stress values when compared with the distribution in the initial FE model. It can be said that the limit state capacity of yield stress is reduced owing to the damages. The distribution of the maximum Mises stress in the damaged-condition FE model is the target output of the surrogate modeling using the TL-GPRSM. The surrogate model for the initial FE model with sixteen uncertain model parameters as the inputs is the source domain, and that for the damaged-condition FE model with nineteen parameters as the inputs is the target domain. Although the number of input parameters is different between the source and target domains, the TL-GPRSM is applied by data expansion with 16 dimensions for the common part, 16 dimensions for the source part, and 19 dimensions for the target part.
+
+<table border='1'>
+  <tr>
+    <th rowspan='2' colspan='3'>FE model parameter (Unit)</th>
+    <th colspan='2'>Initial (Source)</th>
+    <th colspan='2'>Damaged (Target)</th>
+  </tr>
+  <tr>
+    <th>Nominal</th>
+    <th>COV</th>
+    <th>Nominal</th>
+    <th>COV</th>
+  </tr>
+  <tr>
+    <td>#1</td>
+    <td>$D_c$</td>
+    <td>Density of concrete slab (kg/m³)</td>
+    <td>2400</td>
+    <td>0.0171</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#2</td>
+    <td>$E_s$</td>
+    <td>Young's modulus of steel main girders (GPa)</td>
+    <td>200</td>
+    <td>0.0450</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#3</td>
+    <td>$E_c$</td>
+    <td>Young's modulus of concrete slab (GPa)</td>
+    <td>25</td>
+    <td>0.0167</td>
+    <td>22.5</td>
+    <td>0.0333</td>
+  </tr>
+  <tr>
+    <td>#4</td>
+    <td>$E_b$</td>
+    <td>Young's modulus of steel bearings (GPa)</td>
+    <td>200</td>
+    <td>0.0450</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#5</td>
+    <td>$V_s$</td>
+    <td>Poisson's ratio of steel main girder</td>
+    <td>0.3</td>
+    <td>0.0910</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#6</td>
+    <td>$V_c$</td>
+    <td>Poisson's ratio of concrete slab</td>
+    <td>0.2</td>
+    <td>0.0167</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#7</td>
+    <td>$V_b$</td>
+    <td>Poisson's ratio of steel bearing</td>
+    <td>0.3</td>
+    <td>0.0910</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#8</td>
+    <td>$C_f$</td>
+    <td>Friction coefficient of steel bearing</td>
+    <td>0.2</td>
+    <td>0.0167</td>
+    <td>0.9</td>
+    <td>0.0333</td>
+  </tr>
+  <tr>
+    <td>#9</td>
+    <td>$T_{uf1}$</td>
+    <td>Thickness of upper flange of steel girder at near-end section (m)</td>
+    <td>0.0190</td>
+    <td>0.0121</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#10</td>
+    <td>$T_{uf2}$</td>
+    <td>Thickness of upper flange of steel girder at mid-span section (m)</td>
+    <td>0.0300</td>
+    <td>0.0121</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#11</td>
+    <td>$T_w$</td>
+    <td>Thickness of web plate of steel girder (m)</td>
+    <td>0.0090</td>
+    <td>0.0121</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#12</td>
+    <td>$T_{lf1}$</td>
+    <td>Thickness of lower flange of steel girder at near-end section (m)</td>
+    <td>0.0270</td>
+    <td>0.0121</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#13</td>
+    <td>$T_{lf2}$</td>
+    <td>Thickness of lower flange of steel girder at mid-span section (m)</td>
+    <td>0.0300</td>
+    <td>0.0121</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#14</td>
+    <td>$T_{st1}$</td>
+    <td>Thickness of stiffener of steel girder at near-end section (m)</td>
+    <td>0.0130</td>
+    <td>0.0121</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#15</td>
+    <td>$T_{st2}$</td>
+    <td>Thickness of stiffener of steel girder at mid-span section (m)</td>
+    <td>0.0100</td>
+    <td>0.0121</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#16</td>
+    <td>$T_{stn}$</td>
+    <td>Thickness of stiffener of steel girder at other sections (m)</td>
+    <td>0.0065</td>
+    <td>0.0121</td>
+    <td>*</td>
+    <td>*</td>
+  </tr>
+  <tr>
+    <td>#17</td>
+    <td>$T_{lf-d}$</td>
+    <td>Thickness of corroded area in lower flange of steel girder at near-end section (m)</td>
+    <td>-</td>
+    <td>-</td>
+    <td>0.025</td>
+    <td>0.0270</td>
+  </tr>
+  <tr>
+    <td>#18</td>
+    <td>$T_{w-d}$</td>
+    <td>Thickness of corroded area in web plate of steel girder (m)</td>
+    <td>-</td>
+    <td>-</td>
+    <td>0.008</td>
+    <td>0.0162</td>
+  </tr>
+  <tr>
+    <td>#19</td>
+    <td>$T_{st-d}$</td>
+    <td>Thickness of corroded area in stiffener of steel girder at near-end section (m)</td>
+    <td>-</td>
+    <td>-</td>
+    <td>0.012</td>
+    <td>0.0162</td>
+  </tr>
+</table>
 
 
 " 
