@@ -94,7 +94,7 @@ $$
 C_C=\\sum_{i=1}^{L_C}c_i,\\space C_S=\\sum_{i=1}^{L_S}c_i,\\space \\mathrm{and} C_T=\\sum_{i=1}^{L_T}c_i.
 $$
 Here, $C_C$, $C_S$, and $C_T$ are the contributions of the common, source, and target parts, and $L_C$, $L_S$, and $L_T$ are the number of input dimensions of the common, source, and target parts, respectively. Considering that the common part contributes to both the source and target domains, the relative magnitude of $C_C$ against $C_T$ indicates the effect of TL in predicting in the target domain.
-<img src='fig1.png' alt='Fig. 1 Data expansion for incorporating TL into GPR' />
+<center><img src='fig1.png' alt='Fig. 1 Data expansion for incorporating TL into GPR' /></center>
 <center>Fig. 1 Data expansion for incorporating TL into GPR</center>
 
 <h2>2.3 Construction and validation of TL-GPRSM</h2>
@@ -126,7 +126,7 @@ $$\\mathbf D^t=\\{\\bigl(\\mathbf x_1^t,f_t(\\mathbf x_1^t)\\bigr),\\bigl(\\math
 Then, the expanded input vectors for implementing TL are configured following Eq. (10), as:
 $$\\hat{\\mathbf{x}}_i^s=(\\mathbf{x}_i^s,\\mathbf{x}_i^s,\\mathbf{0}_{\\mathbf{1}\\times\\mathbf{3}})(i=1-100) \\mathrm{and} \\hat{\\mathbf{x}}_j^t=(\\mathbf{x}_j^t,\\mathbf{0}_{\\mathbf{1}\\times\\mathbf{3}},\\mathbf{x}_j^t) (j=1-10).$$
 The data matrix for TL-GPRSM is given as follows:
-$$\\mathbf{D}^{TL-GPRSM}=\\{\\left(\\mathbf{\\hat{x}}^{s}{}_{1},f_{s}(\\mathbf{x}_{1}^{s})\\right),\\left(\\mathbf{\\hat{x}}^{s}{}_{2},f_{s}(\\mathbf{x}_{2}^{s})\\right),...,\\left(\\mathbf{\\hat{x}}^{s}{}_{100},f_{s}(\\mathbf{x}_{100}^{s})\\right),\\linebreak \\left(\\mathbf{\\hat{x}}^{t}{}_{1},f_{t}(\\mathbf{x}_{1}^{t})\\right),\\left(\\mathbf{\\hat{x}}^{t}{}_{2},f_{t}(\\mathbf{x}_{2}^{t})\\right),...,\\left(\\mathbf{\\hat{x}}^{t}{}_{10},f_{t}(\\mathbf{x}_{10}^{t})\\right)\\}^{T}$$
+$$\\mathbf{D}^{TL-GPRSM}=\\{\\left(\\mathbf{\\hat{x}}^{s}{}_{1},f_{s}(\\mathbf{x}_{1}^{s})\\right),\\left(\\mathbf{\\hat{x}}^{s}{}_{2},f_{s}(\\mathbf{x}_{2}^{s})\\right),...,\\left(\\mathbf{\\hat{x}}^{s}{}_{100},f_{s}(\\mathbf{x}_{100}^{s})\\right),\\linebreak{} \\left(\\mathbf{\\hat{x}}^{t}{}_{1},f_{t}(\\mathbf{x}_{1}^{t})\\right),\\left(\\mathbf{\\hat{x}}^{t}{}_{2},f_{t}(\\mathbf{x}_{2}^{t})\\right),...,\\left(\\mathbf{\\hat{x}}^{t}{}_{10},f_{t}(\\mathbf{x}_{10}^{t})\\right)\\}^{T}$$
 The obtained surrogate model for target domain $f_t$ is then evaluated by predicting the distribution of function outputs to 1000 samples generated from the space of input variables $x_i$ with range of −1≤ $x_i$ ≤1 (i =1−3). For comparison, a GPR surrogate model without TL is also constructed only using the 10 data from the target function model ft. The predicted distributions are compared in Fig.3 (a). Here, the distribution of function outputs created by assigning the same 1000 samples of input variables to the target function model $f_t$ is also shown as “True” case. The TL-GPRSM can predict the distribution closer to the true distribution than the one predicted from the GPR model without TL. The RMSPE accuracies are 0.13% and 15.2% in TL-GPRSM and GPR without TL, respectively. Also, the function field of ft predicted by the TL-GPRSM in Fig. 3(b) clearly shows good agreement with the true function field, which is shown in Fig. 2(b), compared to the function field predicted by the GPR without TL in Fig. 3(c).<br>
 The contribution of each input variable in each of Common, Source, and Target parts is then evaluated by calculating $c_j$ using Eq. (7) as: 
 $$c_j=\\frac{1/l_j}{\\sum_{j=1}^9\\left(1/l_j\\right)}\\times100\\quad(j=1,\\cdots,9),$$
@@ -134,10 +134,10 @@ where $l_j$ is length-scale in ARD kernel, and subscript $j$ indicates the order
 The effect of TL can be determined by the summation of contribution $c_j$ in each part, which are $C_C$, $C_S$, and $C_T$ expressed in Eq. (12). The calculated values of $C_C$, $C_S$, and $C_T$ are 39.5, 27.1 and 33.4, respectively. It can be said that the TL worked effectively for the appropriate surrogate modeling from the point that the relative value of common part contribution $C_C$ against target part contribution $C_T$ was large in this application example. 
 <table>
     <tr>
-        <td><center><img src='fig3_a.png' alt=''></center></td>
+        <td colspan='2'><center><img src='fig3_a.png' alt=''></center></td>
     </tr>
     <tr>
-        <td><center>(a) Distributions of function outputs</center></td>
+        <td colspan='2'><center>(a) Distributions of function outputs</center></td>
     </tr>
     <tr>
         <td><center><img src='fig3_b.png' alt=''></center></td>
