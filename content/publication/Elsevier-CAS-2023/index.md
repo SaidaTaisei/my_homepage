@@ -37,7 +37,7 @@ publication: '[Computers & Structures](https://www.sciencedirect.com/journal/com
 doi: 10.1016/j.compstruc.2023.107014
 summary: "Computers & Structures (**Impact Factor: 5.372** in 2021; [Structural Engineering at Google Scholar Metrics](https://scholar.google.com/citations?view_op=top_venues&hl=en&vq=eng_structuralengineering))"
 ---
----
+
 <a href="https://www.scimagojr.com/journalsearch.php?q=18171&amp;tip=sid&amp;exact=no" title="SCImago Journal &amp; Country Rank"><img border="0" src="https://www.scimagojr.com/journal_img.php?id=18171" alt="SCImago Journal &amp; Country Rank"  /></a>
 
 # Accepted Version 
