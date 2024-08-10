@@ -174,7 +174,7 @@ The numerical analysis as the target of surrogate modeling in this paper was the
 In the TL-GPRSM, the increase in the uncertainties in the structural properties due to damages is considered through TL. The parameter uncertainties were determined both in the initial FE model as the source model and in the damaged-condition FE model as the target model. In the initial FE model, sixteen parameters #1–#16 were considered, and their uncertainties were represented by the uniform distributions with nominal mean and coefficient of variation (COV), as shown in Table 1. Here, the mean and COV values were determined based on the statistical properties reported in previous research papers and surveys, as summarized in the authors’ previous study [35]. For the damaged-condition FE model, three parameters #17–#19 were added to represent the effect of corrosion, that is, the thickness reduction at the corroded areas. In addition, the probability distribution of the friction coefficient #8 (Cf) was changed to represent the decrease in the moving function due to the corrosion, and the distribution of the Young’s modulus of the concrete slab #3 (Ec) was changed to consider the effect of cracks.<br>
 Figure 6 shows the distributions of the maximum Mises stress near the ends of the girders for the performance evaluation using MC calculations with 500 samples from the space of uncertain model parameters in the initial- and damaged-condition FE models. Here, the 500 samples were generated through LHS. The maximum Mises stress in the damaged-condition FE model is distributed in the range of higher stress values when compared with the distribution in the initial FE model. It can be said that the limit state capacity of yield stress is reduced owing to the damages. The distribution of the maximum Mises stress in the damaged-condition FE model is the target output of the surrogate modeling using the TL-GPRSM. The surrogate model for the initial FE model with sixteen uncertain model parameters as the inputs is the source domain, and that for the damaged-condition FE model with nineteen parameters as the inputs is the target domain. Although the number of input parameters is different between the source and target domains, the TL-GPRSM is applied by data expansion with 16 dimensions for the common part, 16 dimensions for the source part, and 19 dimensions for the target part.
 
-<br>
+<br><br>
 <center>Table 1 Uncertainties of FE model parameters (−: N/A, *: the same as in the initial FE model)</center>
 <table border='1' cellspacing='0' cellpadding='5'>
   <tr>
@@ -396,6 +396,69 @@ Figure 10 shows the contribution of each uncertain model parameter in the constr
 <br>
 <center><img src='fig10.png' alt='' /></center>
 <center>Fig. 10 Estimated contributions of model parameter uncertainties to the maximum Mises stress in the steel girder (number of source data: 30, number of target data: 15) (Left: Common part, Center: Source part, Right: Target part)</center>
+<br>
+<h2>4. Performance evaluation of seismic isolated bridge pier</h2>
+Another application of the structural reliability analysis is performance evaluation against disaster loads such as earthquakes. Here, the structural response analysis requires a nonlinear calculation, and must be performed for various external loads that are probabilistically determined. In this section, the TL-GPRSM was verified using the earthquake response analysis for the seismic performance evaluation of an isolated RC bridge pier. In this section, TL-GPRSM is constructed with the source domain as the input–output of seismic response analysis with the designed earthquake loads, and the target domain as the input–output of seismic response analysis for a certain input observed earthquake load. We verified whether the computational cost of the seismic performance analysis of the structure could be reduced by using the prepared data created based on numerical analysis with the designed earthquake loads.
+<h2>4.1 Modeling and parameter uncertainties</h2>
+The numerical model of a seismic isolation RC pier used in this verification corresponds to the dynamic seismic design shown in the design standard of road bridges in Japan [37]. Figure 11(a) shows the overall view of the bridge, and the target is an RC pier with seismic rubber bearing, indicated as P1. This pier was modeled using the two degree-of-freedom (DOF) lumped-mass model shown in Fig. 11(b). The masses of the superstructure and RC pier were assigned to the upper and lower lumped-masses of the 2DOF system, respectively, and the seismic isolation rubber bearing was modeled as a horizontal spring with nonlinear characteristics described using the bilinear model. The nonlinear stiffness of the RC pier was described using the Takeda model [38]. The nominal parameters were determined based on the values of the bridge properties introduced in the design standard [37], as shown in Table 2. The uncertainty of each model parameter was represented as a uniform distribution with upper and lower limits of ±10% from the nominal value.
+<center><img src='fig10_a.png' alt='' /></center>
+<center>(a) Overall view of the target bridge [37]</center>
+<center><img src='fig10_b.png' alt='' /></center>
+<center>(b) 2DOF lumped-mass model of an isolated RC pier</center>
+<center>Fig. 11 Illustrations of target structure</center>
+<br>
+<center>Table 2　Uncertain parameters of the seismic isolation bridge pier model </center>
+<table border='1' cellspacing='0' cellpadding='5'>
+  <tr>
+    <th style='text-align: center;'>Parameter</th>
+    <th style='text-align: center;'>Nominal</th>
+    <th style='text-align: center;'>Uncertainty</th>
+  </tr>
+  <tr>
+    <td>Superstructure</td>
+    <td>Mass (Mu)</td>
+    <td style='text-align: center;'>604000 kg</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td rowspan='3'>Seismic isolation bearing</td>
+    <td>Primary stiffness (Kb1)</td>
+    <td style='text-align: center;'>40023.2 kN/m</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Secondary stiffness (Kb2)</td>
+    <td style='text-align: center;'>6154.4 kN/m</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Yield load (Qb)</td>
+    <td style='text-align: center;'>1117.2 kN</td>
+    <td style='text-align: center;'>± 10 %</td>
+  </tr>
+  <tr>
+    <td rowspan='4'>RC Pier</td>
+    <td>Mass (Mrc)</td>
+    <td style='text-align: center;'>346300 kg</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Primary stiffness (Krc1)</td>
+    <td style='text-align: center;'>110000 kN/m</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Secondary stiffness (Krc2)</td>
+    <td style='text-align: center;'>8250 kN/m</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Yield load (Qrc)</td>
+    <td style='text-align: center;'>3399 kN</td>
+    <td></td>
+  </tr>
+</table>
+
 
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
