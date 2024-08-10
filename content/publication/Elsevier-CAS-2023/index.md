@@ -48,14 +48,12 @@ In this paper, the overviews of GPR and TL are presented, and the TL-GPRSM is fo
 <h2>2.1 GPR with ARD kernel</h2>
 GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix D with number of data N is defined as shown below.
 $$
-\textbf{D}=(x_{1},y_{1}),(x_{2},y_{2}),...,(x_{N},y_{N})^{T}
+**D**=(x_{1},y_{1}),(x_{2},y_{2}),...,(x_{N},y_{N})^{T}
 $$
 where x is a vector of the input parameters with length of L, and y is the output. The input–output relationship is described as
 $$
 y=f(x).
 $$
-Suppose that y is standardized to the zero-mean variable, and f is supposed to be generated from the following GP with zero mean.
-
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
 doi: 10.1016/j.compstruc.2023.107014
