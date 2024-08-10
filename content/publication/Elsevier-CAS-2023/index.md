@@ -454,8 +454,10 @@ The numerical model of a seismic isolation RC pier used in this verification cor
 
 <h2>4.2 Input earthquake loads and nonlinear time-history analysis</h2>
 The input earthquake loads for the target domain in the TL-GPRSM were the designed ground motion in the design standard [39] and two observed earthquake ground motions recorded as JMA Kobe for the Kobe earthquake in 1995 and KAIHOKUBASHI for the Tohoku earthquake in 2011, as shown in Table 3. As the source domain, the designed earthquake ground motion, called Level-2 ground motion, was adopted, which was used for evaluation based on the time-history analysis. Two types of Level-2 ground motions were considered, namely, Type-1 for the plate boundary type earthquake and Type-2 for the inland earthquake. In the design standard [39], three ground motions were prepared for each of Type-1, Type-2, and three ground classifications. Here, the seismic isolation bridge was allowed to be constructed on hard ground; hence, the earthquake ground motions for the corresponding ground classification were used: Type1-1-1/2/3 and Type2-1-1/2/3. For the source domain in all cases, the first ground motions of the two types, Type1-1-1 and Type2-1-1, were adopted. As shown in Table 3, the second ground motion of Type-2, Type2-1-2, was set for the target domain in Case #1. One of the purposes of this verification was to investigate how the similarity in the input earthquake ground motion affected the performance of the TL-GPRSM. It should be noted that JMA KOBE was classified as an inland earthquake (Type-2) and KAIHOKUBASHI as a plate boundary type earthquake (Type-1). The acceleration response spectra for all ground motions for the target and source domains are shown in Fig. 12. In Type-1 ground motion, high response was observed in the low-range period of less than 0.3 s, and the dominant period in Type-2 ranged from approximately 0.3 to 0.8 s. For the nonlinear time-history analysis, the time increment was set to 0.001 s, and the Newmark-β method (γ = 0.5 m, β = 0.25) was adopted for the numerical integration. The structural damping was assumed to be Rayleigh damping with the component damping coefficient of 0% for the seismic isolation bearing and 2% for the RC pier.<br>
-Figure 13(a) and (b) show the response hysteresis of the RC pier and seismic rubber bearing obtained from the results of the time-history analysis for the input cases of JMA KOBE and KAIHOKUBASHI, respectively. Although both earthquake inputs had the same intensity level as the designed input earthquake for each earthquake type, and both showed the maximum displacements in the pier and bearing, the occurrences of nonlinearity were different. In Fig. 13 (a) for JMA KOBE, not only the rubber bearing but also the RC pier showed plasticized responses. However, the RC pier response was in the elastic range by utilizing the rubber bearing in Fig. 13(b) corresponding to KAIHOKUBASHI. It is well known that the nonlinear response of each member strongly depends on the input ground motion. The TL is expected to effectively consider the input–output relationship of each earthquake type trained in the source domain, in the target domain training.<br>
-<table border='1' cellspacing='0' cellpadding='5'>
+Figure 13(a) and (b) show the response hysteresis of the RC pier and seismic rubber bearing obtained from the results of the time-history analysis for the input cases of JMA KOBE and KAIHOKUBASHI, respectively. Although both earthquake inputs had the same intensity level as the designed input earthquake for each earthquake type, and both showed the maximum displacements in the pier and bearing, the occurrences of nonlinearity were different. In Fig. 13 (a) for JMA KOBE, not only the rubber bearing but also the RC pier showed plasticized responses. However, the RC pier response was in the elastic range by utilizing the rubber bearing in Fig. 13(b) corresponding to KAIHOKUBASHI. It is well known that the nonlinear response of each member strongly depends on the input ground motion. The TL is expected to effectively consider the input–output relationship of each earthquake type trained in the source domain, in the target domain training.<br><br>
+<center>Table 3 Target and source domain settings for verification</center>
+<center>
+<table border='1'>
     <tr>
         <th>Case #</th>
         <th>Target domain</th>
@@ -486,8 +488,9 @@ Figure 13(a) and (b) show the response hysteresis of the RC pier and seismic rub
         </td>
     </tr>
 </table>
+</center>
 <br>
-<center><img src='fig14.png' alt=''></center>
+<center><img src='fig12.png' alt=''></center>
 <center>Fig. 12 Response spectra of earthquake ground motions</center>
 <br>
 <table>
