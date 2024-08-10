@@ -111,14 +111,15 @@ where $x_1$, $x_2$, and $x_3$ are input variables with the range of $−1≤ x_i
 First, the data sets of function input-output relationships for source domain $f_s$ and target domain $f_t$ are created with the numbers of data $N_s =100$ and $N_t =10$, respectively. The samples of input variables space are plotted in Fig.2, where they are shown in the spaces of $x_1$ and $x_2$ because $x_3$ less contributes to the function output, as mentioned above. The data matrix of source domain $\\mathbf{D}^s$ and target domain $\\mathbf{D}^t$ are represented as:
 <table>
     <tr>
-        <td><img src='fig2_a.png' alt=''></td>
-        <td><img src='fig2_b.png' alt=''></td>
+        <td><center><img src='fig2_a.png' alt=''></center></td>
+        <td><center><img src='fig2_b.png' alt=''></center></td>
     </tr>
     <tr>
-        <td>(a) Source domain (data samples $N_S$ =100)</td>
-        <td>(b) Target domain (data samples $N_T$ =10)</td>
+        <td><center>(a) Source domain (data samples $N_S =100$)</center></td>
+        <td><center>(b) Target domain (data samples $N_T =10$)</center></td>
     </tr>
 </table>
+<center>Fig. 2 Function field of source and target domain models and created training data (described in “×”)</center>
 
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
