@@ -46,15 +46,17 @@ In this paper, the overviews of GPR and TL are presented, and the TL-GPRSM is fo
 
 <h2>2. Transfer training in GPR surrogate modeling</h2>
 <h2>2.1 GPR with ARD kernel</h2>
-GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix D with number of data N is defined as shown below.
-{{< math >}}
+GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix $\\mathbf{D}$ with number of data $N$ is defined as shown below.
 $$
-\\mathbf{D}=(x_{1},y_{1}),(x_{2},y_{2}),...,(x_{N},y_{N})^{T}
+\\mathbf{D}=\\{(\\mathbf{x}_1,y_1),(\\mathbf{x}_2,y_2),...,(\\mathbf{x}_N,y_N)\\}^T,
 $$
-{{< math >}}
-where x is a vector of the input parameters with length of L, and y is the output. The input–output relationship is described as
+where $\\mathbf{x}$ is a vector of the input parameters with length of $L$, and $y$ is the output. The input–output relationship is described as
 $$
-y=f(x).
+y=f(\\mathbf{x}).
+$$
+Suppose that $y$ is standardized to the zero-mean variable, and $f$ is supposed to be generated from the following GP with zero mean.
+$$
+f\\sim\\mathrm{GP}\\big(\\mathbf{0},k(\\mathbf{x},\\mathbf{x}^{\\prime})\\big).
 $$
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
