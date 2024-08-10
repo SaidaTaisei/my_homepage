@@ -49,69 +49,9 @@ In this paper, the overviews of GPR and TL are presented, and the TL-GPRSM is fo
 GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix D with number of data N is defined as shown below.<br>
 $$\mathbf{D}=\{(\mathbf{x}_{1},y_{1}),(\mathbf{x}_{2},y_{2}),...,(\mathbf{x}_{N},y_{N})\}^{T}$$
 where x is a vector of the input parameters with length of L, and y is the output. The input–output relationship is described as
-<math xmlns="http://www.w3.org/1998/Math/MathML">
-  <mrow is="true">
-    <mi mathvariant="bold" is="true">D</mi>
-    <mo linebreak="goodbreak" is="true">=</mo>
-    <msup is="true">
-      <mrow is="true">
-        <mfenced open="{" close="}" is="true">
-          <mrow is="true">
-            <mfenced open="(" close=")" is="true">
-              <mrow is="true">
-                <msub is="true">
-                  <mi mathvariant="bold" is="true">x</mi>
-                  <mn is="true">1</mn>
-                </msub>
-                <mo is="true">,</mo>
-                <msub is="true">
-                  <mi is="true">y</mi>
-                  <mn is="true">1</mn>
-                </msub>
-              </mrow>
-            </mfenced>
-            <mo is="true">,</mo>
-            <mrow is="true">
-              <mfenced open="(" close=")" is="true">
-                <mrow is="true">
-                  <msub is="true">
-                    <mi mathvariant="bold" is="true">x</mi>
-                    <mn is="true">2</mn>
-                  </msub>
-                  <mo is="true">,</mo>
-                  <msub is="true">
-                    <mi is="true">y</mi>
-                    <mn is="true">2</mn>
-                  </msub>
-                </mrow>
-              </mfenced>
-            </mrow>
-            <mo is="true">,</mo>
-            <mo is="true">&#x22EF;</mo>
-            <mo is="true">,</mo>
-            <mrow is="true">
-              <mfenced open="(" close=")" is="true">
-                <mrow is="true">
-                  <msub is="true">
-                    <mi mathvariant="bold" is="true">x</mi>
-                    <mi is="true">N</mi>
-                  </msub>
-                  <mo is="true">,</mo>
-                  <msub is="true">
-                    <mi is="true">y</mi>
-                    <mi is="true">N</mi>
-                  </msub>
-                </mrow>
-              </mfenced>
-            </mrow>
-          </mrow>
-        </mfenced>
-      </mrow>
-      <mi is="true">T</mi>
-    </msup>
-    <mo is="true">,</mo>
-  </mrow>
-</math>
+$$
+y=f(x).
+$$
 Suppose that y is standardized to the zero-mean variable, and f is supposed to be generated from the following GP with zero mean.
 $$
 f\sim\mathrm{GP}(\mathbf{0},k(\mathbf{x},\mathbf{x}')).
