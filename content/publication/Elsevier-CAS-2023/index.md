@@ -456,8 +456,8 @@ The numerical model of a seismic isolation RC pier used in this verification cor
 The input earthquake loads for the target domain in the TL-GPRSM were the designed ground motion in the design standard [39] and two observed earthquake ground motions recorded as JMA Kobe for the Kobe earthquake in 1995 and KAIHOKUBASHI for the Tohoku earthquake in 2011, as shown in Table 3. As the source domain, the designed earthquake ground motion, called Level-2 ground motion, was adopted, which was used for evaluation based on the time-history analysis. Two types of Level-2 ground motions were considered, namely, Type-1 for the plate boundary type earthquake and Type-2 for the inland earthquake. In the design standard [39], three ground motions were prepared for each of Type-1, Type-2, and three ground classifications. Here, the seismic isolation bridge was allowed to be constructed on hard ground; hence, the earthquake ground motions for the corresponding ground classification were used: Type1-1-1/2/3 and Type2-1-1/2/3. For the source domain in all cases, the first ground motions of the two types, Type1-1-1 and Type2-1-1, were adopted. As shown in Table 3, the second ground motion of Type-2, Type2-1-2, was set for the target domain in Case #1. One of the purposes of this verification was to investigate how the similarity in the input earthquake ground motion affected the performance of the TL-GPRSM. It should be noted that JMA KOBE was classified as an inland earthquake (Type-2) and KAIHOKUBASHI as a plate boundary type earthquake (Type-1). The acceleration response spectra for all ground motions for the target and source domains are shown in Fig. 12. In Type-1 ground motion, high response was observed in the low-range period of less than 0.3 s, and the dominant period in Type-2 ranged from approximately 0.3 to 0.8 s. For the nonlinear time-history analysis, the time increment was set to 0.001 s, and the Newmark-β method (γ = 0.5 m, β = 0.25) was adopted for the numerical integration. The structural damping was assumed to be Rayleigh damping with the component damping coefficient of 0% for the seismic isolation bearing and 2% for the RC pier.<br>
 Figure 13(a) and (b) show the response hysteresis of the RC pier and seismic rubber bearing obtained from the results of the time-history analysis for the input cases of JMA KOBE and KAIHOKUBASHI, respectively. Although both earthquake inputs had the same intensity level as the designed input earthquake for each earthquake type, and both showed the maximum displacements in the pier and bearing, the occurrences of nonlinearity were different. In Fig. 13 (a) for JMA KOBE, not only the rubber bearing but also the RC pier showed plasticized responses. However, the RC pier response was in the elastic range by utilizing the rubber bearing in Fig. 13(b) corresponding to KAIHOKUBASHI. It is well known that the nonlinear response of each member strongly depends on the input ground motion. The TL is expected to effectively consider the input–output relationship of each earthquake type trained in the source domain, in the target domain training.<br><br>
 <center>Table 3 Target and source domain settings for verification</center>
-
-<table border='1' align="center">
+<center>
+<table border='1'>
     <tr>
         <th>Case #</th>
         <th>Target domain</th>
@@ -488,7 +488,7 @@ Figure 13(a) and (b) show the response hysteresis of the RC pier and seismic rub
         </td>
     </tr>
 </table>
-
+</center>
 <br>
 <center><img src='fig12.png' alt=''></center>
 <center>Fig. 12 Response spectra of earthquake ground motions</center>
@@ -510,6 +510,163 @@ Figure 13(a) and (b) show the response hysteresis of the RC pier and seismic rub
     </tr>
 </table>
 <center>Fig. 13 Response hysteresis with input earthquake ground motions in target domain in Cases #2 and #3</center>
+<br>
+<h2>4.3 Surrogate model construction using TL-GPRSM</h2>
+Figures 14−16 show the accuracies and effects of TL in the constructed surrogate models in Cases #1−#3. In this verification, all surrogate models were constructed using 200 Type1-1-1 data and 200 Type2-1-1 data, with the data having a higher TL effect as the source domain data, as shown in Table 3. For setting the training and testing datasets in the target domain, a fundamental dataset was prepared by creating 10,000 input–output relationships of the nonlinear time-history analysis of the 2DOF lumped-mass model. In each figure, plot (a) depicts the comparison of the accuracies based on RMSPE between the surrogate models constructed using the TL-GPRSM and those constructed using GPR with only the target domain data, plotted against the number of target domain training data. Plot (b) shows the relative contributions of the common, source, and target parts, calculated from the estimated length-scales of ARD, and plot (c) depicts the comparison of the contributions of the common part for each of the two source domains: Type1-1-1 and Type2-1-1.
+In Case #1 with the target domain of Type2-1-2, the RMSPE of the TL-GPRSM is slightly lower than that of the surrogate model constructed using GPR in the range of number of target domain data smaller than 50; further, the accuracies in the cases with number of training data over 50 show little difference, as shown in Fig. 14(a). This means that the TL was not useful in ensuring effective surrogate modeling. From the plots in Fig. 14(b), the contribution of the common part to the target part was almost constant, ranging from 10 to 15%, beyond the number of training data of 10. Figure 14(c) shows that the contribution of Type2-1-1 was higher than that of Type1-1-1. This means that the output of the maximum displacement of the RC pier mainly considers the source domain of Type2-1-1, which is the same type of input ground motion as that of the target domain. However, the output of the rubber bearing mainly considers Type1-1-1.<br><br>
+<table>
+    <tr>
+        <td><center><img src='fig14_a1.png' alt=''></center></td>
+        <td><center><img src='fig14_a2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(a)	Accuracies of constructed surrogate models (left: pier, right: bearing)</center></td>
+    </tr>
+    <tr>
+        <td><center><img src='fig14_b1.png' alt=''></center></td>
+        <td><center><img src='fig14_b2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(b) Contributions of common, source, and target domains (left: pier, right: bearing)</center></td>
+    </tr>
+    <tr>
+        <td><center><img src='fig14_c1.png' alt=''></center></td>
+        <td><center><img src='fig14_c2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(c) Contribution of common part for each source domain (left: pier, right: bearing)</center></td>
+    </tr>
+</table>
+<center>Fig. 14 Results of surrogate model construction in target domain of Type2-1-2 (Case #1)</center>
+<br>
+
+In Case #2 with the target domain of JMA KOBE, the surrogate models by TL-GPRSM show slightly higher accuracy for both the RC pier and isolation bearing, especially when approximately 30 target domain data are used, as shown in Fig. 15(a). Figure 15(b) shows that the relationship between the contributions of the common and target parts is constant, as seen in Case #1, and the ratios of those two contributions are similar. In Fig. 15(c), the contribution of the common part for each of the two source domains shows the same trend as that in Fig. 15(c), both for the RC pier and seismic isolation bearing; however, the difference between the contributions of Type1-1-1 and Type2-1-1 decreases.<br><br>
+<table>
+    <tr>
+        <td><center><img src='fig15_a1.png' alt=''></center></td>
+        <td><center><img src='fig15_a2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(a)	Accuracies of constructed surrogate models (left: pier, right: bearing)</center></td>
+    </tr>
+    <tr>
+        <td><center><img src='fig15_b1.png' alt=''></center></td>
+        <td><center><img src='fig15_b2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(b) Contributions of common, source, and target domains (left: pier, right: bearing)</center></td>
+    </tr>
+    <tr>
+        <td><center><img src='fig15_c1.png' alt=''></center></td>
+        <td><center><img src='fig15_c2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(c) Contribution of common part for each source domain (left: pier, right: bearing)</center></td>
+    </tr>
+</table>
+<center>Fig. 15 Results of surrogate model construction in target domain of JMA KOBE (Case #2)</center>
+<br>
+In the case of KAIHOKUBASHI in Fig. 16(a), the accuracy of the TL-GPRSM for the RC pier almost overlaps that of the surrogate model constructed using only the target domain training data. However, the accuracy of the TL-GPRSM for the bearing improves, especially when the number of training data is less than 100. Considering the range in Fig. 16(b), the contribution of the common part to the target part is relatively high. This indicates that the TL was effective in the surrogate model construction for the RC pier in this case. However, the RMSPE of the bearing surrogate model was approximately three times higher than those of all the other surrogate models, including those of the two previous cases. Figure 16(c) does not show a clear trend in which source domain data were selected in the TL for the surrogate model of the RC pier; however, for the bearing, there was a tendency to select the source domain of Type2-1-1, although the KAIHOKUBASHI ground motion is related to the plate boundary.<br><br>
+<table>
+    <tr>
+        <td><center><img src='fig16_a1.png' alt=''></center></td>
+        <td><center><img src='fig16_a2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(a)	Accuracies of constructed surrogate models (left: pier, right: bearing)</center></td>
+    </tr>
+    <tr>
+        <td><center><img src='fig16_b1.png' alt=''></center></td>
+        <td><center><img src='fig16_b2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(b) Contributions of common, source, and target domains (left: pier, right: bearing)</center></td>
+    </tr>
+    <tr>
+        <td><center><img src='fig16_c1.png' alt=''></center></td>
+        <td><center><img src='fig16_c2.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td colspan='2'><center>(c) Contribution of common part for each source domain (left: pier, right: bearing)</center></td>
+    </tr>
+</table>
+<center>Fig. 16 Results of surrogate model construction in target domain of KAIHOKUBASHI (Case #3)</center>
+<br>
+Figure 17 shows the estimated contributions of each model parameter uncertainty to the demand output for discussing the explainability of the constructed surrogate models. Here, the contributions to the maximum displacement of the RC pier are shown in Case #2 and Case #3 in Fig. 17(a) and (b), respectively. Notice that highly nonlinear behavior occurred in Case #2 (JMA KOBE) but did not occur in Case #3 (KAIHOKUBASHI), as explained in Fig. 13. The plot of red bars shows the contributions of the model parameters in the common part, the one with green bars denotes those in the source part, and the plot of blue bars denotes the contributions in the target part. It can be first understood that no parameter significantly contributed to the output in the common part in both cases. This is considered the reason why the TL was not effective in these cases. The plot of the target part indicates how each model parameter is considered in each target surrogate model. It can be seen that the contributions of the parameters that are related to the nonlinear behavior, such as Kb2, Qb, and Qrc, are high in Case #2 (JRA KOBE), whereas the contribution of those parameters is much lower in Case #3 (KAHOKUBASHI). These show the consistencies in the structural responses, i.e., occurrences of nonlinearity, which depend on the input earthquake waveform. Even though the effect of TL in computational cost reduction was not achieved by the TL-GPRSM in the cases considered here, the validity of the constructed surrogate models could be assured by observing the estimated contributions. Further considerations of the surrogate modeling of nonlinear dynamic systems with effective TL are required in a future study.<br><br>
+<center><img src='fig17_a.png' alt=''></center>
+<center>(a) Case #2 JMA KOBE (number of target domain training data: 50)</center>
+<center><img src='fig17_b.png' alt=''></center>
+<center>(b) Case #3 KAIHOKUBASHI (number of target domain training data: 50)</center>
+<center>Fig. 17 Estimated contributions of model parameter uncertainties to the maximum displacement of the RC pier (Left: Common part, Center: Source part, Right: Target part)</center>
+<br>
+However, the constructed surrogate models can provide appropriate distributions of the maximum displacements for seismic evaluation. Figure 18 shows the cumulative distributions of the maximum displacements of the RC pier and seismic isolation rubber bearing in Case #2. The surrogate model was constructed using TL-GPRSM with the number of target domain data as 50. Ten red lines denote the distributions from the ten surrogate models constructed by ten-time DoE samplings of the data. The black line denotes the distributions derived using the 2DOF model MC calculations with 10,000 samples. Especially in the RC pier, the distribution from the surrogate model shows good agreement with those from the MC calculation along with high stability. In the bearing, the both-side tails of the distributions from the surrogate models do not show high accuracy and stability.<br><br>
+<table>
+    <tr>
+        <td><center><img src='fig18_a.png' alt=''></center></td>
+        <td><center><img src='fig18_b.png' alt=''></center></td>
+    </tr>
+    <tr>
+        <td><center>(a)	RC pier</center></td>
+        <td><center>(b)	Rubber bearing</center></td>
+    </tr>
+</table>
+<center>Fig. 18 Prediction of cumulative distribution of output values by TL-GPRSM in Case #2</center>
+<br>
+<h2>5. Conclusions</h2>
+<p>The GPR surrogate model with TL (TL-GPRSM) was proposed in this paper. The computational cost for constructing a surrogate model of the target analysis was reduced by using the data of the input–output relationships of the source analysis with any similarity to those of the target analysis. The use of the ARD kernel in GPR was suggested to evaluate the effectiveness of TL and explainability of the constructed surrogate model. Two case studies were conducted to verify the significance of TL-GPRSM. The conclusions are summarized as follows:</p>
+    <ul>
+        <li>TL-GPRSM was applied to the surrogate modeling of the live-load performance evaluation of a steel plate girder bridge with corrosion damage by applying the source analysis of the undamaged condition. The prediction error was less than 1% RMSPE when 15 target domain data were used. This is equivalent to the accuracy obtained with 25 target data for the surrogate model without TL, regardless of the number of source data.</li>
+        <li>The predicted cumulative distribution of the maximum stress in the TL-GPRSM had less uncertainty and the shape was closer to that obtained with the numerical results than the surrogate model without TL using the same number of target data.</li>
+        <li>The TL effect could be determined from the contribution of the common part calculated from the ARD kernel. Transfer learning was determined to be more effective when the number of source data with lower RMSPE was large. Furthermore, ARD made it possible to know the contribution of the individual parameters, and the contribution of parameters related to degradation damage was high.</li>
+        <li>The seismic performance evaluation of a seismic isolation bridge pier considering the variation in the input earthquake ground motions was the second application considered for verification. This involved the surrogate modeling of nonlinear time-history analysis. It was shown that the effectiveness of TL was not as high as in the linear structural analysis in the first case; however, the TL-GPRSM was able to predict the distributions of the maximum displacements with slightly higher accuracy than the surrogate model without TL in some input cases.</li>
+        <li>In nonlinear analysis, it was possible to determine the effectiveness of TL based on the magnitude of the contribution of the common part as estimated by the ARD kernel. The contribution of each parameter to the output estimated by the ARD kernel was reasonable from the viewpoint of nonlinear structural dynamics.</li>
+    </ul>
+    <p>A future topic of study is the further consideration of surrogate modeling of nonlinear dynamic systems with effective TL. Further, the advanced DoE sampling that takes advantage of the estimated contributions in ARD is expected to reduce the computational cost of creating training data for effective TL. The selection of the kernel function in GPR with ARD is also worth considering, as the computational cost might be reduced by capturing the characteristics of the input–output relationship of the target numerical analysis appropriately. However, the results of this paper showed that the TL-GPRSM was effective in constructing the surrogate model of linear numerical calculations by reducing the computational cost of the structural performance analysis with linear numerical calculation under variation in uncertainties, such as the analysis of the damaged condition based on that of the undamaged initial condition. Moreover, it was shown that the effectiveness of TL in each surrogate modeling and the explainability of the constructed model could be discussed by deriving the contributions of each parameter by using the ARD kernel. This is significant in ensuring the acceptability of the constructed surrogate models in the structural performance evaluation for any decision-making.</p>
+<br>
+<h2>Funding</h2>
+This study was supported by the JST FOREST Program, Japan [grant number JPMJFR205T].<br>
+<h2>References</h2>
+<ol>
+        <li>Bucher CG, Bourgund U. A fast and efficient response surface approach for structural reliability problems. Struct Saf 1990;7:57–66. <a href='https://doi.org/10.1016/0167-4730(90)90012-E'>https://doi.org/10.1016/0167-4730(90)90012-E</a>.</li>
+        <li>Kim S-H, Na S-W. Response surface method using vector projected sampling points. Struct Saf 1997;19:3–19. <a href='https://doi.org/10.1016/S0167-4730(96)00037-9'>https://doi.org/10.1016/S0167-4730(96)00037-9</a>.</li>
+        <li>Zhao W, Qiu Z. An efficient response surface method and its application to structural reliability and reliability-based optimization. Finite Elem Anal Des 2013;67:34–42. <a href='https://doi.org/10.1016/j.finel.2012.12.004'>https://doi.org/10.1016/j.finel.2012.12.004</a>.</li>
+        <li>Rocco CM, Moreno JA. Fast Monte Carlo reliability evaluation using support vector machine. Reliab Eng Syst Saf 2002;76:237–43. <a href='https://doi.org/10.1016/S0951-8320(02)00015-7'>https://doi.org/10.1016/S0951-8320(02)00015-7</a>.</li>
+        <li>Roy A, Manna R, Chakraborty S. Support vector regression based metamodeling for structural reliability analysis. Probab Eng Mech 2019;55:78–89. <a href='https://doi.org/10.1016/j.probengmech.2018.11.001'>https://doi.org/10.1016/j.probengmech.2018.11.001</a>.</li>
+        <li>Hawchar L, El Soueidy C-P, Schoefs F. Principal component analysis and polynomial chaos expansion for time-variant reliability problems. Reliab Eng Syst Saf 2017;167:406–16. <a href='https://doi.org/10.1016/j.ress.2017.06.024'>https://doi.org/10.1016/j.ress.2017.06.024</a>.</li>
+        <li>Marelli S, Sudret B. An active-learning algorithm that combines sparse polynomial chaos expansions and bootstrap for structural reliability analysis. Struct Saf 2018;75:67–74. <a href='https://doi.org/10.1016/j.strusafe.2018.06.003'>https://doi.org/10.1016/j.strusafe.2018.06.003</a>.</li>
+        <li>Le V, Caracoglia L. A neural network surrogate model for the performance assessment of a vertical structure subjected to non-stationary, tornadic wind loads. Comput Struct 2020;231:106208. <a href='https://doi.org/10.1016/j.compstruc.2020.106208'>https://doi.org/10.1016/j.compstruc.2020.106208</a>.</li>
+        <li>Chojaczyk AA, Teixeira AP, Neves LC, Cardoso JB, Guedes Soares C. Review and application of Artificial Neural Networks models in reliability analysis of steel structures. Struct Saf 2015;52:78–89. <a href='https://doi.org/10.1016/j.strusafe.2014.09.002'>https://doi.org/10.1016/j.strusafe.2014.09.002</a>.</li>
+        <li>Deng J, Gu D, Li X, Yue ZQ. Structural reliability analysis for implicit performance functions using artificial neural network. Struct Saf 2005;27:25–48. <a href='https://doi.org/10.1016/j.strusafe.2004.03.004'>https://doi.org/10.1016/j.strusafe.2004.03.004</a>.</li>
+        <li>Zhou T, Peng Y. Kernel principal component analysis-based Gaussian process regression modelling for high-dimensional reliability analysis. Comput Struct 2020;241:106358. <a href='https://doi.org/10.1016/j.compstruc.2020.106358'>https://doi.org/10.1016/j.compstruc.2020.106358</a>.</li>
+        <li>Su G, Peng L, Hu L. A Gaussian process-based dynamic surrogate model for complex engineering structural reliability analysis. Struct Saf 2017;68:97–109. <a href='https://doi.org/10.1016/j.strusafe.2017.06.003'>https://doi.org/10.1016/j.strusafe.2017.06.003</a>.</li>
+        <li>Gaspar B, Teixeira AP, Soares CG. Assessment of the efficiency of Kriging surrogate models for structural reliability analysis. Probab Eng Mech 2014;37:24–34. <a href='https://doi.org/10.1016/j.probengmech.2014.03.011'>https://doi.org/10.1016/j.probengmech.2014.03.011</a>.</li>
+        <li>Avendaño-Valencia LD, Abdallah I, Chatzi E. Virtual fatigue diagnostics of wake-affected wind turbine via Gaussian Process Regression. Renewable Energy 2021;170:539–61. <a href='https://doi.org/10.1016/j.renene.2021.02.003'>https://doi.org/10.1016/j.renene.2021.02.003</a>.</li>
+        <li>Rasmussen CE. Gaussian Processes in Machine Learning. In: Bousquet O, von Luxburg U, Rätsch G, editors. Advanced Lectures on Machine Learning: ML Summer Schools 2003, Canberra, Australia, February 2 - 14, 2003, Tübingen, Germany, August 4 - 16, 2003, Revised Lectures, Berlin, Heidelberg: Springer Berlin Heidelberg; 2004, p. 63–71. <a href='https://doi.org/10.1007/978-3-540-28650-9_4'>https://doi.org/10.1007/978-3-540-28650-9_4</a>.</li>
+        <li>Bichon BJ, Eldred MS, Swiler LP, Mahadevan S, McFarland JM. Efficient Global Reliability Analysis for Nonlinear Implicit Performance Functions. AIAA Journal 2008;46:2459–68. <a href='https://doi.org/10.2514/1.34321'>https://doi.org/10.2514/1.34321</a>.</li>
+        <li>Echard B, Gayton N, Lemaire M. AK-MCS: An active learning reliability method combining Kriging and Monte Carlo Simulation. Struct Saf 2011;33:145–54. <a href='https://doi.org/10.1016/j.strusafe.2011.01.002'>https://doi.org/10.1016/j.strusafe.2011.01.002</a>.</li>
+        <li>Gaspar B, Teixeira AP, Guedes Soares C. Adaptive surrogate model with active refinement combining Kriging and a trust region method. Reliab Eng Syst Saf 2017;165:277–91. <a href='https://doi.org/10.1016/j.ress.2017.03.035'>https://doi.org/10.1016/j.ress.2017.03.035</a>.</li>
+        <li>Xiao N-C, Zuo MJ, Guo W. Efficient reliability analysis based on adaptive sequential sampling design and cross-validation. Appl Math Model 2018;58:404–20. <a href='https://doi.org/10.1016/j.apm.2018.02.012'>https://doi.org/10.1016/j.apm.2018.02.012</a>.</li>
+        <li>Zhou T, Marelli S, Sudret B, Peng Y. AK-PDEMi: A failure-informed enrichment algorithm for improving the AK-PDEM in reliability analysis. Mech Syst Signal Process 2022.</li>
+        <li>Echard B, Gayton N, Lemaire M, Relun N. A combined Importance Sampling and Kriging reliability method for small failure probabilities with time-demanding numerical models. Reliab Eng Syst Saf 2013;111:232–40. <a href='https://doi.org/10.1016/j.ress.2012.10.008'>https://doi.org/10.1016/j.ress.2012.10.008</a>.</li>
+        <li>Huang X, Chen J, Zhu H. Assessing small failure probabilities by AK–SS: An active learning method combining Kriging and Subset Simulation. Struct Saf 2016;59:86–95. <a href='https://doi.org/10.1016/j.strusafe.2015.12.003'>https://doi.org/10.1016/j.strusafe.2015.12.003</a>.</li>
+        <li>Moustapha M, Marelli S, Sudret B. Active learning for structural reliability: Survey, general framework and benchmark. Struct Saf 2022;96:102174. <a href='https://doi.org/10.1016/j.strusafe.2021.102174'>https://doi.org/10.1016/j.strusafe.2021.102174</a>.</li>
+        <li>Weiss K, Khoshgoftaar TM, Wang D. A survey of transfer learning. Journal of Big Data 2016;3:1–40. <a href='https://doi.org/10.1186/s40537-016-0043-6'>https://doi.org/10.1186/s40537-016-0043-6</a>.</li>
+        <li>Xiong Y, Guo L, Zhang Y, Xu M, Tian D, Li M. Surrogate modeling for spacecraft thermophysical models using deep learning. Neural Comput Appl 2022. <a href='https://doi.org/10.1007/s00521-022-07257-7'>https://doi.org/10.1007/s00521-022-07257-7</a>.</li>
+        <li>Kaya M, Hajimirza S. Using a Novel Transfer Learning Method for Designing Thin Film Solar Cells with Enhanced Quantum Efficiencies. Sci Rep 2019;9:5034. <a href='https://doi.org/10.1038/s41598-019-41316-9'>https://doi.org/10.1038/s41598-019-41316-9</a>.</li>
+        <li>Tian K, Li Z, Zhang J, Huang L, Wang B. Transfer learning based variable-fidelity surrogate model for shell buckling prediction. Compos Struct 2021;273:114285. <a href='https://doi.org/10.1016/j.compstruct.2021.114285'>https://doi.org/10.1016/j.compstruct.2021.114285</a>.</li>
+        <li>Golparvar B, Papadopoulos P, Ezzat AA, Wang R-Q. A surrogate-model-based approach for estimating the first and second-order moments of offshore wind power. Appl Energy 2021;299:117286. <a href='https://doi.org/10.1016/j.apenergy.2021.117286'>https://doi.org/10.1016/j.apenergy.2021.117286</a>.</li>
+        <li>Williams C, Rasmussen C. Gaussian processes for regression. Advances in Neural Information Processing Systems 1995.</li>
+        <li>Wipf D, Nagarajan S. A new view of automatic relevance determination. Advances in Neural Information Processing Systems 2007;20.</li>
+        <li>Liu DC, Nocedal J. On the limited memory BFGS method for large scale optimization. Math Program 1989;45:503–28. <a href='https://doi.org/10.1007/BF01589116'>https://doi.org/10.1007/BF01589116</a>.</li>
+        <li>GPy. GPy: A Gaussian process framework in python since 2012. <a href='http://github.com/SheffieldML/GPy'>http://github.com/SheffieldML/GPy</a>.</li>
+        <li>Daumé H III. Frustratingly Easy Domain Adaptation. ArXiv [CsLG] 2009. <a href='https://doi.org/10.48550/arXiv.0907.1815'>https://doi.org/10.48550/arXiv.0907.1815</a>.</li>
+        <li>McKay MD, Beckman RJ, Conover WJ. Comparison of Three Methods for Selecting Values of Input Variables in the Analysis of Output from a Computer Code. Technometrics 1979;21:239–45. <a href='https://doi.org/10.1080/00401706.1979.10489755'>https://doi.org/10.1080/00401706.1979.10489755</a>.</li>
+        <li>Nishio M, Miura M, Shuku T. Sparse Surrogate Modeling for Structural Reliability Analysis of Existing Bridges. Journal of Japan Society of Civil Engineers, Ser A2 (Applied Mechanics (AM)) 2018;74:I_125-I_136. <a href='https://doi.org/10.2208/jscejam.74.I_125'>https://doi.org/10.2208/jscejam.74.I_125</a>. (in Japanese)</li>
+        <li>Japan Road Association. SPECIFICATION FOR HIGHWAY BRIDGES PART II STEEL BRIDGES. Japan Road Association; 2012. (in Japanese)</li>
+        <li>Japan Road Association. Handout on Seismic Design of Road Bridges [Translated from Japanese]. Japan Road Association; 1997. (in Japanese)</li>
+        <li>Takeda T, Sozen MA, Nielsen NN. Reinforced Concrete Response to Simulated Earthquakes. Journal of the Structural Division 1970;96:2557–73. <a href='https://doi.org/10.1061/JSDEAG.0002765'>https://doi.org/10.1061/JSDEAG.0002765</a>.</li>
+        <li>Japan Road Association. SPECIFICATIONS FOR HIGHWAY BRIDGES Part V SEISMIC DESIGN. Japan Road Association; 2012. (in Japanese)</li>
+    </ol>
 
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
