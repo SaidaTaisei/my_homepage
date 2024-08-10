@@ -95,6 +95,7 @@ C_C=\\sum_{i=1}^{L_C}c_i,\\space C_S=\\sum_{i=1}^{L_S}c_i,\\space \\mathrm{and} 
 $$
 Here, $C_C$, $C_S$, and $C_T$ are the contributions of the common, source, and target parts, and $L_C$, $L_S$, and $L_T$ are the number of input dimensions of the common, source, and target parts, respectively. Considering that the common part contributes to both the source and target domains, the relative magnitude of $C_C$ against $C_T$ indicates the effect of TL in predicting in the target domain.
 <img src='image.png' alt='Fig. 1 Data expansion for incorporating TL into GPR' />
+<center>Fig. 1 Data expansion for incorporating TL into GPR</center>
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
 doi: 10.1016/j.compstruc.2023.107014
