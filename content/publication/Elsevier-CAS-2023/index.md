@@ -46,35 +46,35 @@ In this paper, the overviews of GPR and TL are presented, and the TL-GPRSM is fo
 
 <h2>2. Transfer training in GPR surrogate modeling</h2>
 <h2>2.1 GPR with ARD kernel</h2>
-GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix $\\mathbf{D}$ with number of data $N$ is defined as shown below.
-$$
-\\mathbf{D}=\\{(\\mathbf{x}_1,y_1),(\\mathbf{x}_2,y_2),...,(\\mathbf{x}_N,y_N)\\}^T,
-$$
-where $\\mathbf{x}$ is a vector of the input parameters with length of $L$, and $y$ is the output. The input–output relationship is described as
-$$
-y=f(\\mathbf{x}).
-$$
-Suppose that $y$ is standardized to the zero-mean variable, and $f$ is supposed to be generated from the following GP with zero mean.
-$$
-f\\sim\\mathrm{GP}\\big(\\mathbf{0},k(\\mathbf{x},\\mathbf{x}^{\\prime})\\big).
-$$
-Here, GP represents the Gaussian process and $k$ is a kernel function used to calculate the kernel matrix $\\mathbf{K}$, which has $N$ rows and $N$ columns.
-$$
-K_{nm}=k(\\mathbf{x}_{n},\\mathbf{x}_{m}),
-$$
-where $K_{nm}$ is the element of $\\mathbf{K}$ with $n$ rows and $m$ columns. Because $f$ in Eq. (2) follows the $GP$, as shown in Eq. (3), the output vector $y=(y_1,y_2,…,y_N )^T$ also follows the Gaussian distribution with zero mean and covariance matrix $\\mathbf{K}$.
-$$
-\\mathbf{y}\\sim\\mathcal{N}(\\mathbf{0},\\mathbf{K}).
-$$
-In this paper, we used the autoregressive relevance determination (ARD) kernel function [29]. In the ARD, the input parameters that contribute to the output can be determined automatically. Further, the performance of regression in GPR depends on the selection of the kernel function. For instance, if the Matern5/2 kernel is selected, ARD is applied as
-$$
-k(r,\\mathbf{\\theta})=\\sigma^2\\left(1+\\sqrt{5}r+\\frac{5}{3}r^2\\right)\\exp(-\\sqrt{5}r), \\mathrm{where}\\space r(\\mathbf{x}_n,\\mathbf{x}_m)=\\sqrt{\\sum_{i=1}^L\\frac{(x_{ni}-x_{mi})^2}{l_i^2}}.
-$$
-Here, $L$ is the number of dimensions of the input parameter vector, and $\\mathbf{\\theta}$ is a vector of the hyperparameters $\\sigma$ and $l_i$. Among these hyperparameters, $l_i$ is called the length-scale, which indicates the contribution of the input parameter $x_i$ in the ARD. The smaller the estimation of the length-scale $l_i$, the larger is the contribution of $x_i$ to the output $y$. The estimator of GPR with ARD is thus the hyperparameter $\\mathbf{\\theta}$, which includes the length-scale $l_i$. To verify the contribution of each parameter, index $c_i$ was defined, which was the index converted from the length-scale $l_i$ to the relative percentage contribution in each input dimension $i$, as below.
-$$
-c_i=\\frac{1/l_i}{\\sum_{j=1}^L(1/l_j)}\\times100\\quad(i=1,2,\\cdots,L)
-$$
-In this study, the maximum likelihood estimation was used for estimating the hyperparameters of GPR model $\\mathbf{\\theta}$ by adopting the limited-memory Broyden–Fletcher–Goldfarb–Shanno (L-BFGS) method [31] as the optimization method. The GPR model construction was implemented using the Python library GPy [32].
+<p>GPR [15] is a nonparametric regression method and applicable to various input–output relationships. First, suppose an input-and-output data matrix $D$ with number of data $N$ is defined as shown below.</p>
+    <p>$$
+    D = \\{(x_1,y_1 ),(x_2,y_2 ),\\ldots,(x_N,y_N )\\}^T
+    $$</p>
+    <p>where $x$ is a vector of the input parameters with length of $L$, and $y$ is the output. The input–output relationship is described as</p>
+    <p>$$
+    y = f(x)
+    $$</p>
+    <p>Suppose that $y$ is standardized to the zero-mean variable, and $f$ is supposed to be generated from the following GP with zero mean.</p>
+    <p>$$
+    f \\sim \\mathcal{GP}(0,k(x,x'))
+    $$</p>
+    <p>Here, GP represents the Gaussian process and $k$ is a kernel function used to calculate the kernel matrix $K$, which has $N$ rows and $N$ columns.</p>
+    <p>$$
+    K_{nm} = k(x_n,x_m)
+    $$</p>
+    <p>where $K_{nm}$ is the element of $K$ with $n$ rows and $m$ columns. Because $f$ in Eq. (2) follows the GP, as shown in Eq. (3), the output vector $y = (y_1, y_2, \\ldots, y_N )^T$ also follows the Gaussian distribution with zero mean and covariance matrix $K$.</p>
+    <p>$$
+    y \\sim \\mathcal{N}(0,K)
+    $$</p>
+    <p>In this paper, we used the autoregressive relevance determination (ARD) kernel function [29]. In the ARD, the input parameters that contribute to the output can be determined automatically. Further, the performance of regression in GPR depends on the selection of the kernel function. For instance, if the Matern5/2 kernel is selected, ARD is applied as</p>
+    <p>$$
+    k(r,\\theta) = \\sigma^2 \\left(1 + \\sqrt{5} \\, r + \\frac{5}{3} r^2 \\right) \\exp(-\\sqrt{5} \\, r), \\quad \\text{where} \\quad r(x_n,x_m) = \\sqrt{\\sum_{i=1}^L \\frac{(x_{ni} - x_{mi})^2}{l_i^2}}
+    $$</p>
+    <p>Here, $L$ is the number of dimensions of the input parameter vector, and $\\theta$ is a vector of the hyperparameters $\\sigma$ and $l_i$. Among these hyperparameters, $l_i$ is called the length-scale, which indicates the contribution of the input parameter $x_i$ in the ARD. The smaller the estimation of the length-scale $l_i$, the larger is the contribution of $x_i$ to the output $y$. The estimator of GPR with ARD is thus the hyperparameter $\\theta$, which includes the length-scale $l_i$. To verify the contribution of each parameter, index $c_i$ was defined, which was the index converted from the length-scale $l_i$ to the relative percentage contribution in each input dimension $i$, as below.</p>
+    <p>$$
+    c_i = \\frac{1 / l_i}{\\sum_{j=1}^L (1 / l_j)} \\times 100 \\quad (i = 1,2,\\ldots,L)
+    $$</p>
+    <p>In this study, the maximum likelihood estimation was used for estimating the hyperparameters of GPR model $\\theta$ by adopting the limited-memory Broyden–Fletcher–Goldfarb–Shanno (L-BFGS) method [31] as the optimization method. The GPR model construction was implemented using the Python library GPy [32].</p>
 
 <h2>2.2 TL in TL-GPRSM</h2>
 TL in TL-GPRSM is implemented by the data expansion proposed by Daumé [33]. This method can apply to TL in most machine learning models including GPR by expanding the matrix of input parameters in training data to the common, source, and target parts. This makes possible to implement TL without losing advantages of GPR, applicability to nonlinear and nonparametric regressions. Furthermore, as the ARD kernel can be applied straightforward, the explainability of constructed TL-GPRSM is introduced including the effectiveness of TL.<br>
