@@ -410,54 +410,48 @@ The numerical model of a seismic isolation RC pier used in this verification cor
 <center>Table 2　Uncertain parameters of the seismic isolation bridge pier model </center>
 <table border='1' cellspacing='0' cellpadding='5'>
   <tr>
-    <th style='text-align: center;'>Parameter</th>
+    <th colspan='2' style='text-align: center;'>Parameter</th>
     <th style='text-align: center;'>Nominal</th>
     <th style='text-align: center;'>Uncertainty</th>
   </tr>
   <tr>
     <td>Superstructure</td>
     <td>Mass (Mu)</td>
-    <td style='text-align: center;'>604000 kg</td>
-    <td></td>
+    <td>604000 kg</td>
+    <td rowspan='8' style='text-align: center;'>± 10 %</td>
   </tr>
   <tr>
     <td rowspan='3'>Seismic isolation bearing</td>
     <td>Primary stiffness (Kb1)</td>
-    <td style='text-align: center;'>40023.2 kN/m</td>
-    <td></td>
+    <td>40023.2 kN/m</td>
   </tr>
   <tr>
     <td>Secondary stiffness (Kb2)</td>
-    <td style='text-align: center;'>6154.4 kN/m</td>
-    <td></td>
+    <td>6154.4 kN/m</td>
   </tr>
   <tr>
     <td>Yield load (Qb)</td>
-    <td style='text-align: center;'>1117.2 kN</td>
-    <td style='text-align: center;'>± 10 %</td>
+    <td>1117.2 kN</td>
   </tr>
   <tr>
     <td rowspan='4'>RC Pier</td>
     <td>Mass (Mrc)</td>
-    <td style='text-align: center;'>346300 kg</td>
-    <td></td>
+    <td>346300 kg</td>
   </tr>
   <tr>
     <td>Primary stiffness (Krc1)</td>
-    <td style='text-align: center;'>110000 kN/m</td>
-    <td></td>
+    <td>110000 kN/m</td>
   </tr>
   <tr>
     <td>Secondary stiffness (Krc2)</td>
-    <td style='text-align: center;'>8250 kN/m</td>
-    <td></td>
+    <td>8250 kN/m</td>
   </tr>
   <tr>
     <td>Yield load (Qrc)</td>
-    <td style='text-align: center;'>3399 kN</td>
-    <td></td>
+    <td>3399 kN</td>
   </tr>
 </table>
+
 
 
 " 
