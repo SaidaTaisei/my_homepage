@@ -76,7 +76,7 @@ c_i=\\frac{1/l_i}{\\sum_{j=1}^L(1/l_j)}\\times100\\quad(i=1,2,\\cdots,L)
 $$
 In this study, the maximum likelihood estimation was used for estimating the hyperparameters of GPR model $\\mathbf{\\theta}$ by adopting the limited-memory Broyden–Fletcher–Goldfarb–Shanno (L-BFGS) method [31] as the optimization method. The GPR model construction was implemented using the Python library GPy [32].
 
-<h2>TL in TL-GPRSM</h2>
+<h2>2.2 TL in TL-GPRSM</h2>
 TL in TL-GPRSM is implemented by the data expansion proposed by Daumé [33]. This method can apply to TL in most machine learning models including GPR by expanding the matrix of input parameters in training data to the common, source, and target parts. This makes possible to implement TL without losing advantages of GPR, applicability to nonlinear and nonparametric regressions. Furthermore, as the ARD kernel can be applied straightforward, the explainability of constructed TL-GPRSM is introduced including the effectiveness of TL.<br>
 The input–output relationship of the target numerical analysis for surrogate modeling is called the “target domain.” The “source domain” is the input–output relationship of the previously trained model. For successful TL, the input–output relationship of the source domain is required to be similar to that of the target domain. First, suppose that the source domain data $\\mathbf{D}^s$ and target domain data $\\mathbf{D}^t$ are described as
 $$
@@ -90,6 +90,11 @@ $$\\hat{\\mathbf{x}}^s=(\\mathbf{x}^s,\\mathbf{x}^s,\\mathbf{0}) \\mathrm{and}\\
 The expanded input and output data $\\mathbf{D}^{TL-GPRSM}$ for TL-GPRSM are as follows:
 $$\\mathbf{D}^{TL-GPRSM}=\\left\\{(\\mathbf{\\hat{x}}_{1}^{s},y_{1}^{s}),(\\mathbf{\\hat{x}}_{2}^{s},y_{2}^{s}),...,(\\mathbf{\\hat{x}}_{{N_{s}}}^{s},y_{{N_{s}}}^{s}),(\\mathbf{\\hat{x}}_{1}^{t},y_{1}^{t}),(\\mathbf{\\hat{x}}_{2}^{t},y_{2}^{t}),...,\\left(\\mathbf{\\hat{x}}_{{N_{T}}}^{t},y_{{N_{T}}}^{t}\\right)\\right\\}^{T}.$$
 TL can be realized by constructing a GPR model using the data matrix in Eq. (11) as training data. The objective of this formulation is to expand the input vector $\\mathbf{x}$ to three parts: “common part,” “source part,” and “target part,” as shown in Fig. 1. TL-GPRSM is then realized by constructing a GPR model using these expanded data. This means that the information of the source domain is used in training the target domain model. Within the expanded input and output data, the common part considers both the source and target domains, the source part considers only the source domain, and the target part considers only the target domain. The contribution of each part to the constructed GPR model indicates the utility of the TL. By adopting the ARD kernel for GPR, it becomes possible to derive the contribution of each part. Here, the contribution of each input dimension can also be derived using Eq. (7). The contribution for each part can be calculated by adding the contribution ci, where i indicates the component corresponding to each part.
+$$
+C_C=\\sum_{i=1}^{L_C}c_i,\\space C_S=\\sum_{i=1}^{L_S}c_i,\\space \\mathrm{and} C_T=\\sum_{i=1}^{L_T}c_i.
+$$
+Here, $C_C$, $C_S$, and $C_T$ are the contributions of the common, source, and target parts, and $L_C$, $L_S$, and $L_T$ are the number of input dimensions of the common, source, and target parts, respectively. Considering that the common part contributes to both the source and target domains, the relative magnitude of $C_C$ against $C_T$ indicates the effect of TL in predicting in the target domain.
+![Fig. 1 Data expansion for incorporating TL into GPR](image.png)
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
 doi: 10.1016/j.compstruc.2023.107014
