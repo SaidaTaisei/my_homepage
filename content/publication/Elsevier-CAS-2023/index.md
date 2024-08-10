@@ -401,14 +401,14 @@ Figure 10 shows the contribution of each uncertain model parameter in the constr
 Another application of the structural reliability analysis is performance evaluation against disaster loads such as earthquakes. Here, the structural response analysis requires a nonlinear calculation, and must be performed for various external loads that are probabilistically determined. In this section, the TL-GPRSM was verified using the earthquake response analysis for the seismic performance evaluation of an isolated RC bridge pier. In this section, TL-GPRSM is constructed with the source domain as the input–output of seismic response analysis with the designed earthquake loads, and the target domain as the input–output of seismic response analysis for a certain input observed earthquake load. We verified whether the computational cost of the seismic performance analysis of the structure could be reduced by using the prepared data created based on numerical analysis with the designed earthquake loads.
 <h2>4.1 Modeling and parameter uncertainties</h2>
 The numerical model of a seismic isolation RC pier used in this verification corresponds to the dynamic seismic design shown in the design standard of road bridges in Japan [37]. Figure 11(a) shows the overall view of the bridge, and the target is an RC pier with seismic rubber bearing, indicated as P1. This pier was modeled using the two degree-of-freedom (DOF) lumped-mass model shown in Fig. 11(b). The masses of the superstructure and RC pier were assigned to the upper and lower lumped-masses of the 2DOF system, respectively, and the seismic isolation rubber bearing was modeled as a horizontal spring with nonlinear characteristics described using the bilinear model. The nonlinear stiffness of the RC pier was described using the Takeda model [38]. The nominal parameters were determined based on the values of the bridge properties introduced in the design standard [37], as shown in Table 2. The uncertainty of each model parameter was represented as a uniform distribution with upper and lower limits of ±10% from the nominal value.
-<center><img src='fig10_a.png' alt='' /></center>
+<center><img src='fig11_a.png' alt='' /></center>
 <center>(a) Overall view of the target bridge [37]</center>
-<center><img src='fig10_b.png' alt='' /></center>
+<center><img src='fig11_b.png' alt='' /></center>
 <center>(b) 2DOF lumped-mass model of an isolated RC pier</center>
 <center>Fig. 11 Illustrations of target structure</center>
 <br>
 <center>Table 2　Uncertain parameters of the seismic isolation bridge pier model </center>
-<table border='1' cellspacing='0' cellpadding='5'>
+<table border='1'>
   <tr>
     <th colspan='2' style='text-align: center;'>Parameter</th>
     <th style='text-align: center;'>Nominal</th>
@@ -418,7 +418,7 @@ The numerical model of a seismic isolation RC pier used in this verification cor
     <td>Superstructure</td>
     <td>Mass (Mu)</td>
     <td>604000 kg</td>
-    <td rowspan='8' style='text-align: center;'>± 10 %</td>
+    <td rowspan='8' style='text-align: center; vertical-align: middle;'>± 10 %</td>
   </tr>
   <tr>
     <td rowspan='3'>Seismic isolation bearing</td>
@@ -451,6 +451,7 @@ The numerical model of a seismic isolation RC pier used in this verification cor
     <td>3399 kN</td>
   </tr>
 </table>
+
 
 
 
