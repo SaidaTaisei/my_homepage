@@ -58,11 +58,11 @@ Suppose that $y$ is standardized to the zero-mean variable, and $f$ is supposed 
 $$
 f\\sim\\mathrm{GP}\\big(\\mathbf{0},k(\\mathbf{x},\\mathbf{x}^{\\prime})\\big).
 $$
-Here, GP represents the Gaussian process and $k$ is a kernel function used to calculate the kernel matrix $\\mathbf{K}$, which has $N$ rows and $N$ columns.
+Here, $\\mathrm{GP}$ represents the Gaussian process and $k$ is a kernel function used to calculate the kernel matrix $\\mathbf{K}$, which has $N$ rows and $N$ columns.
 $$
 K_{nm}=k(\\mathbf{x}_{n},\\mathbf{x}_{m}),
 $$
-where $K_{nm}$ is the element of $\\mathbf{K}$ with $n$ rows and $m$ columns. Because $f$ in Eq. (2) follows the $GP$, as shown in Eq. (3), the output vector $\\mathbf{y}=(y_1,y_2,…,y_N )^T$ also follows the Gaussian distribution with zero mean and covariance matrix $\\mathbf{K}$.
+where $K_{nm}$ is the element of $\\mathbf{K}$ with $n$ rows and $m$ columns. Because $f$ in Eq. (2) follows the $\\mathrm{GP}$, as shown in Eq. (3), the output vector $\\mathbf{y}=(y_1,y_2,…,y_N )^T$ also follows the Gaussian distribution with zero mean and covariance matrix $\\mathbf{K}$.
 $$
 \\mathbf{y}\\sim\\mathcal{N}(\\mathbf{0},\\mathbf{K}).
 $$
@@ -104,7 +104,7 @@ The computational cost of surrogate modeling was evaluated by the required numbe
 The explainability of the constructed surrogate model and confidence assurance of the TL were then evaluated based on the percentage contributions derived using the estimated length-scales in the ARD kernel. Structural reliability analysis is the procedure of considering the uncertainties of multiple parameters for evaluating the limit state capacity. However, the number of parameters contributing to the output required for the performance evaluation is actually limited in many cases. This sparsity of the contribution can be estimated by using the ARD kernel. The contribution of each input dimension $c_i$, derived using Eq. (7) with the estimated length-scale $l_i$, indicates the extent to which the uncertainty of the corresponding model parameter affects the demand output. The constructed surrogate model can be accepted when the contributing model parameters can explain the structural response output behaviors from the viewpoint of the physics of the structure. Furthermore, the contributions of the common, source, and target parts, which are the summed contributions of the dimensions belonging to each part, calculated using Eq. (12), is used for evaluating the effectiveness of TL. Here, TL is considered effective when the contribution of the common part $C_c$ against $C_T$ is relatively high.
 
 <h2>2.3 Application example of TL-GPRSM</h2>
-A simple application example is shown to recognize the significance of TL-GPRSM. Here, the function models, fs and ft, are given as the source domain and the target domain, respectively. 
+A simple application example is shown to recognize the significance of TL-GPRSM. Here, the function models, $f_s$ and $f_t$, are given as the source domain and the target domain, respectively. 
 $$f_s(\\mathbf{x})=2{x_1}^2+{x_2}^2+0.00001x_3+5$$
 $$f_t(\\mathbf{x})=2x_1^2-2(x_2-1)\\sin x_2+0.00001x_3+5$$
 where $x_1$, $x_2$, and $x_3$ are input variables with the range of $−1≤ x_i ≤1 (i =1−3)$, and the input vector is configured as $\\mathbf{x}=(x_1, x_2, x_3)$. Seeing the similarity between those two function models, only the terms of $x_2$ acts on the output differences between the models of source domain $f_s$ and target domain $f_t$, and contributions of the terms of $x_1$ and $x_3$ and the constant terms are the same in both models. In addition, the coefficient of each term indicates how much that term contributes to the output of function. It is obvious that coefficients on $x_3$ are relatively small in both models.<br>
@@ -124,10 +124,10 @@ $$\\mathbf D^t=\\{\\bigl(\\mathbf x_1^t,f_t(\\mathbf x_1^t)\\bigr),\\bigl(\\math
 <center>Fig. 2 Function field of source and target domain models and created training data (described in “×”)</center>
 <br><br>
 Then, the expanded input vectors for implementing TL are configured following Eq. (10), as:
-$$\\hat{\\mathbf{x}}_i^s=(\\mathbf{x}_i^s,\\mathbf{x}_i^s,\\mathbf{0}_{\\mathbf{1}\\times\\mathbf{3}})(i=1-100) \\mathrm{and} \\hat{\\mathbf{x}}_j^t=(\\mathbf{x}_j^t,\\mathbf{0}_{\\mathbf{1}\\times\\mathbf{3}},\\mathbf{x}_j^t) (j=1-10).$$
+$$\\hat{\\mathbf{x}}_i^s=(\\mathbf{x}_i^s,\\mathbf{x}_i^s,\\mathbf{0}_{\\mathbf{1}\\times\\mathbf{3}})(i=1-100) \\space \\mathrm{and} \\space \\hat{\\mathbf{x}}_j^t=(\\mathbf{x}_j^t,\\mathbf{0}_{\\mathbf{1}\\times\\mathbf{3}},\\mathbf{x}_j^t) (j=1-10).$$
 The data matrix for TL-GPRSM is given as follows:
 $$\\mathbf{D}^{TL-GPRSM}=\\{\\left(\\mathbf{\\hat{x}}^{s}{}_{1},f_{s}(\\mathbf{x}_{1}^{s})\\right),\\left(\\mathbf{\\hat{x}}^{s}{}_{2},f_{s}(\\mathbf{x}_{2}^{s})\\right),...,\\left(\\mathbf{\\hat{x}}^{s}{}_{100},f_{s}(\\mathbf{x}_{100}^{s})\\right),\\\ \\left(\\mathbf{\\hat{x}}^{t}{}_{1},f_{t}(\\mathbf{x}_{1}^{t})\\right),\\left(\\mathbf{\\hat{x}}^{t}{}_{2},f_{t}(\\mathbf{x}_{2}^{t})\\right),...,\\left(\\mathbf{\\hat{x}}^{t}{}_{10},f_{t}(\\mathbf{x}_{10}^{t})\\right)\\}^{T}$$
-The obtained surrogate model for target domain $f_t$ is then evaluated by predicting the distribution of function outputs to 1000 samples generated from the space of input variables $x_i$ with range of −1≤ $x_i$ ≤1 (i =1−3). For comparison, a GPR surrogate model without TL is also constructed only using the 10 data from the target function model ft. The predicted distributions are compared in Fig.3 (a). Here, the distribution of function outputs created by assigning the same 1000 samples of input variables to the target function model $f_t$ is also shown as “True” case. The TL-GPRSM can predict the distribution closer to the true distribution than the one predicted from the GPR model without TL. The RMSPE accuracies are 0.13% and 15.2% in TL-GPRSM and GPR without TL, respectively. Also, the function field of ft predicted by the TL-GPRSM in Fig. 3(b) clearly shows good agreement with the true function field, which is shown in Fig. 2(b), compared to the function field predicted by the GPR without TL in Fig. 3(c).<br>
+The obtained surrogate model for target domain $f_t$ is then evaluated by predicting the distribution of function outputs to 1000 samples generated from the space of input variables $x_i$ with range of $−1≤ x_i ≤1 (i =1−3)$. For comparison, a GPR surrogate model without TL is also constructed only using the 10 data from the target function model ft. The predicted distributions are compared in Fig.3 (a). Here, the distribution of function outputs created by assigning the same 1000 samples of input variables to the target function model $f_t$ is also shown as “True” case. The TL-GPRSM can predict the distribution closer to the true distribution than the one predicted from the GPR model without TL. The RMSPE accuracies are 0.13% and 15.2% in TL-GPRSM and GPR without TL, respectively. Also, the function field of ft predicted by the TL-GPRSM in Fig. 3(b) clearly shows good agreement with the true function field, which is shown in Fig. 2(b), compared to the function field predicted by the GPR without TL in Fig. 3(c).<br>
 The contribution of each input variable in each of Common, Source, and Target parts is then evaluated by calculating $c_j$ using Eq. (7) as: 
 $$c_j=\\frac{1/l_j}{\\sum_{j=1}^9\\left(1/l_j\\right)}\\times100\\quad(j=1,\\cdots,9),$$
 where $l_j$ is length-scale in ARD kernel, and subscript $j$ indicates the order of each input parameter in expansion data, i.e., $j=1−3$ indicates three input variables $x_1-x_3$ in “Common” part, $j=4−6$ indicates those in “Source” part, and $j=7−9$ are those in “Target” part. Those parts correspond to the “Common”, “Source”, and “Target” parts presented in Fig.1. Figure 4 shows calculated contribution index $c_j$. In the “Common” part, only input variable $x_1$ has non-zero value. This indicates that the terms of $x_1$ contribute similarly to both function outputs of the source domain fs and the target domain $f_t$. On the other hand, there is no contribution in $x_2$ in “Common” part, and the term of $x_2$ shows significant contribution in each of “Source” and “Target” parts. These points are understandable because the terms of $x_1$ are the same in the two function models, $f_s$ and $f_t$, and the terms of $x_2$ are different between them, as shown in Eqs. (13) and (14). In addition, almost zero values in x3 in all parts indicate consistency with the point that the terms of $x_3$ have small coefficients in both model functions. 
@@ -421,7 +421,7 @@ The numerical model of a seismic isolation RC pier used in this verification cor
     <td rowspan='8' style='text-align: center; vertical-align: middle;'>± 10 %</td>
   </tr>
   <tr>
-    <td rowspan='3' style='text-align: center; vertical-align: middle;'>Seismic isolation bearing</td>
+    <td rowspan='3' style='vertical-align: middle;'>Seismic isolation bearing</td>
     <td>Primary stiffness (Kb1)</td>
     <td>40023.2 kN/m</td>
   </tr>
@@ -434,7 +434,7 @@ The numerical model of a seismic isolation RC pier used in this verification cor
     <td>1117.2 kN</td>
   </tr>
   <tr>
-    <td rowspan='4' style='text-align: center; vertical-align: middle;'>RC Pier</td>
+    <td rowspan='4' style='vertical-align: middle;'>RC Pier</td>
     <td>Mass (Mrc)</td>
     <td>346300 kg</td>
   </tr>
