@@ -1,8 +1,8 @@
 ---
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
-title: "転移学習ガウス過程回帰代替モデルによる構造性能解析の計算負荷低減"
-event: "令和5年度全国大会　第78回年次学術講演会"
+title: "周波数領域へのAttention機構適用による説明性のある地震応答代替モデルの構築"
+event: "令和6年度全国大会　第79回年次学術講演会"
 event_url: "https://pub.confit.atlas.jp/ja/event/jsce2024"
 location: Sendai in Japan
 address:
