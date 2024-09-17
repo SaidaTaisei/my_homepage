@@ -2,7 +2,7 @@
 # Documentation: https://sourcethemes.com/academic/docs/managing-content/
 
 title: "転移学習ガウス過程回帰代替モデルによる構造性能解析の計算負荷低減"
-event: "令和5年度全国大会　第78回年次学術講演会"
+event: "令和4年度全国大会　第77回年次学術講演会"
 event_url: "http://zenkokutaikai.jsce.or.jp/2022/"
 location: Kyoto in Japan
 address:
