@@ -16,7 +16,7 @@ abstract: "地震による構造物の被災度を確率論的に評価するた
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date: 2024-09-6T15:10:00
+date: 2024-09-06T15:10:00
 # date_end: 2020-07-30T13:00:00+02:00
 all_day: false
 
