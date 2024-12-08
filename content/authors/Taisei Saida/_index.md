@@ -47,7 +47,7 @@ education:
       institution: University of Tsukuba, Tsukuba in Japan
       year: 2021
 ---
-Taisei Saida is doctor's student in University of Tsukuba. I am primarily working on surrogate models. Topics of interest will be structural reliability, structural health monitoring, and machine learning.  
+I am Taisei Saida, currently pursuing my Ph.D. at the University of Tsukuba. My research centers on the development and application of surrogate models in structural engineering. My primary research interests include structural reliability analysis, structural health monitoring systems, and the implementation of machine learning techniques in civil engineering applications.  
 - Reserch Map: [https://researchmap.jp/taisei_saida](https://researchmap.jp/taisei_saida)
 - Google Scholar: [https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ](https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ)
 - Publons: [https://www.webofscience.com/wos/author/record/JRY-4837-2023](https://www.webofscience.com/wos/author/record/JRY-4837-2023)
