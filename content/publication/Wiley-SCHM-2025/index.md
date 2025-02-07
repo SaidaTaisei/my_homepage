@@ -31,8 +31,8 @@ publishDate: '2025-02-07'
 publication_types:
 - 2
 abstract: "This study presents a novel approach for anomaly event detection in large-scale civil structures by integrating transfer learning (TL) techniques with extended node strength network analysis based on video data. By leveraging TL with BEiT + UPerNet pretrained models, the method identifies structural Region-of-Uninterest (RoU), such as windows and doors. Following this identification, the extended node strength network uses rich visual information from the video data, concentrating on structural components to detect disturbances in the nonlinearity vector field within these components. The proposed framework provides a comprehensive solution for anomaly detection, achieving high accuracy and reliability in identifying deviations from normal behavior. The approach was validated through two large-scale structural shaking table tests, which included both pronounced shear cracks and tiny cracks. The detection and quantitative analysis results demonstrated the effectiveness and robustness of the method in detecting varying degrees of anomalies in civil structural components. Additionally, the integration of TL techniques improved computational efficiency by approximately 10%, with a positive correlation observed between this efficiency gain and the proportion of structural RoUs in the video. This study advances anomaly detection in large-scale structures, offering a promising approach to enhancing safety and maintenance practices in critical infrastructure." 
-publication: '[Software Impacts](https://www.sciencedirect.com/journal/software-impacts) (**Impact Factor: 2.1**)'
-doi: 10.1016/j.simpa.2023.100515
+publication: '[Structural Control and Health Monitoring](https://onlinelibrary.wiley.com/journal/schm) (**Impact Factor: 4.6**)'
+doi: 10.1155/stc/4702519
 url_pdf: publication/wiley-schm-2025//paper.pdf
 summary: "Structural Control and Health Monitoring (**Impact Factor: 4.6** in 2023)"
 ---
