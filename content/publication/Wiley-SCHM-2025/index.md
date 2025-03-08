@@ -34,6 +34,6 @@ abstract: "This study presents a novel approach for anomaly event detection in l
 publication: '[Structural Control and Health Monitoring](https://onlinelibrary.wiley.com/journal/schm) (**Impact Factor: 4.6**)'
 doi: 10.1155/stc/4702519
 url_pdf: publication/wiley-schm-2025//paper.pdf
-summary: "Structural Control and Health Monitoring (**Impact Factor: 4.6** in 2023)"
+summary: "Structural Control and Health Monitoring (**Impact Factor: 4.6** in 2023; [Structural Engineering at Google Scholar Metrics](https://scholar.google.com/citations?view_op=top_venues&hl=en&vq=eng_structuralengineering))"
 ---
 <a href="https://www.scimagojr.com/journalsearch.php?q=12246&amp;tip=sid&amp;exact=no" title="SCImago Journal &amp; Country Rank"><img border="0" src="https://www.scimagojr.com/journal_img.php?id=12246" alt="SCImago Journal &amp; Country Rank"  /></a>
