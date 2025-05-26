@@ -19,9 +19,9 @@
   weight = 30
 
 [[main]]
-  name = "Jounal Articles"
+  name = "Journal Articles"
   parent = "Publications"
-  url = "#jounal_articles"
+  url = "#journal_articles"
   weight = 31
 
 [[main]]
