@@ -7,8 +7,8 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 2  # Order that this section will appear.
 
-title = "Jounal Articles"
-subtitle = "[All jounal articles >>](/publication/#2)"
+title = "Journal Articles"
+subtitle = "[All journal articles >>](/publication/#2)"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
