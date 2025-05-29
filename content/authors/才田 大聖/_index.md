@@ -1,6 +1,6 @@
 ---
 title: 才田 大聖
-role: 博士後期課程
+role: 博士後期課程 (学振DC2 研究者)
 organizations:
   - name: 筑波大学（研究室HP）
     url: "https://www.kz.tsukuba.ac.jp/~nishio/"
@@ -48,7 +48,7 @@ education:
 email: "saida.taisei.tj@alumni.tsukuba.ac.jp"
 ---
 筑波大学博士後期課程の学生です。<br>
-私の研究は主にサロゲートモデリングに焦点を当てており、特に構造信頼性、構造ヘルスモニタリング、構造工学における機械学習の応用に興味があります。
+私の研究は主にサロゲートモデリングに焦点を当てており、特に構造信頼性、構造ヘルスモニタリング、構造工学における機械学習の応用に興味があります。<br>
 <a href="../../">Go to English Page</a>
 
 - Reserch Map: [https://researchmap.jp/taisei_saida](https://researchmap.jp/taisei_saida)
