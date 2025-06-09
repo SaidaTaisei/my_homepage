@@ -33,6 +33,6 @@ publishDate: '2025-05-20'
 publication_types:
 - 1
 abstract: "This study proposes a surrogate model using deep kernel learning (DKL) with a convolutional neural network (CNN) and attention mechanism for efficient seismic fragility assessment of infrastructure. The CNN extracts features from seismic response spectrum, enabling efficient Gaussian process (GP) regression in a lower-dimensional space. An automatic relevance determination (ARD) kernel and attention mechanism enhance explainability by evaluating input variable contributions and attention weights for response spectrum. The model achieved high prediction accuracy, outperforming GPs, especially with limited data. Fragility analysis using the surrogate model reduced computational cost to 0.05% of direct numerical simulation." 
-# publication: '[Lecture Notes in Civil Engineering](https://link.springer.com/book/10.1007/978-3-031-39117-0)'
-# doi: 10.1007/978-3-031-39117-0_53
+publication: '[IABSE Reports](https://structurae.net/en/literature/conference-proceedings/iabse-symposium-tokyo-2025)'
+doi: 10.2749/tokyo.2025.2581
 ---
