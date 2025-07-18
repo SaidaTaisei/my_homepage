@@ -668,7 +668,7 @@ This study was supported by the JST FOREST Program, Japan [grant number JPMJFR20
     </ol>
 
 " 
-publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures) (**Impact Factor: 5.372**)'
+publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures)'
 doi: 10.1016/j.compstruc.2023.107014
 summary: "Computers & Structures"
 ---
