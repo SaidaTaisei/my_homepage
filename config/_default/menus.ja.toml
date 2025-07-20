@@ -1,0 +1,6 @@
+# Japanese menu overrides
+
+[[main]]
+  name = "Conferences"
+  url = "/talk/"
+  weight = 40 
