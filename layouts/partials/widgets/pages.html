@@ -19,8 +19,9 @@
 
 {{/* Fallback to English if no items in current language */}}
 {{ if and (eq (len $query) 0) (ne $.Site.Language.Lang "en") }}
-  {{ $enSite := (where $.Sites "Language.Lang" "en") | first }}
-  {{ if $enSite }}
+  {{ $enSites := where $.Sites "Language.Lang" "en" }}
+  {{ if ge (len $enSites) 1 }}
+    {{ $enSite := index $enSites 0 }}
     {{ $query = where $enSite.RegularPages "Type" $items_type }}
     {{ $archive_page = $enSite.GetPage "Section" $items_type }}
   {{ end }}
