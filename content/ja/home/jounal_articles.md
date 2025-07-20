@@ -8,7 +8,7 @@ active = true  # Activate this widget? true/false
 weight = 2  # Order that this section will appear.
 
 title = "学術雑誌論文"
-subtitle = "[All journal articles >>](/publication/#2)"
+subtitle = "[すべての学術雑誌論文 >>](/publication/#2)"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
