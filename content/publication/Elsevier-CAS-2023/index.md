@@ -670,7 +670,7 @@ This study was supported by the JST FOREST Program, Japan [grant number JPMJFR20
 " 
 publication: '[Computers & Structures](https://www.sciencedirect.com/journal/computers-and-structures)'
 doi: 10.1016/j.compstruc.2023.107014
-summary: "Computers & Structures"
+summary: "Computers & Structures, 2023"
 ---
 
 <a href="https://www.scimagojr.com/journalsearch.php?q=18171&amp;tip=sid&amp;exact=no" title="SCImago Journal &amp; Country Rank"><img border="0" src="https://www.scimagojr.com/journal_img.php?id=18171" alt="SCImago Journal &amp; Country Rank"  /></a>
