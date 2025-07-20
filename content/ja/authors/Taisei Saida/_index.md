@@ -1,8 +1,8 @@
 ---
-title: Taisei Saida
-role: Ph.D Student (JSPS DC2 Researcher)
+title: 才田 大聖
+role: 博士後期課程 (学振DC2特別研究員)
 organizations:
-  - name: University of Tsukuba (Lab's url)
+  - name: 筑波大学（研究室HP）
     url: "https://www.kz.tsukuba.ac.jp/~nishio/"
 superuser: true
 authors:
@@ -30,7 +30,6 @@ social:
   - icon: publons
     icon_pack: ai
     link: https://www.webofscience.com/wos/author/record/JRY-4837-2023
-
 interests:
 - 🤖 Surrogate Modeling
 - 🖥️ Machine Learning
@@ -46,9 +45,15 @@ education:
     - course: Bachelor of Engineering
       institution: University of Tsukuba, Tsukuba in Japan
       year: 2021
+email: "saida.taisei.tj@alumni.tsukuba.ac.jp"
 ---
-I am Taisei Saida, a doctoral student at the University of Tsukuba. My research primarily focuses on surrogate modeling, with particular interests in structural reliability, structural health monitoring, and machine learning applications in structural engineering.
+筑波大学博士後期課程の学生です。<br>
+研究では主にサロゲートモデリングに焦点を当てており、特に構造信頼性、構造ヘルスモニタリング、構造工学における機械学習の応用に興味があります。<br>
+最近は、構造物の地震応答を深層学習モデルで予測する研究に興味があります。 <br>
+<a href="../../">Go to English Page</a>
+
 - Reserch Map: [https://researchmap.jp/taisei_saida](https://researchmap.jp/taisei_saida)
 - Google Scholar: [https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ](https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ)
 - Publons: [https://www.webofscience.com/wos/author/record/JRY-4837-2023](https://www.webofscience.com/wos/author/record/JRY-4837-2023)
-- CV: [PDF File](author/taisei-saida/cv.pdf)
+- CV: [PDF File](https://profile.tsaida.net/author/taisei-saida/cv.pdf)
+
