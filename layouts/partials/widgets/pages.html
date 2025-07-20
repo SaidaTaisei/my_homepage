@@ -13,35 +13,37 @@
 {{ end }}
 {{ $items_sort := $st.Params.content.order | default "desc" }}
 
+{{ $siteSrc := site }}
+
 {{/* Query for current language */}}
-{{ $query := where site.RegularPages "Type" $items_type }}
-{{ $archive_page := site.GetPage "Section" $items_type }}
+{{ $query := where $siteSrc.RegularPages "Type" $items_type }}
+{{ $archive_page := $siteSrc.GetPage "Section" $items_type }}
 
 {{/* Fallback to English if no items in current language */}}
 {{ if and (eq (len $query) 0) (ne $.Site.Language.Lang "en") }}
   {{ $enSites := where $.Sites "Language.Lang" "en" }}
   {{ if ge (len $enSites) 1 }}
-    {{ $enSite := index $enSites 0 }}
-    {{ $query = where $enSite.RegularPages "Type" $items_type }}
-    {{ $archive_page = $enSite.GetPage "Section" $items_type }}
+    {{ $siteSrc = index $enSites 0 }}
+    {{ $query = where $siteSrc.RegularPages "Type" $items_type }}
+    {{ $archive_page = $siteSrc.GetPage "Section" $items_type }}
   {{ end }}
 {{ end }}
 
 {{/* Filters */}}
 {{ if $st.Params.content.filters.tag }}
-  {{ $archive_page = site.GetPage (printf "tags/%s" (urlize $st.Params.content.filters.tag)) }}
+  {{ $archive_page = $siteSrc.GetPage (printf "tags/%s" (urlize $st.Params.content.filters.tag)) }}
   {{ $query = $query | intersect $archive_page.Pages }}
 {{ end }}
 {{ if $st.Params.content.filters.category }}
-  {{ $archive_page = site.GetPage (printf "categories/%s" (urlize $st.Params.content.filters.category)) }}
+  {{ $archive_page = $siteSrc.GetPage (printf "categories/%s" (urlize $st.Params.content.filters.category)) }}
   {{ $query = $query | intersect $archive_page.Pages }}
 {{ end }}
 {{ if $st.Params.content.filters.publication_type }}
-  {{ $archive_page = site.GetPage (printf "publication_types/%s" $st.Params.content.filters.publication_type) }}
+  {{ $archive_page = $siteSrc.GetPage (printf "publication_types/%s" $st.Params.content.filters.publication_type) }}
   {{ $query = $query | intersect $archive_page.Pages }}
 {{ end }}
 {{ if $st.Params.content.filters.author }}
-  {{ $archive_page = site.GetPage (printf "authors/%s" (urlize $st.Params.content.filters.author)) }}
+  {{ $archive_page = $siteSrc.GetPage (printf "authors/%s" (urlize $st.Params.content.filters.author)) }}
   {{ $query = $query | intersect $archive_page.Pages }}
 {{ end }}
 {{ if $st.Params.content.filters.exclude_featured }}
