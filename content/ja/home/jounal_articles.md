@@ -7,12 +7,15 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 2  # Order that this section will appear.
 
-title = "Journal Articles"
+title = "学術雑誌論文"
 subtitle = "[All journal articles >>](/publication/#2)"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.
   page_type = "publication"
+  
+  # Filter content by language
+  content_language_fallback = true
   
   # Choose how much pages you would like to display (0 = all pages)
   count = 5
