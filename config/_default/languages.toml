@@ -10,6 +10,7 @@
 # Configure the Japanese version of the site.
 [ja]
   languageCode = "ja"
+  contentDir = "content/ja"
   title = "Taisei Saida"
   [ja.params]
     description = "才田大聖のホームページ"
