@@ -7,6 +7,13 @@
   languageCode = "en-us"
   # contentDir = "content/en"  # Uncomment for multi-lingual sites, and move English content into `en` sub-folder.
 
+# Configure the Japanese version of the site.
+[ja]
+  languageCode = "ja"
+  title = "Taisei Saida"
+  [ja.params]
+    description = "才田大聖のホームページ"
+
 # Uncomment the lines below to configure your website in a second language.
 #[zh]
 #  languageCode = "zh-Hans"
