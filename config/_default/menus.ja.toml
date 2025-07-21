@@ -1,6 +1,58 @@
-# Japanese menu overrides
+# Navigation Links
+#   To link a homepage widget, specify the URL as a hash `#` followed by the filename of the
+#     desired widget in your `content/home/` folder.
+#   The weight parameter defines the order that the links will appear in.
 
 [[main]]
-  name = "Conferences"
-  url = "/talk/"
-  weight = 40 
+  name = "Home"
+  url = "#about"
+  weight = 10
+
+[[main]]
+  name = "Google Scholar"
+  url = "https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ"
+  weight = 20
+
+[[main]]
+  name = "出版物"
+  url = "../publication/"
+  weight = 30
+
+[[main]]
+  name = "学術雑誌論文"
+  parent = "出版物"
+  url = "#journal_articles"
+  weight = 31
+
+[[main]]
+  name = "会議論文"
+  parent = "出版物"
+  url = "#conference_paper"
+  weight = 32
+
+[[main]]
+  name = "学会発表"
+  url = "../talk/"
+  weight = 40
+
+[[main]]
+  name = "経験"
+  url = "../experience/"
+  weight = 50
+
+[[main]]
+  name = "ブログ"
+  url = "../post/"
+  weight = 60
+
+[[main]]
+  name = "連絡先"
+  url = "#contact"
+  weight = 80
+
+# Link to a PDF of your resume/CV from the menu.
+# To enable, copy your resume/CV to `static/files/cv.pdf` and uncomment the lines below.
+# [[main]]
+#    name = "CV"
+#    url = "files/cv.pdf"
+#    weight = 70
