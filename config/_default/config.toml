@@ -20,6 +20,8 @@ copyright = "Taisei Saida; {year}"
 ## Advanced options below ##
 ############################
 
+disablePathToLower = true
+
 # Name of Academic theme folder in `themes/`.
 theme = "academic"
 
