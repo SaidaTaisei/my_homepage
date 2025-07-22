@@ -31,6 +31,10 @@ subtitle = "[All journal articles >>](/publication/#2)"
     author = ""
     exclude_featured = false
   
+[content.archive]
+  link = "/publication/#"
+  text = "See all publications"
+
 [design]
   # Toggle between the various page layout types.
   #   1 = List
