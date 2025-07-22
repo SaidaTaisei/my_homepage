@@ -3,7 +3,7 @@
 
 title: "Digital twin framework for real-time dynamic analysis visualization with detecting dynamic changes in structures properties using PINN"
 subtitle: ""
-summary: ""
+summary: "SPIE, 2023"
 authors:
 - Toko Okuda
 - Taisei Saida

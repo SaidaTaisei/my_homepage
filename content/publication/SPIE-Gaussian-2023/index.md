@@ -3,7 +3,7 @@
 
 title: "Gaussian process regression surrogate model for dynamic analysis to account for uncertainties in seismic loading"
 subtitle: ""
-summary: ""
+summary: "SPIE, 2023"
 authors:
 - Taisei Saida
 - Mayuko Nishio

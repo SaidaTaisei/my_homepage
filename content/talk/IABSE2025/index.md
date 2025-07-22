@@ -11,7 +11,6 @@ address:
   region:
   postcode:
   country:
-#summary:  "A talk covering five things about open and reproducible science that every early career researcher should know. Practical tools are also covered."
 abstract: "This study proposes a surrogate model using deep kernel learning (DKL) with a convolutional neural network (CNN) and attention mechanism for efficient seismic fragility assessment of infrastructure. The CNN extracts features from seismic response spectrum, enabling efficient Gaussian process (GP) regression in a lower-dimensional space. An automatic relevance determination (ARD) kernel and attention mechanism enhance explainability by evaluating input variable contributions and attention weights for response spectrum. The model achieved high prediction accuracy, outperforming GPs, especially with limited data. Fragility analysis using the surrogate model reduced computational cost to 0.05% of direct numerical simulation. "
 
 # Talk start and end times.
@@ -68,5 +67,4 @@ slides: ""
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 #projects: ["meta-science"]
-
 ---

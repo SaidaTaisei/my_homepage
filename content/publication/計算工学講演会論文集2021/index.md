@@ -3,7 +3,7 @@
 
 title: "ARD カーネルによる非線形地震応答解析のガウス過程回帰代替モデル構築"
 subtitle: ""
-summary: ""
+summary: "計算工学講演会論文集, 2021"
 authors:
 - 才田 大聖
 - 西尾 真由子

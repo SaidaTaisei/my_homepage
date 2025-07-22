@@ -3,7 +3,7 @@
 
 title: "Seismic Fragility Assessment using Explainable Deep Kernel Learning Surrogate Model considering Structural and Seismic Uncertainties"
 subtitle: ""
-summary: ""
+summary: "IABSE, 2025"
 authors:
 - Taisei Saida
 - Mayuko Nishio
