@@ -1,5 +1,6 @@
 ---
 title: 才田 大聖
+name_en: "Taisei Saida"
 role: 博士後期課程 (学振DC2特別研究員)
 organizations:
   - name: 筑波大学（研究室HP）

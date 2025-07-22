@@ -1,0 +1,10 @@
+# Font style metadata
+name = "my_noto_fonts"
+
+google_fonts = "family=Fira+Sans:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Merriweather:wght@400;700&display=swap"
+
+# Font families
+heading_font = "Merriweather"
+body_font = "Fira Sans"
+nav_font = "Merriweather"
+mono_font = "Fira Sans" 

@@ -1,0 +1,21 @@
+{{/* Choose Roman name if profile has name_en, else use profile Title or raw string */}}
+{{- $pg := . -}}
+{{- $result := "" -}}
+
+{{- if $pg.Params.authors -}}
+  {{- $name_raw := index $pg.Params.authors 0 -}}
+  {{- $profile := site.GetPage (printf "/authors/%s" (urlize $name_raw)) -}}
+  {{- if $profile -}}
+    {{- with $profile.Params.name_en -}}
+      {{- $result = . -}}
+    {{- else -}}
+      {{- $result = $profile.Title -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $result = $name_raw -}}
+  {{- end -}}
+{{- else -}}
+  {{- $result = site.Params.org_name | default site.Title -}}
+{{- end -}}
+
+{{- $result -}} 

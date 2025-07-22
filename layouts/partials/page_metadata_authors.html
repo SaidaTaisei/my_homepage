@@ -1,0 +1,24 @@
+{{/* Custom author list: use profile.Params.name_en if available */}}
+{{- $taxonomy := "authors" -}}
+{{ with .Param $taxonomy }}
+  {{ $link_authors := site.Params.link_authors | default true }}
+  {{ range $index, $name_raw := . }}
+    {{- $profile_page := site.GetPage (printf "/%s/%s" $taxonomy $name_raw) -}}
+    {{- $name := $name_raw -}}
+    {{- if $profile_page -}}
+      {{- with $profile_page.Params.name_en -}}
+        {{ $name = . }}
+      {{- else -}}
+        {{ $name = $profile_page.Title }}
+      {{- end -}}
+    {{- end -}}
+    {{- if gt $index 0 }}, {{ end -}}
+    <span {{ if site.Params.highlight_superuser | and (eq $profile_page.Params.superuser true) }}class="font-weight-bold"{{end}}>
+      {{- if and $profile_page $link_authors -}}
+        <a href="{{$profile_page.RelPermalink}}">{{$name}}</a>
+      {{- else -}}
+        {{$name}}
+      {{- end -}}
+    </span>
+  {{- end -}}
+{{- end -}} 

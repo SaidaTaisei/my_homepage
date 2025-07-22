@@ -7,8 +7,8 @@ headless = true  # This file represents a page section.
 active = true  # Activate this widget? true/false
 weight = 3  # Order that this section will appear.
 
-title = "国際会議論文"
-subtitle = "[すべての国際会議論文 >>](/publication/#1)"
+title = "会議論文"
+subtitle = "[すべての会議論文 >>](/publication/#1)"
 
 [content]
   # Page type to display. E.g. post, talk, or publication.

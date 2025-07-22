@@ -1,1 +1,17 @@
 // Override this file to add your own SCSS styling.
+
+html,
+body {
+  font-family: 'Fira Sans', 'Noto Sans JP', sans-serif;
+}
+
+/* Headings & Navbar */
+.navbar-light,
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Merriweather', 'Noto Sans JP', serif;
+}
+
+/* Monospace/code */
+pre, code, kbd, samp {
+  font-family: 'Fira Sans', 'Noto Sans JP', monospace;
+}
