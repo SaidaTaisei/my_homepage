@@ -43,7 +43,7 @@ links:
 - name: web site
   url: https://virtual.oxfordabstracts.com/event/5176/submission/201
 - name: conference paper (PDF)
-  url: talk/IABSE2025/proceeding.pdf
+  url: proceeding.pdf
 # - name: video
 #   url: https://drive.google.com/file/d/1GAWWMp4frYk9hrEyiXackXeshtxU3lCh/view?usp=share_link
 #   icon_pack: fab
