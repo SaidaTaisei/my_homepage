@@ -14,6 +14,15 @@
   title = "Taisei Saida"
   [ja.params]
     description = "才田大聖のホームページ"
+    # Address format: use Japanese style
+    address_format = "ja"
+  [ja.params.address]
+    street = "天王台1-1-1"
+    city = "つくば市"
+    region = "茨城県"
+    postcode = "305-8577"
+    country = "日本"
+    country_code = "JP"
 
 # Uncomment the lines below to configure your website in a second language.
 #[zh]

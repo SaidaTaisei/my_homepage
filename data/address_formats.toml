@@ -1,0 +1,1 @@
+ja = {order = ['postcode', 'region', 'city', 'street'], delimiters = [' ', '', '', '']} 
