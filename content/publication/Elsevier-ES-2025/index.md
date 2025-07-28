@@ -26,7 +26,7 @@ image:
 #   E.g. `projects = ["internal-project"]` references `content/project/deep-learning/index.md`.
 #   Otherwise, set `projects = []`.
 projects: []
-publishDate: '2025-11-15'
+publishDate: '2025-07-28'
 publication_types:
 - 2
 abstract: "This study presents Explainable Seismic Response Networks (ExSRNet), a novel deep learning framework designed to predict structural seismic responses while enhancing explainability. ExSRNet combines SincNet for frequency decomposition, convolutional neural networks for processing frequency-banded seismic loads, and a frequency attention mechanism to focus on features of specific frequency bands. The performance of the model was evaluated through three comprehensive case studies: a seismic-isolated reinforced concrete bridge pier, a nine-story steel frame building, and a six-story concrete building, utilizing both numerical simulations and real-world data. ExSRNet consistently outperformed traditional long short-term memory models, achieving greater accuracy in both time history responses and peak response predictions. The core innovation of ExSRNet lies in its explainability, which is provided by the frequency attention mechanism. In the case studies, the frequency regions highlighted by the attention mechanism of ExSRNet aligned with the results of modal analysis for the structures under investigation. Additionally, in real-world applications, the model's frequency focus strongly correlated with the Fast Fourier Transform of the observed structural responses. This alignment between the model's attention and established structural dynamics principles validates the physical basis of its predictions, enhancing its reliability and explainability in earthquake engineering applications." 
