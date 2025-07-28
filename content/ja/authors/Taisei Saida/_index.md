@@ -24,7 +24,7 @@ social:
     link: https://orcid.org/0000-0002-2678-5286
   - icon: cv
     icon_pack: ai
-    link: author/taisei-saida/cv.pdf
+    link: author/Taisei-Saida/cv.pdf
   - icon: researchgate
     icon_pack: ai
     link: https://www.researchgate.net/profile/Taisei-Saida
@@ -56,5 +56,5 @@ email: "saida.taisei.tj@alumni.tsukuba.ac.jp"
 - Reserch Map: [https://researchmap.jp/taisei_saida](https://researchmap.jp/taisei_saida)
 - Google Scholar: [https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ](https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ)
 - Publons: [https://www.webofscience.com/wos/author/record/JRY-4837-2023](https://www.webofscience.com/wos/author/record/JRY-4837-2023)
-- CV: [PDF File](https://profile.tsaida.net/author/taisei-saida/cv.pdf)
+- CV: [PDF File](https://profile.tsaida.net/author/Taisei-Saida/cv.pdf)
 
