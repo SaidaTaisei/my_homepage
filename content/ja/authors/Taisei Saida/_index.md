@@ -24,7 +24,7 @@ social:
     link: https://orcid.org/0000-0002-2678-5286
   - icon: cv
     icon_pack: ai
-    link: author/Taisei-Saida/cv.pdf
+    link: https://profile.tsaida.net/author/Taisei-Saida/cv.pdf
   - icon: researchgate
     icon_pack: ai
     link: https://www.researchgate.net/profile/Taisei-Saida
