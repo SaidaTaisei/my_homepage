@@ -46,7 +46,7 @@ education:
     - course: Bachelor of Engineering
       institution: University of Tsukuba, Tsukuba in Japan
       year: 2021
-email: "saida.taisei.tj@alumni.tsukuba.ac.jp"
+email: "saida.taisei.7n@kyoto-u.ac.jp"
 ---
 京都大学 工学研究科の助教です。<br>
 研究では主にサロゲートモデリングに焦点を当てており、特に構造信頼性、構造ヘルスモニタリング、構造工学における機械学習の応用に興味があります。<br>

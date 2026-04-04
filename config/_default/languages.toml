@@ -17,7 +17,7 @@
     # Address format: use Japanese style
     address_format = "ja"
   [ja.params.address]
-    street = "西京区京都大学桂"
+    street = "西京区京都大学桂 Cクラスター C1-2号棟 138号室"
     city = "京都市"
     region = "京都府"
     postcode = "〒615-8530"

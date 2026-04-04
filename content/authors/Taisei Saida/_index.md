@@ -2,7 +2,7 @@
 title: Taisei Saida
 role: Assistant Professor
 organizations:
-  - name: Kyoto University (Lab's url)
+  - name: Kyoto University
     # url: "https://www.kz.tsukuba.ac.jp/~nishio/"
 superuser: true
 authors:

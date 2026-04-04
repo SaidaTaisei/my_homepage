@@ -93,7 +93,7 @@ show_related = {docs = true, page = false, post = true, project = true, publicat
 
 # Address
 # For country_code, use the 2-letter ISO code (see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 )
-address = {street = "kyotodaigaku katsura", city = "Kyoto", region="Kyoto", postcode = "615-8530", country = "Japan", country_code = "NO"}
+address = {street = "Room 138, Building C1-2, C Cluster, Kyoto University Katsura, Nishikyo-ku", city = "Kyoto", region="Kyoto", postcode = "615-8530", country = "Japan", country_code = "NO"}
 
 # Geographic coordinates
 # To get your coordinates, right-click on Google Maps and choose "What's here?". The coords will show up at the bottom.
@@ -117,7 +117,7 @@ contact_links = [
  # {icon = "keybase", icon_pack = "fab", name = "Chat on Keybase", link = "https://keybase.io/"},
  # {icon = "comments", icon_pack = "fas", name = "Discuss on Forum", link = "https://discourse.gohugo.io"},
   # {icon = "telegram", icon_pack = "fab", name = "Telegram Me", link = "https://telegram.me/@Telegram"},
-  {icon = "envelope", icon_pack = "fas", name = "saida.taisei.tj@alumni.tsukuba.ac.jp", link = "mailto:saida.taisei.tj@alumni.tsukuba.ac.jp"},
+  {icon = "envelope", icon_pack = "fas", name = "saida.taisei.7n@kyoto-u.ac.jp", link = "mailto:saida.taisei.tj@alumni.tsukuba.ac.jp"},
   ]
 
 ############################
