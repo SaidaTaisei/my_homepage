@@ -1,9 +1,9 @@
 ---
 title: Taisei Saida
-role: Ph.D Student (JSPS DC2 Researcher)
+role: Assistant Professor
 organizations:
-  - name: University of Tsukuba (Lab's url)
-    url: "https://www.kz.tsukuba.ac.jp/~nishio/"
+  - name: Kyoto University (Lab's url)
+    # url: "https://www.kz.tsukuba.ac.jp/~nishio/"
 superuser: true
 authors:
   - admin
@@ -39,7 +39,7 @@ education:
   courses:
     - course: Ph.D. in Engineering
       institution: University of Tsukuba, Tsukuba in Japan
-      year: Current
+      year: 2026
     - course: Master of Engineering
       institution: University of Tsukuba, Tsukuba in Japan
       year: 2023
@@ -47,7 +47,7 @@ education:
       institution: University of Tsukuba, Tsukuba in Japan
       year: 2021
 ---
-I am Taisei Saida, a doctoral student at the University of Tsukuba. My research primarily focuses on surrogate modeling, with particular interests in structural reliability, structural health monitoring, and machine learning applications in structural engineering.  
+I am Taisei Saida, an assistant professor in Kyoto University. My research primarily focuses on surrogate modeling, with particular interests in structural reliability, structural health monitoring, and machine learning applications in structural engineering.  
 [日本語ページはこちら](ja/)
 - Reserch Map: [https://researchmap.jp/taisei_saida](https://researchmap.jp/taisei_saida)
 - Google Scholar: [https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ](https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ)

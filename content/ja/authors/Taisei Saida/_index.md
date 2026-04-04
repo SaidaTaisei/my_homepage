@@ -1,10 +1,10 @@
 ---
 title: 才田 大聖
 name_en: "Taisei Saida"
-role: 博士後期課程 (学振DC2特別研究員)
+role: 助教
 organizations:
-  - name: 筑波大学（研究室HP）
-    url: "https://www.kz.tsukuba.ac.jp/~nishio/"
+  - name: 京都大学
+    # url: "https://www.kz.tsukuba.ac.jp/~nishio/"
 superuser: true
 authors:
   - admin
@@ -39,7 +39,7 @@ education:
   courses:
     - course: Ph.D. in Engineering
       institution: University of Tsukuba, Tsukuba in Japan
-      year: Current
+      year: 2026
     - course: Master of Engineering
       institution: University of Tsukuba, Tsukuba in Japan
       year: 2023
@@ -48,7 +48,7 @@ education:
       year: 2021
 email: "saida.taisei.tj@alumni.tsukuba.ac.jp"
 ---
-筑波大学博士後期課程の学生です。<br>
+京都大学 工学研究科の助教です。<br>
 研究では主にサロゲートモデリングに焦点を当てており、特に構造信頼性、構造ヘルスモニタリング、構造工学における機械学習の応用に興味があります。<br>
 最近は、構造物の地震応答を深層学習モデルで予測する研究に興味があります。 <br>
 <a href="../">Go to English Page</a>

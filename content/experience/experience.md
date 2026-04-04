@@ -73,7 +73,7 @@ date_format = "Jan 2006"
   company_url = "https://www.kz.tsukuba.ac.jp/~nishio/english.html"
   location = "Ibaraki"
   date_start = "2021-06-01"
-  date_end = ""
+  date_end = "2026-03-31"
   description = """
   """
 +++
