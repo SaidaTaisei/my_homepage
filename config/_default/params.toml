@@ -93,7 +93,7 @@ show_related = {docs = true, page = false, post = true, project = true, publicat
 
 # Address
 # For country_code, use the 2-letter ISO code (see https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2 )
-address = {street = "1-1-1 Tennodai", city = "Tsukuba", region="Ibaraki", postcode = "305-8577", country = "Japan", country_code = "NO"}
+address = {street = "kyotodaigaku katsura", city = "Kyoto", region="Kyoto", postcode = "615-8530", country = "Japan", country_code = "NO"}
 
 # Geographic coordinates
 # To get your coordinates, right-click on Google Maps and choose "What's here?". The coords will show up at the bottom.

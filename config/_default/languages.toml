@@ -17,10 +17,10 @@
     # Address format: use Japanese style
     address_format = "ja"
   [ja.params.address]
-    street = "天王台1-1-1"
-    city = "つくば市"
-    region = "茨城県"
-    postcode = "〒305-8577"
+    street = "西京区京都大学桂"
+    city = "京都市"
+    region = "京都府"
+    postcode = "〒615-8530"
     country = "日本"
     country_code = "JP"
 
