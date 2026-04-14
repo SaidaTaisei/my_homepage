@@ -3,8 +3,8 @@ title: 才田 大聖
 name_en: "Taisei Saida"
 role: 助教
 organizations:
-  - name: 京都大学
-    # url: "https://www.kz.tsukuba.ac.jp/~nishio/"
+  - name: 京都大学（研究室ホームページ）
+    url: "https://quake.kuciv.kyoto-u.ac.jp/"
 superuser: true
 authors:
   - admin
