@@ -3,7 +3,7 @@ title: Taisei Saida
 role: Assistant Professor
 organizations:
   - name: Kyoto University
-    # url: "https://www.kz.tsukuba.ac.jp/~nishio/"
+    url: "https://quake.kuciv.kyoto-u.ac.jp/"
 superuser: true
 authors:
   - admin
