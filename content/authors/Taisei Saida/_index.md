@@ -2,7 +2,7 @@
 title: Taisei Saida
 role: Assistant Professor
 organizations:
-  - name: Kyoto University
+  - name: Kyoto University (Lab's HP)
     url: "https://quake.kuciv.kyoto-u.ac.jp/"
 superuser: true
 authors:
