@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2&nbsp; 重回帰 – 深層学習入門</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/03-multilayer-perceptron.html" rel="next">
+<link href="../chapters/01-simple-linear-regression.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-cdb0db408418ad9d86fa88eebd80e6d4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "一致なし",
+    "search-matching-documents-text": "一致した文書",
+    "search-copy-link-title": "検索へのリンクをコピー",
+    "search-hide-matches-text": "追加の検索結果を非表示",
+    "search-more-match-text": "追加の検索結果",
+    "search-more-matches-text": "追加の検索結果",
+    "search-clear-button-title": "消去",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "検索",
+    "search-label": "サーチ"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/02-multiple-linear-regression.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">重回帰</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="サーチ" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">深層学習入門</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="サーチ"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">はじめに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-simple-linear-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">単回帰</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-multiple-linear-regression.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">重回帰</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-multilayer-perceptron.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">多層パーセプトロン</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目次</h2>
+   
+  <ul>
+  <li><a href="#この章で学ぶこと" id="toc-この章で学ぶこと" class="nav-link active" data-scroll-target="#この章で学ぶこと"><span class="header-section-number">2.1</span> この章で学ぶこと</a></li>
+  <li><a href="#単回帰から重回帰へ" id="toc-単回帰から重回帰へ" class="nav-link" data-scroll-target="#単回帰から重回帰へ"><span class="header-section-number">2.2</span> 単回帰から重回帰へ</a></li>
+  <li><a href="#ベクトルによるモデルの表現" id="toc-ベクトルによるモデルの表現" class="nav-link" data-scroll-target="#ベクトルによるモデルの表現"><span class="header-section-number">2.3</span> ベクトルによるモデルの表現</a></li>
+  <li><a href="#行列による複数データの表現" id="toc-行列による複数データの表現" class="nav-link" data-scroll-target="#行列による複数データの表現"><span class="header-section-number">2.4</span> 行列による複数データの表現</a></li>
+  <li><a href="#損失関数と最小二乗解" id="toc-損失関数と最小二乗解" class="nav-link" data-scroll-target="#損失関数と最小二乗解"><span class="header-section-number">2.5</span> 損失関数と最小二乗解</a></li>
+  <li><a href="#例題2種類の荷重から梁の中央たわみを予測する" id="toc-例題2種類の荷重から梁の中央たわみを予測する" class="nav-link" data-scroll-target="#例題2種類の荷重から梁の中央たわみを予測する"><span class="header-section-number">2.6</span> 例題：2種類の荷重から梁の中央たわみを予測する</a>
+  <ul class="collapse">
+  <li><a href="#観測データの作成" id="toc-観測データの作成" class="nav-link" data-scroll-target="#観測データの作成"><span class="header-section-number">2.6.1</span> 観測データの作成</a></li>
+  <li><a href="#観測データの可視化" id="toc-観測データの可視化" class="nav-link" data-scroll-target="#観測データの可視化"><span class="header-section-number">2.6.2</span> 観測データの可視化</a></li>
+  <li><a href="#設計行列の作成" id="toc-設計行列の作成" class="nav-link" data-scroll-target="#設計行列の作成"><span class="header-section-number">2.6.3</span> 設計行列の作成</a></li>
+  <li><a href="#逆行列による最小二乗解の計算" id="toc-逆行列による最小二乗解の計算" class="nav-link" data-scroll-target="#逆行列による最小二乗解の計算"><span class="header-section-number">2.6.4</span> 逆行列による最小二乗解の計算</a></li>
+  <li><a href="#回帰平面と残差" id="toc-回帰平面と残差" class="nav-link" data-scroll-target="#回帰平面と残差"><span class="header-section-number">2.6.5</span> 回帰平面と残差</a></li>
+  <li><a href="#梁理論から得られる係数との比較" id="toc-梁理論から得られる係数との比較" class="nav-link" data-scroll-target="#梁理論から得られる係数との比較"><span class="header-section-number">2.6.6</span> 梁理論から得られる係数との比較</a></li>
+  </ul></li>
+  <li><a href="#重回帰を利用する際の注意点" id="toc-重回帰を利用する際の注意点" class="nav-link" data-scroll-target="#重回帰を利用する際の注意点"><span class="header-section-number">2.7</span> 重回帰を利用する際の注意点</a>
+  <ul class="collapse">
+  <li><a href="#説明変数間の相関" id="toc-説明変数間の相関" class="nav-link" data-scroll-target="#説明変数間の相関"><span class="header-section-number">2.7.1</span> 説明変数間の相関</a></li>
+  <li><a href="#学習データへの適合と未知データの予測" id="toc-学習データへの適合と未知データの予測" class="nav-link" data-scroll-target="#学習データへの適合と未知データの予測"><span class="header-section-number">2.7.2</span> 学習データへの適合と未知データの予測</a></li>
+  </ul></li>
+  <li><a href="#重回帰では表現できない関係" id="toc-重回帰では表現できない関係" class="nav-link" data-scroll-target="#重回帰では表現できない関係"><span class="header-section-number">2.8</span> 重回帰では表現できない関係</a>
+  <ul class="collapse">
+  <li><a href="#重回帰で表現できないことを確かめる" id="toc-重回帰で表現できないことを確かめる" class="nav-link" data-scroll-target="#重回帰で表現できないことを確かめる"><span class="header-section-number">2.8.1</span> 重回帰で表現できないことを確かめる</a></li>
+  <li><a href="#理論曲面と重回帰平面の比較" id="toc-理論曲面と重回帰平面の比較" class="nav-link" data-scroll-target="#理論曲面と重回帰平面の比較"><span class="header-section-number">2.8.2</span> 理論曲面と重回帰平面の比較</a></li>
+  </ul></li>
+  <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ"><span class="header-section-number">2.9</span> まとめ</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">重回帰</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="この章で学ぶこと" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="この章で学ぶこと"><span class="header-section-number">2.1</span> この章で学ぶこと</h2>
+<p>第1章では、1つの説明変数から目的変数を予測する単回帰を扱いました。本章では、 複数の説明変数を同時に用いる<strong>重回帰</strong>へモデルを拡張します。</p>
+<p>本章の目的は、次の事項を理解することです。</p>
+<ul>
+<li>複数の説明変数を用いる線形回帰モデル</li>
+<li>ベクトルと行列によるモデルの表現</li>
+<li>平均二乗誤差を最小にするパラメータの導出</li>
+<li>逆行列を用いた最小二乗解の計算</li>
+<li>重回帰モデルにおける重みの解釈</li>
+</ul>
+<p>重回帰で用いる</p>
+<p><span class="math display">\[
+\boldsymbol{w}^{\mathsf T}\boldsymbol{x}+b
+\]</span></p>
+<p>という計算は、ニューラルネットワークを構成するニューロンの基本的な計算でもあります。</p>
+</section>
+<section id="単回帰から重回帰へ" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="単回帰から重回帰へ"><span class="header-section-number">2.2</span> 単回帰から重回帰へ</h2>
+<p>単回帰モデルは、1つの説明変数 <span class="math inline">\(x\)</span> に対して</p>
+<p><span class="math display">\[
+\hat{y}=wx+b
+\]</span></p>
+<p>と表されます。説明変数が2つの場合、モデルは</p>
+<p><span id="eq-multiple-regression-two"><span class="math display">\[
+\hat{y}=w_1x_1+w_2x_2+b
+\tag{2.1}\]</span></span></p>
+<p>となります。一般に、説明変数が <span class="math inline">\(M\)</span> 個ある場合の重回帰モデルは</p>
+<p><span id="eq-multiple-regression-general"><span class="math display">\[
+\hat{y}
+=
+\sum_{j=1}^{M}w_jx_j+b
+\tag{2.2}\]</span></span></p>
+<p>と表されます。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>記号</th>
+<th>名称</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(x_j\)</span></td>
+<td><span class="math inline">\(j\)</span> 番目の説明変数</td>
+<td>モデルへ入力する値</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(w_j\)</span></td>
+<td><span class="math inline">\(j\)</span> 番目の重み</td>
+<td><span class="math inline">\(x_j\)</span> が予測値に及ぼす影響を表す係数</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(b\)</span></td>
+<td>バイアス</td>
+<td>すべての説明変数が0のときの予測値</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(y\)</span></td>
+<td>目的変数</td>
+<td>データとして観測された値</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\hat{y}\)</span></td>
+<td>予測値</td>
+<td>モデルが出力する目的変数の推定値</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\(w_j\)</span> は、ほかの説明変数を固定した状態で <span class="math inline">\(x_j\)</span> が1増加したとき、予測値がどれだけ 変化するかを表します。</p>
+<p>説明変数が2つの場合、<a href="#eq-multiple-regression-two" class="quarto-xref">式&nbsp;<span>2.1</span></a> は3次元空間内の平面を表します。 説明変数が3つ以上になると図として直接描くことは困難ですが、モデルは同様に 高次元空間内の超平面を表します。</p>
+</section>
+<section id="ベクトルによるモデルの表現" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="ベクトルによるモデルの表現"><span class="header-section-number">2.3</span> ベクトルによるモデルの表現</h2>
+<p>1つのデータに含まれる説明変数と、それらに対応する重みを</p>
+<p><span class="math display">\[
+\boldsymbol{x}
+=
+\begin{bmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_M
+\end{bmatrix},
+\qquad
+\boldsymbol{w}
+=
+\begin{bmatrix}
+w_1\\
+w_2\\
+\vdots\\
+w_M
+\end{bmatrix}
+\]</span></p>
+<p>と定義します。このとき、<a href="#eq-multiple-regression-general" class="quarto-xref">式&nbsp;<span>2.2</span></a> は内積を用いて</p>
+<p><span id="eq-multiple-vector"><span class="math display">\[
+\hat{y}
+=
+\boldsymbol{w}^{\mathsf T}\boldsymbol{x}+b
+\tag{2.3}\]</span></span></p>
+<p>と簡潔に表せます。<span class="math inline">\(\boldsymbol{w}^{\mathsf T}\boldsymbol{x}\)</span> は</p>
+<p><span class="math display">\[
+\boldsymbol{w}^{\mathsf T}\boldsymbol{x}
+=w_1x_1+w_2x_2+\cdots+w_Mx_M
+\]</span></p>
+<p>を意味します。</p>
+</section>
+<section id="行列による複数データの表現" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="行列による複数データの表現"><span class="header-section-number">2.4</span> 行列による複数データの表現</h2>
+<p><span class="math inline">\(N\)</span> 個の観測データがあるとします。<span class="math inline">\(i\)</span> 番目のデータにおける <span class="math inline">\(j\)</span> 番目の説明変数を <span class="math inline">\(x_{ij}\)</span> とすると、すべての説明変数をまとめた行列は</p>
+<p><span class="math display">\[
+\mathbf{X}
+=
+\begin{bmatrix}
+x_{11} &amp; x_{12} &amp; \cdots &amp; x_{1M}\\
+x_{21} &amp; x_{22} &amp; \cdots &amp; x_{2M}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+x_{N1} &amp; x_{N2} &amp; \cdots &amp; x_{NM}
+\end{bmatrix}
+\in\mathbb{R}^{N\times M}
+\]</span></p>
+<p>となります。バイアスも行列演算に含めるため、<span class="math inline">\(\mathbf{X}\)</span> の第1列に1を追加した 行列を</p>
+<p><span class="math display">\[
+\tilde{\mathbf{X}}
+=
+\begin{bmatrix}
+1 &amp; x_{11} &amp; \cdots &amp; x_{1M}\\
+1 &amp; x_{21} &amp; \cdots &amp; x_{2M}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
+1 &amp; x_{N1} &amp; \cdots &amp; x_{NM}
+\end{bmatrix}
+\]</span></p>
+<p>とします。また、バイアスと重みをまとめたパラメータベクトルを</p>
+<p><span class="math display">\[
+\boldsymbol{\theta}
+=
+\begin{bmatrix}
+b\\
+w_1\\
+\vdots\\
+w_M
+\end{bmatrix}
+\]</span></p>
+<p>とします。すると、重回帰モデルにおける予測値は</p>
+<p><span id="eq-multiple-matrix"><span class="math display">\[
+\hat{\boldsymbol{y}}
+=
+\tilde{\mathbf{X}}\boldsymbol{\theta}
+\tag{2.4}\]</span></span></p>
+<p>となります。</p>
+</section>
+<section id="損失関数と最小二乗解" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="損失関数と最小二乗解"><span class="header-section-number">2.5</span> 損失関数と最小二乗解</h2>
+<p>重回帰においても、単回帰と同じ平均二乗誤差を損失関数として使用できます。</p>
+<p><span id="eq-multiple-mse"><span class="math display">\[
+L(\boldsymbol{\theta})
+=
+\frac{1}{N}
+\left\|
+\boldsymbol{y}
+-\tilde{\mathbf{X}}\boldsymbol{\theta}
+\right\|_2^2
+\tag{2.5}\]</span></span></p>
+<p>ここで、<span class="math inline">\(\|\cdot\|_2\)</span> はベクトルのEuclid距離を用いたノルムです。 もう少し理解しやすいように、<a href="#eq-multiple-mse" class="quarto-xref">式&nbsp;<span>2.5</span></a> を成分で書けば、</p>
+<p><span class="math display">\[
+L(\boldsymbol{\theta})
+=
+\frac{1}{N}\sum_{i=1}^{N}
+\left(y_i-\hat{y}_i\right)^2
+\]</span></p>
+<p>であり、第1章のMSEと同じであることが分かります。</p>
+<p>この損失関数を行列の内積を用いて展開すると、</p>
+<p><span class="math display">\[
+L(\boldsymbol{\theta})
+=
+\frac{1}{N}
+\left(
+\boldsymbol{y}^{\mathsf T}\boldsymbol{y}
+- 2\boldsymbol{\theta}^{\mathsf T}\tilde{\mathbf{X}}^{\mathsf T}\boldsymbol{y}
++ \boldsymbol{\theta}^{\mathsf T}\tilde{\mathbf{X}}^{\mathsf T}\tilde{\mathbf{X}}\boldsymbol{\theta}
+\right)
+\]</span></p>
+<p>と表されます。 これを <span class="math inline">\(\boldsymbol{\theta}\)</span> で微分すると、勾配は</p>
+<p><span id="eq-multiple-gradient"><span class="math display">\[
+\nabla_{\boldsymbol{\theta}}L
+=
+\frac{2}{N}
+\tilde{\mathbf{X}}^{\mathsf T}
+\left(
+\tilde{\mathbf{X}}\boldsymbol{\theta}
+-\boldsymbol{y}
+\right)
+\tag{2.6}\]</span></span></p>
+<p>となります。最小点では勾配が0になるため、</p>
+<p><span id="eq-normal-equation"><span class="math display">\[
+\tilde{\mathbf{X}}^{\mathsf T}
+\tilde{\mathbf{X}}\boldsymbol{\theta}
+=
+\tilde{\mathbf{X}}^{\mathsf T}\boldsymbol{y}
+\tag{2.7}\]</span></span></p>
+<p>が得られます。 <span class="math inline">\(\tilde{\mathbf{X}}^{\mathsf T}\tilde{\mathbf{X}}\)</span> が逆行列をもつ場合、 最小二乗解は</p>
+<p><span id="eq-multiple-closed-form"><span class="math display">\[
+\boldsymbol{\theta}^*
+=
+\left(
+\tilde{\mathbf{X}}^{\mathsf T}
+\tilde{\mathbf{X}}
+\right)^{-1}
+\tilde{\mathbf{X}}^{\mathsf T}\boldsymbol{y}
+\tag{2.8}\]</span></span></p>
+<p>と表されます。</p>
+</section>
+<section id="例題2種類の荷重から梁の中央たわみを予測する" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="例題2種類の荷重から梁の中央たわみを予測する"><span class="header-section-number">2.6</span> 例題：2種類の荷重から梁の中央たわみを予測する</h2>
+<p>重回帰の例として、中央集中荷重 <span class="math inline">\(P\)</span> と等分布荷重 <span class="math inline">\(q\)</span> が同時に作用する単純支持梁を 考えます。梁は線形弾性体であり、微小変形の範囲にあるものとします。</p>
+<div id="fig-beam-two-loads" class="quarto-float quarto-figure quarto-figure-center anchored" alt="左端をピン、右端をローラーで支持した梁に、全支間の等分布荷重qと中央集中荷重Pが作用し、中央たわみδが生じる様子。支間長はL。">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-beam-two-loads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/simply-supported-beam-point-and-distributed-load.png" class="img-fluid figure-img" style="width:90.0%" alt="左端をピン、右端をローラーで支持した梁に、全支間の等分布荷重qと中央集中荷重Pが作用し、中央たわみδが生じる様子。支間長はL。">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-beam-two-loads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;2.1: 中央集中荷重と等分布荷重を同時に受ける単純支持梁
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-beam-two-loads" class="quarto-xref">図&nbsp;<span>2.1</span></a> に示すように、支間長 <span class="math inline">\(L\)</span> の梁全体に等分布荷重 <span class="math inline">\(q\)</span> が作用し、 さらに梁中央に集中荷重 <span class="math inline">\(P\)</span> が作用する条件を考えます。</p>
+<p>梁中央のたわみ <span class="math inline">\(\delta\)</span> は</p>
+<p><span id="eq-beam-two-loads"><span class="math display">\[
+\delta
+=
+\frac{PL^3}{48EI}
++
+\frac{5qL^4}{384EI}
+\tag{2.9}\]</span></span></p>
+<p>で与えられます。<span class="math inline">\(L\)</span>、<span class="math inline">\(E\)</span>、<span class="math inline">\(I\)</span> が一定であれば、<span class="math inline">\(\delta\)</span> は <span class="math inline">\(P\)</span> と <span class="math inline">\(q\)</span> の線形結合です。 したがって、重回帰モデル</p>
+<p><span id="eq-beam-multiple-model"><span class="math display">\[
+\hat{\delta}=w_1P+w_2q+b
+\tag{2.10}\]</span></span></p>
+<p>を適用できます。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>機械学習上の変数</th>
+<th>この例における物理量</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(x_1\)</span></td>
+<td>中央集中荷重 <span class="math inline">\(P\)</span> [kN]</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(x_2\)</span></td>
+<td>等分布荷重 <span class="math inline">\(q\)</span> [kN/m]</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(y\)</span></td>
+<td>観測された中央たわみ <span class="math inline">\(\delta\)</span> [mm]</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(w_1\)</span></td>
+<td>集中荷重に対する柔性 [mm/kN]</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(w_2\)</span></td>
+<td>等分布荷重に対する柔性 [mm/(kN/m)]</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(b\)</span></td>
+<td>初期たわみや測定器のゼロ点誤差 [mm]</td>
+</tr>
+</tbody>
+</table>
+<section id="観測データの作成" class="level3" data-number="2.6.1">
+<h3 data-number="2.6.1" class="anchored" data-anchor-id="観測データの作成"><span class="header-section-number">2.6.1</span> 観測データの作成</h3>
+<p>第1章と同じ鋼製の矩形断面の梁を使用します。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>物理量</th>
+<th>記号</th>
+<th>設定値</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ヤング率</td>
+<td><span class="math inline">\(E\)</span></td>
+<td><span class="math inline">\(205\ \mathrm{GPa}\)</span></td>
+</tr>
+<tr class="even">
+<td>支間長</td>
+<td><span class="math inline">\(L\)</span></td>
+<td><span class="math inline">\(3.0\ \mathrm{m}\)</span></td>
+</tr>
+<tr class="odd">
+<td>断面幅</td>
+<td><span class="math inline">\(B\)</span></td>
+<td><span class="math inline">\(0.10\ \mathrm{m}\)</span></td>
+</tr>
+<tr class="even">
+<td>断面高さ</td>
+<td><span class="math inline">\(H\)</span></td>
+<td><span class="math inline">\(0.20\ \mathrm{m}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>中央集中荷重と等分布荷重を複数の条件で組み合わせ、<a href="#eq-beam-two-loads" class="quarto-xref">式&nbsp;<span>2.9</span></a> から理論たわみを 計算します。その後、平均0、標準偏差 <span class="math inline">\(0.04\ \mathrm{mm}\)</span> の正規分布に従う測定誤差を 加えて観測データを作成します。</p>
+<div id="e5483373" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scienceplots</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>plt.style.use([<span class="st">"science"</span>, <span class="st">"no-latex"</span>])</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"Noto Sans CJK JP"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"mathtext.fontset"</span>] <span class="op">=</span> <span class="st">"cm"</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 梁の物性値と寸法</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>young_modulus <span class="op">=</span> <span class="fl">205e9</span>       <span class="co"># Young率 [Pa]</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>span_length <span class="op">=</span> <span class="fl">3.0</span>           <span class="co"># 支間長 [m]</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>section_width <span class="op">=</span> <span class="fl">0.10</span>        <span class="co"># 断面幅 [m]</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>section_height <span class="op">=</span> <span class="fl">0.20</span>       <span class="co"># 断面高さ [m]</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>second_moment <span class="op">=</span> section_width <span class="op">*</span> section_height<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> <span class="dv">12</span>  <span class="co"># [m^4]</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 集中荷重Pと等分布荷重qの組合せ</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>point_load_levels <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">6</span>)       <span class="co"># [kN]</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>distributed_load_levels <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">5</span>) <span class="co"># [kN/m]</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>P_grid, q_grid <span class="op">=</span> np.meshgrid(point_load_levels, distributed_load_levels)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> P_grid.ravel()</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>q <span class="op">=</span> q_grid.ravel()</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># 梁理論による中央たわみ [mm]</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>deflection_from_P <span class="op">=</span> (</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    (P <span class="op">*</span> <span class="fl">1e3</span>) <span class="op">*</span> span_length<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> young_modulus <span class="op">*</span> second_moment)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e3</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>deflection_from_q <span class="op">=</span> (</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    <span class="dv">5</span> <span class="op">*</span> (q <span class="op">*</span> <span class="fl">1e3</span>) <span class="op">*</span> span_length<span class="op">**</span><span class="dv">4</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> (<span class="dv">384</span> <span class="op">*</span> young_modulus <span class="op">*</span> second_moment)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e3</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> deflection_from_P <span class="op">+</span> deflection_from_q</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 測定誤差を加えた観測値</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">123</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>measurement_std <span class="op">=</span> <span class="fl">0.04</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> y_true <span class="op">+</span> rng.normal(<span class="fl">0.0</span>, measurement_std, size<span class="op">=</span>y_true.size)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>データ生成には梁理論を用いましたが、これ以降の学習でモデルに与えるのは、観測された <span class="math inline">\((P_i,q_i,y_i)\)</span> の組だけです。</p>
+</section>
+<section id="観測データの可視化" class="level3" data-number="2.6.2">
+<h3 data-number="2.6.2" class="anchored" data-anchor-id="観測データの可視化"><span class="header-section-number">2.6.2</span> 観測データの可視化</h3>
+<p>説明変数が2つであるため、観測データを3次元空間に表示できます。</p>
+<div id="cell-fig-multiple-observations" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<div id="fig-multiple-observations" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-multiple-observations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-multiple-linear-regression_files/figure-html/fig-multiple-observations-output-1.png" width="459" height="424" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-multiple-observations-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;2.2: 集中荷重、等分布荷重、および中央たわみの観測データ
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-multiple-observations" class="quarto-xref">図&nbsp;<span>2.2</span></a> では、観測点がおおむね1つの平面上に分布しています。ただし、 測定誤差が含まれるため、完全に同一平面上にはありません。</p>
+</section>
+<section id="設計行列の作成" class="level3" data-number="2.6.3">
+<h3 data-number="2.6.3" class="anchored" data-anchor-id="設計行列の作成"><span class="header-section-number">2.6.3</span> 設計行列の作成</h3>
+<p>切片、集中荷重、等分布荷重の順に列を並べ、行列 <span class="math inline">\(\tilde{\mathbf{X}}\)</span> を作成します。</p>
+<div id="6601b982" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X_tilde <span class="op">=</span> np.column_stack([</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    np.ones_like(P),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    P,</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    q,</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"行列の形状: </span><span class="sc">{</span>X_tilde<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"目的変数の形状: </span><span class="sc">{</span>y<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X_tilde[:<span class="dv">5</span>])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>行列の形状: (30, 3)
+目的変数の形状: (30,)
+[[ 1.  0.  0.]
+ [ 1. 10.  0.]
+ [ 1. 20.  0.]
+ [ 1. 30.  0.]
+ [ 1. 40.  0.]]</code></pre>
+</div>
+</div>
+<p>この例には30個の観測データと、切片を含む3個の入力列があるため、 <span class="math inline">\(\tilde{\mathbf{X}}\)</span> の形状は <span class="math inline">\((30,3)\)</span> です。</p>
+</section>
+<section id="逆行列による最小二乗解の計算" class="level3" data-number="2.6.4">
+<h3 data-number="2.6.4" class="anchored" data-anchor-id="逆行列による最小二乗解の計算"><span class="header-section-number">2.6.4</span> 逆行列による最小二乗解の計算</h3>
+<p><a href="#eq-multiple-closed-form" class="quarto-xref">式&nbsp;<span>2.8</span></a> に従い、MSEを最小にするパラメータを逆行列から求めます。 まず、方程式の係数行列 <span class="math inline">\(\tilde{\mathbf{X}}^{\mathsf T}\tilde{\mathbf{X}}\)</span> と右辺 <span class="math inline">\(\tilde{\mathbf{X}}^{\mathsf T}\boldsymbol{y}\)</span> を計算します。</p>
+<div id="23df6a0d" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>normal_matrix <span class="op">=</span> X_tilde.T <span class="op">@</span> X_tilde</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>normal_vector <span class="op">=</span> X_tilde.T <span class="op">@</span> y</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>theta_opt <span class="op">=</span> np.linalg.inv(normal_matrix) <span class="op">@</span> normal_vector</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>b_opt, w_P_opt, w_q_opt <span class="op">=</span> theta_opt</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> X_tilde <span class="op">@</span> theta_opt</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>residuals <span class="op">=</span> y <span class="op">-</span> y_pred</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> np.mean(residuals<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>rank <span class="op">=</span> np.linalg.matrix_rank(X_tilde)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"切片 b*: </span><span class="sc">{</span>b_opt<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"集中荷重の重み w1*: </span><span class="sc">{</span>w_P_opt<span class="sc">:.5f}</span><span class="ss"> mm/kN"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"等分布荷重の重み w2*: </span><span class="sc">{</span>w_q_opt<span class="sc">:.5f}</span><span class="ss"> mm/(kN/m)"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"MSE: </span><span class="sc">{</span>mse<span class="sc">:.6f}</span><span class="ss"> mm²"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"行列 X_tilde のランク: </span><span class="sc">{</span>rank<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>切片 b*: -0.00770 mm
+集中荷重の重み w1*: 0.04145 mm/kN
+等分布荷重の重み w2*: 0.07903 mm/(kN/m)
+MSE: 0.001232 mm²
+行列 X_tilde のランク: 3</code></pre>
+</div>
+</div>
+<p><code>X_tilde.T</code> は転置行列<span class="math inline">\(\tilde{\mathbf{X}}^{\mathsf T}\)</span>、<code>np.linalg.inv(normal_matrix)</code> は <span class="math inline">\((\tilde{\mathbf{X}}^{\mathsf T}\tilde{\mathbf{X}})^{-1}\)</span> に対応します。また、<code>@</code> は 行列積を表す演算子です。したがって、パラメータを求めるコードは <a href="#eq-multiple-closed-form" class="quarto-xref">式&nbsp;<span>2.8</span></a>、<code>X_tilde @ theta_opt</code> は <a href="#eq-multiple-matrix" class="quarto-xref">式&nbsp;<span>2.4</span></a> に対応します。</p>
+<p>この計算で逆行列が存在するには、拡大設計行列<span class="math inline">\(\tilde{\mathbf{X}}\)</span>が列フルランク（すべての列ベクトルが1次独立である状態）である必要があります。 この例では列数が3、ランクも3であるため、逆行列を用いて一意な解を求められます。</p>
+</section>
+<section id="回帰平面と残差" class="level3" data-number="2.6.5">
+<h3 data-number="2.6.5" class="anchored" data-anchor-id="回帰平面と残差"><span class="header-section-number">2.6.5</span> 回帰平面と残差</h3>
+<p>学習によって得られたモデルを平面として表示し、観測データと比較します。</p>
+<div id="cell-fig-multiple-regression-plane" class="cell" data-execution_count="5">
+<div class="cell-output cell-output-display">
+<div id="fig-multiple-regression-plane" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-multiple-regression-plane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-multiple-linear-regression_files/figure-html/fig-multiple-regression-plane-output-1.png" width="473" height="438" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-multiple-regression-plane-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;2.3: 観測データ、学習された回帰平面、および残差
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-multiple-regression-plane" class="quarto-xref">図&nbsp;<span>2.3</span></a> の橙色の平面が重回帰モデルの予測、青い点が観測値です。 各観測点と回帰平面を結ぶ赤い線分が残差を表します。最小二乗法は、これらの残差の 二乗和が最小になる平面を求めています。</p>
+</section>
+<section id="梁理論から得られる係数との比較" class="level3" data-number="2.6.6">
+<h3 data-number="2.6.6" class="anchored" data-anchor-id="梁理論から得られる係数との比較"><span class="header-section-number">2.6.6</span> 梁理論から得られる係数との比較</h3>
+<p><a href="#eq-beam-two-loads" class="quarto-xref">式&nbsp;<span>2.9</span></a> から、各荷重に対する理論上の係数を計算できます。</p>
+<div id="0c21d3b6" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w_P_theory <span class="op">=</span> (</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    span_length<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> young_modulus <span class="op">*</span> second_moment)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e6</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>w_q_theory <span class="op">=</span> (</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="dv">5</span> <span class="op">*</span> span_length<span class="op">**</span><span class="dv">4</span> <span class="op">/</span> (<span class="dv">384</span> <span class="op">*</span> young_modulus <span class="op">*</span> second_moment)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e6</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"集中荷重に対する係数"</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  理論値: </span><span class="sc">{</span>w_P_theory<span class="sc">:.5f}</span><span class="ss"> mm/kN"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  学習値: </span><span class="sc">{</span>w_P_opt<span class="sc">:.5f}</span><span class="ss"> mm/kN"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"等分布荷重に対する係数"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  理論値: </span><span class="sc">{</span>w_q_theory<span class="sc">:.5f}</span><span class="ss"> mm/(kN/m)"</span>)</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  学習値: </span><span class="sc">{</span>w_q_opt<span class="sc">:.5f}</span><span class="ss"> mm/(kN/m)"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>集中荷重に対する係数
+  理論値: 0.04116 mm/kN
+  学習値: 0.04145 mm/kN
+等分布荷重に対する係数
+  理論値: 0.07717 mm/(kN/m)
+  学習値: 0.07903 mm/(kN/m)</code></pre>
+</div>
+</div>
+<p>学習には梁理論の係数を与えていません。それにもかかわらず、十分に異なる荷重条件を 観測することで、重回帰は理論値に近い重みをデータから推定できます。推定値が理論値と 完全には一致しないのは、観測データに測定誤差が含まれているためです。</p>
+</section>
+</section>
+<section id="重回帰を利用する際の注意点" class="level2" data-number="2.7">
+<h2 data-number="2.7" class="anchored" data-anchor-id="重回帰を利用する際の注意点"><span class="header-section-number">2.7</span> 重回帰を利用する際の注意点</h2>
+<p>重回帰では説明変数を増やせますが、変数を追加すれば常に適切なモデルになるわけでは ありません。特に、次の点に注意が必要です。</p>
+<section id="説明変数間の相関" class="level3" data-number="2.7.1">
+<h3 data-number="2.7.1" class="anchored" data-anchor-id="説明変数間の相関"><span class="header-section-number">2.7.1</span> 説明変数間の相関</h3>
+<p>説明変数同士に強い線形関係がある状態を<strong>多重共線性</strong>と呼びます。多重共線性があると、 異なる重みの組合せが類似した予測を与えるため、個々の重みの推定が不安定になります。</p>
+</section>
+<section id="学習データへの適合と未知データの予測" class="level3" data-number="2.7.2">
+<h3 data-number="2.7.2" class="anchored" data-anchor-id="学習データへの適合と未知データの予測"><span class="header-section-number">2.7.2</span> 学習データへの適合と未知データの予測</h3>
+<p>説明変数を増やすと、一般に学習データに対するMSEは小さくなります。しかし、学習データに よく適合することと、未知データを正確に予測できることは同じではありません。未知データに 対する性能を評価する方法は、後の章で扱います。</p>
+</section>
+</section>
+<section id="重回帰では表現できない関係" class="level2" data-number="2.8">
+<h2 data-number="2.8" class="anchored" data-anchor-id="重回帰では表現できない関係"><span class="header-section-number">2.8</span> 重回帰では表現できない関係</h2>
+<p>ここまでの例では、中央たわみが集中荷重 <span class="math inline">\(P\)</span> と等分布荷重 <span class="math inline">\(q\)</span> の線形結合で表されるため、 重回帰を適用できました。しかし、説明変数を増やしても、重回帰で任意の関係を表現できる わけではありません。</p>
+<p>例として、断面形状と支間長を固定した単純支持梁に中央集中荷重 <span class="math inline">\(P\)</span> を作用させ、Young率 <span class="math inline">\(E\)</span> が異なる場合を考えます。梁中央のたわみは</p>
+<p><span id="eq-deflection-load-young"><span class="math display">\[
+\delta
+=
+\frac{PL^3}{48EI}
+=
+C\frac{P}{E},
+\qquad
+C=\frac{L^3}{48I}
+\tag{2.11}\]</span></span></p>
+<p>と表されます。<span class="math inline">\(P\)</span> と <span class="math inline">\(E\)</span> をそのまま説明変数とする重回帰モデルは</p>
+<p><span id="eq-linear-load-young"><span class="math display">\[
+\hat{\delta}=w_1P+w_2E+b
+\tag{2.12}\]</span></span></p>
+<p>です。<a href="#eq-linear-load-young" class="quarto-xref">式&nbsp;<span>2.12</span></a> は <span class="math inline">\(P\)</span>–<span class="math inline">\(E\)</span>–<span class="math inline">\(\delta\)</span> 空間内の平面を表します。一方、 <a href="#eq-deflection-load-young" class="quarto-xref">式&nbsp;<span>2.11</span></a> は <span class="math inline">\(P/E\)</span> に比例する曲面であり、<span class="math inline">\(E\)</span> に対して反比例します。 したがって、重み <span class="math inline">\(w_1,w_2\)</span> と切片 <span class="math inline">\(b\)</span> をどのように選んでも、この曲面全体を1枚の 平面で表すことはできません。</p>
+<section id="重回帰で表現できないことを確かめる" class="level3" data-number="2.8.1">
+<h3 data-number="2.8.1" class="anchored" data-anchor-id="重回帰で表現できないことを確かめる"><span class="header-section-number">2.8.1</span> 重回帰で表現できないことを確かめる</h3>
+<p>PとEが説明変数となる重回帰モデルを構築して、図示することで、重回帰では表現できないことを確認できます。 ここでは、集中荷重を <span class="math inline">\(5\)</span>–<span class="math inline">\(50\ \mathrm{kN}\)</span>、ヤング率を <span class="math inline">\(100\)</span>–<span class="math inline">\(300\ \mathrm{GPa}\)</span> の範囲で 変化させます。</p>
+<div id="e846d5bc" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 集中荷重とYoung率の組合せ</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>P_nonlinear_levels <span class="op">=</span> np.linspace(<span class="dv">5</span>, <span class="dv">50</span>, <span class="dv">10</span>)       <span class="co"># [kN]</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>E_nonlinear_levels <span class="op">=</span> np.linspace(<span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">9</span>)     <span class="co"># [GPa]</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>P_nonlinear_grid, E_nonlinear_grid <span class="op">=</span> np.meshgrid(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    P_nonlinear_levels,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    E_nonlinear_levels,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>P_nonlinear <span class="op">=</span> P_nonlinear_grid.ravel()</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>E_nonlinear <span class="op">=</span> E_nonlinear_grid.ravel()</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># 梁理論による中央たわみ（測定誤差なし）</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>y_nonlinear <span class="op">=</span> (</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    (P_nonlinear <span class="op">*</span> <span class="fl">1e3</span>) <span class="op">*</span> span_length<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> (E_nonlinear <span class="op">*</span> <span class="fl">1e9</span>) <span class="op">*</span> second_moment)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e3</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># PとEを説明変数とする重回帰</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>X_nonlinear <span class="op">=</span> np.column_stack([</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    np.ones_like(P_nonlinear),</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    P_nonlinear,</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    E_nonlinear,</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>normal_matrix_nonlinear <span class="op">=</span> X_nonlinear.T <span class="op">@</span> X_nonlinear</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>normal_vector_nonlinear <span class="op">=</span> X_nonlinear.T <span class="op">@</span> y_nonlinear</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>theta_nonlinear <span class="op">=</span> np.linalg.inv(normal_matrix_nonlinear) <span class="op">@</span> normal_vector_nonlinear</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>y_nonlinear_pred <span class="op">=</span> X_nonlinear <span class="op">@</span> theta_nonlinear</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>residuals_nonlinear <span class="op">=</span> y_nonlinear <span class="op">-</span> y_nonlinear_pred</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>mse_nonlinear <span class="op">=</span> np.mean(residuals_nonlinear<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"重回帰モデルのMSE: </span><span class="sc">{</span>mse_nonlinear<span class="sc">:.6f}</span><span class="ss"> mm²"</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"残差の最大絶対値: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">max</span>(np.<span class="bu">abs</span>(residuals_nonlinear))<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>重回帰モデルのMSE: 0.086464 mm²
+残差の最大絶対値: 1.12059 mm</code></pre>
+</div>
+</div>
+</section>
+<section id="理論曲面と重回帰平面の比較" class="level3" data-number="2.8.2">
+<h3 data-number="2.8.2" class="anchored" data-anchor-id="理論曲面と重回帰平面の比較"><span class="header-section-number">2.8.2</span> 理論曲面と重回帰平面の比較</h3>
+<p><a href="#fig-linear-model-limitation" class="quarto-xref">図&nbsp;<span>2.4</span></a> に、梁理論による曲面と、重回帰で学習された平面を重ねて 示します。</p>
+<div id="cell-fig-linear-model-limitation" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Patch</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>P_surface_nonlinear, E_surface_nonlinear <span class="op">=</span> np.meshgrid(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    np.linspace(P_nonlinear.<span class="bu">min</span>(), P_nonlinear.<span class="bu">max</span>(), <span class="dv">45</span>),</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    np.linspace(E_nonlinear.<span class="bu">min</span>(), E_nonlinear.<span class="bu">max</span>(), <span class="dv">45</span>),</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>y_surface_theory <span class="op">=</span> (</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    (P_surface_nonlinear <span class="op">*</span> <span class="fl">1e3</span>) <span class="op">*</span> span_length<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> (E_surface_nonlinear <span class="op">*</span> <span class="fl">1e9</span>) <span class="op">*</span> second_moment)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e3</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>y_surface_linear <span class="op">=</span> (</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    theta_nonlinear[<span class="dv">0</span>]</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> theta_nonlinear[<span class="dv">1</span>] <span class="op">*</span> P_surface_nonlinear</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> theta_nonlinear[<span class="dv">2</span>] <span class="op">*</span> E_surface_nonlinear</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="fl">7.6</span>, <span class="fl">5.8</span>))</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">"3d"</span>, computed_zorder<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>ax.plot_surface(</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    P_surface_nonlinear,</span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    E_surface_nonlinear,</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    y_surface_theory,</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"tab:blue"</span>,</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.55</span>,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>ax.plot_wireframe(</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    P_surface_nonlinear,</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    E_surface_nonlinear,</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    y_surface_linear,</span>
+<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"tab:red"</span>,</span>
+<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    rstride<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>    cstride<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb10-36"><a href="#cb10-36" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.9</span>,</span>
+<span id="cb10-37"><a href="#cb10-37" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb10-38"><a href="#cb10-38" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-39"><a href="#cb10-39" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb10-40"><a href="#cb10-40" aria-hidden="true" tabindex="-1"></a>    P_nonlinear,</span>
+<span id="cb10-41"><a href="#cb10-41" aria-hidden="true" tabindex="-1"></a>    E_nonlinear,</span>
+<span id="cb10-42"><a href="#cb10-42" aria-hidden="true" tabindex="-1"></a>    y_nonlinear,</span>
+<span id="cb10-43"><a href="#cb10-43" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb10-44"><a href="#cb10-44" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">12</span>,</span>
+<span id="cb10-45"><a href="#cb10-45" aria-hidden="true" tabindex="-1"></a>    depthshade<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb10-46"><a href="#cb10-46" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb10-47"><a href="#cb10-47" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-48"><a href="#cb10-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-49"><a href="#cb10-49" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"集中荷重 </span><span class="dv">$</span><span class="vs">P</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[kN]</span><span class="vs">"</span>)</span>
+<span id="cb10-50"><a href="#cb10-50" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"Young率 </span><span class="dv">$</span><span class="vs">E</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[GPa]</span><span class="vs">"</span>)</span>
+<span id="cb10-51"><a href="#cb10-51" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="vs">r"中央たわみ </span><span class="dv">$\d</span><span class="vs">elta</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[mm]</span><span class="vs">"</span>)</span>
+<span id="cb10-52"><a href="#cb10-52" aria-hidden="true" tabindex="-1"></a>ax.view_init(elev<span class="op">=</span><span class="dv">25</span>, azim<span class="op">=-</span><span class="dv">128</span>)</span>
+<span id="cb10-53"><a href="#cb10-53" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>[</span>
+<span id="cb10-54"><a href="#cb10-54" aria-hidden="true" tabindex="-1"></a>    Patch(facecolor<span class="op">=</span><span class="st">"tab:blue"</span>, alpha<span class="op">=</span><span class="fl">0.55</span>, label<span class="op">=</span><span class="st">"梁理論の曲面"</span>),</span>
+<span id="cb10-55"><a href="#cb10-55" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], color<span class="op">=</span><span class="st">"tab:red"</span>, label<span class="op">=</span><span class="st">"重回帰の平面"</span>),</span>
+<span id="cb10-56"><a href="#cb10-56" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"black"</span>, linestyle<span class="op">=</span><span class="st">"none"</span>, label<span class="op">=</span><span class="st">"観測データ"</span>),</span>
+<span id="cb10-57"><a href="#cb10-57" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb10-58"><a href="#cb10-58" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="fig-linear-model-limitation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-linear-model-limitation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="02-multiple-linear-regression_files/figure-html/fig-linear-model-limitation-output-1.png" width="476" height="438" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-linear-model-limitation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;2.4: Young率を説明変数とした場合の理論曲面と重回帰平面
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-linear-model-limitation" class="quarto-xref">図&nbsp;<span>2.4</span></a> から、限定された範囲では重回帰平面が理論曲面を近似できるものの、 両者は一致しないことが分かります。ここでは測定誤差を加えていないため、残差の原因は データのばらつきではなく、重回帰モデルが <span class="math inline">\(P/E\)</span> という非線形な関係を表現できないことに あります。</p>
+<p>なお、<span class="math inline">\(P/E\)</span> を新しい説明変数として人があらかじめ作れば、</p>
+<p><span class="math display">\[
+x_1=\frac{P}{E},
+\qquad
+\hat{\delta}=w_1x_1+b
+\]</span></p>
+<p>として線形回帰を適用できます。このように、元の説明変数を変換してモデルが扱いやすい 変数を作ることを<strong>特徴量設計</strong>（feature engineering）と呼びます。しかし、対象の関係が 未知である場合、人が適切な変換をあらかじめ決められるとは限りません。</p>
+<p>こうした線形回帰の適用とかが難しい場合に用いることができる回帰手法として、次章で説明する<strong>多層パーセプトロン</strong>（Multilayer Perceptron; MLP）があります。</p>
+</section>
+</section>
+<section id="まとめ" class="level2" data-number="2.9">
+<h2 data-number="2.9" class="anchored" data-anchor-id="まとめ"><span class="header-section-number">2.9</span> まとめ</h2>
+<ul>
+<li>重回帰は、複数の説明変数から1つの目的変数を予測する線形モデルである。</li>
+<li>モデルは <span class="math inline">\(\hat{y}=\boldsymbol{w}^{\mathsf T}\boldsymbol{x}+b\)</span> と表される。</li>
+<li>複数データの予測は <span class="math inline">\(\hat{\boldsymbol{y}}=\tilde{\mathbf{X}}\boldsymbol{\theta}\)</span> と表せる。</li>
+<li>MSEの勾配を0とおくことで正規方程式が得られる。</li>
+<li>説明変数 <span class="math inline">\(x\)</span> と目的変数 <span class="math inline">\(y\)</span> の関係が非線形な場合、重回帰では関係全体を表現できない。</li>
+<li>非線形な活性化関数をもつMLPは、平面では表せない曲がった応答面を表現できる。</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "コピーしました");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "コピーしました");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/01-simple-linear-regression.html" class="pagination-link" aria-label="単回帰">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">単回帰</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/03-multilayer-perceptron.html" class="pagination-link" aria-label="多層パーセプトロン">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">多層パーセプトロン</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

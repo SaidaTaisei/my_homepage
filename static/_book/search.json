@@ -1,0 +1,452 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "深層学習入門",
+    "section": "",
+    "text": "はじめに\nこの教材では、深層学習の仕組みを数式とPythonの両方から学びます。 ライブラリの使い方だけを覚えるのではなく、モデルがどのように予測し、 どのようにデータから学習するのかを、小さな例から段階的に理解することを目指します。\n学習は、次の順序で進めます。\n最初に単回帰を取り上げ、その後、重回帰、ニューラルネットワーク、 誤差逆伝播へと進みます。",
+    "crumbs": [
+      "はじめに"
+    ]
+  },
+  {
+    "objectID": "index.html#実行環境",
+    "href": "index.html#実行環境",
+    "title": "深層学習入門",
+    "section": "実行環境",
+    "text": "実行環境\n本文中のコードはPythonで記述します。数値計算にはNumPy、 グラフの描画にはMatplotlibを使用します。\n\nimport sys\n\nprint(f\"Python {sys.version_info.major}.{sys.version_info.minor}\")\n\nPython 3.12",
+    "crumbs": [
+      "はじめに"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html",
+    "href": "chapters/01-simple-linear-regression.html",
+    "title": "1  単回帰",
+    "section": "",
+    "text": "1.1 この章で学ぶこと\nこの章では、1つの説明変数から1つの目的変数を予測する単回帰を扱います。 単回帰は最も基本的な回帰モデルの1つです。 次に示す機械学習の基本を具体的な計算を通して理解するのに適しています。\nモデル、損失関数、パラメータの最適化という枠組みは、後に扱う ニューラルネットワークにも共通しています。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#この章で学ぶこと",
+    "href": "chapters/01-simple-linear-regression.html#この章で学ぶこと",
+    "title": "1  単回帰",
+    "section": "",
+    "text": "予測と正解のずれを測る損失関数\n損失が小さくなるパラメータを探す学習",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#直線で値を予測する",
+    "href": "chapters/01-simple-linear-regression.html#直線で値を予測する",
+    "title": "1  単回帰",
+    "section": "1.2 直線で値を予測する",
+    "text": "1.2 直線で値を予測する\n例として、住宅の面積から価格を予測することを考えます。 一般に、面積が広くなるほど価格も高くなると予想できます。 この関係を1本の直線で近似するのが、単回帰の基本的な考え方です。\n入力を \\(x\\)、予測値を \\(\\hat{y}\\) とすると、モデルは次の式で表されます。\n\\[\n\\hat{y} = wx + b\n\\tag{1.1}\\]\nそれぞれの記号は、次の意味を持ちます。\n\n\n\n記号\n名前\nこの例での意味\n\n\n\n\n\\(x\\)\n入力または特徴量\n住宅の面積\n\n\n\\(\\hat{y}\\)\n予測値\nモデルが予測した価格\n\n\n\\(w\\)\n重みまたは傾き\n面積が1増えたときの価格の増加量\n\n\n\\(b\\)\nバイアスまたは切片\n直線の上下方向の位置\n\n\n\n\\(w\\) と \\(b\\) は、モデルの振る舞いを決めるパラメータです。 機械学習における学習とは、データによく合うパラメータを見つけることだと考えられます。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#pythonで予測する",
+    "href": "chapters/01-simple-linear-regression.html#pythonで予測する",
+    "title": "1  単回帰",
+    "section": "1.3 Pythonで予測する",
+    "text": "1.3 Pythonで予測する\nまずは、パラメータを人の手で決めて予測してみましょう。 ここでは面積を \\(mathrm{m}^2\\)、価格を百万円単位で表します。\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# 住宅の面積 [m^2]\nx = np.array([30, 40, 50, 60, 70], dtype=float)\n\n# 実際の価格 [百万円]\ny = np.array([18, 22, 29, 33, 42], dtype=float)\n\n# 仮に決めたパラメータ\nw = 0.5\nb = 3.0\n\n# 単回帰モデルによる予測\ny_pred = w * x + b\n\nprint(y_pred)\n\n[18. 23. 28. 33. 38.]\n\n\nNumPyの配列 x に対して w * x + b を計算すると、 すべての住宅に対する予測を一度に求められます。\nデータと予測直線をグラフにすると、モデルの振る舞いを視覚的に確認できます。\n\nx_line = np.linspace(25, 75, 200)\ny_line = w * x_line + b\n\nfig, ax = plt.subplots()\nax.scatter(x, y, color=\"tab:blue\", label=\"Observed data\")\nax.plot(x_line, y_line, color=\"tab:orange\", label=\"Prediction\")\nax.set_xlabel(\"Area [m²]\")\nax.set_ylabel(\"Price [million yen]\")\nax.legend()\nax.grid(alpha=0.3)\nplt.show()\n\n\n\n\n\n\n\n図 1.1: 住宅面積と価格、および仮に決めた予測直線\n\n\n\n\n\n図 1.1 の各点が実際のデータ、直線がモデルの予測です。 完全には一致していませんが、面積とともに価格が上昇する傾向は表現できています。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#予測のずれを測る",
+    "href": "chapters/01-simple-linear-regression.html#予測のずれを測る",
+    "title": "1  単回帰",
+    "section": "1.4 予測のずれを測る",
+    "text": "1.4 予測のずれを測る\n\\(i\\) 番目のデータに対する実際の値を \\(y_i\\)、予測値を \\(\\hat{y}_i\\) とします。 両者の差\n\\[\ne_i = y_i - \\hat{y}_i\n\\]\nを残差と呼びます。残差が0に近いほど、そのデータに対する予測は正確です。\n\nresiduals = y - y_pred\n\nfor area, actual, predicted, residual in zip(x, y, y_pred, residuals):\n    print(\n        f\"面積={area:&gt;4.0f}, 実際={actual:&gt;4.1f}, \"\n        f\"予測={predicted:&gt;4.1f}, 残差={residual:&gt;5.1f}\"\n    )\n\n面積=  30, 実際=18.0, 予測=18.0, 残差=  0.0\n面積=  40, 実際=22.0, 予測=23.0, 残差= -1.0\n面積=  50, 実際=29.0, 予測=28.0, 残差=  1.0\n面積=  60, 実際=33.0, 予測=33.0, 残差=  0.0\n面積=  70, 実際=42.0, 予測=38.0, 残差=  4.0\n\n\nモデル全体の良し悪しを比較するには、データごとの残差を1つの値にまとめる必要があります。 そこで、残差を二乗して平均した平均二乗誤差（mean squared error; MSE）を使います。\n\\[\nL(w,b)\n=\n\\frac{1}{N}\\sum_{i=1}^{N}\n\\left(y_i-\\hat{y}_i\\right)^2\n=\n\\frac{1}{N}\\sum_{i=1}^{N}\n\\left\\{y_i-(wx_i+b)\\right\\}^2\n\\tag{1.2}\\]\nここで \\(N\\) はデータ数です。\\(L\\) は損失関数と呼ばれ、 値が小さいほどモデルの予測がデータによく合っていることを意味します。 二乗することで、正と負の残差が打ち消し合うことを防いでいます。\n\nmse = np.mean((y - y_pred) ** 2)\nprint(f\"MSE: {mse:.3f}\")\n\nMSE: 3.600",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#パラメータによって損失は変わる",
+    "href": "chapters/01-simple-linear-regression.html#パラメータによって損失は変わる",
+    "title": "1  単回帰",
+    "section": "1.5 パラメータによって損失は変わる",
+    "text": "1.5 パラメータによって損失は変わる\nバイアス \\(b=3\\) を固定し、重み \\(w\\) を変化させてみましょう。 それぞれの \\(w\\) について 式 1.2 を計算します。\n\nw_candidates = np.linspace(0.2, 0.8, 200)\nlosses = []\n\nfor w_candidate in w_candidates:\n    candidate_pred = w_candidate * x + b\n    loss = np.mean((y - candidate_pred) ** 2)\n    losses.append(loss)\n\nlosses = np.array(losses)\nbest_index = np.argmin(losses)\n\nfig, ax = plt.subplots()\nax.plot(w_candidates, losses)\nax.scatter(\n    w_candidates[best_index],\n    losses[best_index],\n    color=\"tab:red\",\n    zorder=3,\n    label=\"Smallest loss\",\n)\nax.set_xlabel(\"Weight w\")\nax.set_ylabel(\"Mean squared error\")\nax.legend()\nax.grid(alpha=0.3)\nplt.show()\n\nprint(f\"この範囲で損失が最小となるw: {w_candidates[best_index]:.3f}\")\n\n\n\n\n\n\n\n図 1.2: 重み \\(w\\) と平均二乗誤差の関係（\\(b=3\\) に固定）\n\n\n\n\n\nこの範囲で損失が最小となるw: 0.523\n\n\n図 1.2 から、パラメータを変えると損失も変わり、 損失が特に小さくなる場所があることが分かります。\n今回は多くの候補を順番に試しました。しかし、ニューラルネットワークには非常に多くの パラメータがあるため、すべての組み合わせを試すことはできません。 そこで、損失関数の微分を利用して、損失が小さくなる方向へパラメータを更新します。 この方法が、次章で扱う勾配降下法です。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#まとめ",
+    "href": "chapters/01-simple-linear-regression.html#まとめ",
+    "title": "1  単回帰",
+    "section": "1.6 まとめ",
+    "text": "1.6 まとめ\n\n単回帰は、1つの説明変数と目的変数の関係を直線で表現するモデルである。\nモデルは \\(\\hat{y}=wx+b\\) と表される。\n\\(w\\) と \\(b\\) は観測データに基づいて決定されるモデルパラメータである。\n残差は、観測値と予測値の差である。\n平均二乗誤差は、モデルの観測データへの適合度を定量化する損失関数である。\n学習の目的は、損失関数を最小化するパラメータを求めることである。\n単回帰では、MSEを \\(w\\) と \\(b\\) で偏微分することで最適なパラメータを解析的に求められる。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#確認問題",
+    "href": "chapters/01-simple-linear-regression.html#確認問題",
+    "title": "1  単回帰",
+    "section": "1.7 確認問題",
+    "text": "1.7 確認問題\n\n\\(w\\) を大きくすると、予測直線はどのように変化するでしょうか。\n\\(b\\) を大きくすると、予測直線はどのように変化するでしょうか。\n残差をそのまま平均せず、二乗してから平均するのはなぜでしょうか。\n上のコードで \\(w\\) と \\(b\\) を変更し、MSEと予測直線がどのように変化するか確認してください。\n理想的な梁理論では切片が0になるにもかかわらず、実験データから求めた切片が 0にならない原因を考えてください。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#単回帰モデル",
+    "href": "chapters/01-simple-linear-regression.html#単回帰モデル",
+    "title": "1  単回帰",
+    "section": "1.3 単回帰モデル",
+    "text": "1.3 単回帰モデル\n正解が連続値である問題を回帰問題と呼びます。 そのうち、1つの変数 \\(x\\) から1つの変数 \\(y\\) を予測するモデルが単回帰です。 ここで、入力となる変数を説明変数、出力となる変数を目的変数と呼びます。\n単回帰では、説明変数と目的変数の関係を次の1次式で表します。\n\\[\n\\hat{y} = wx + b\n\\tag{1.1}\\]\nここで、\\(\\hat{y}\\) はモデルによる予測値です。目的変数の観測値 \\(y\\) と区別するため、 予測値にはハットを付けて表しています。\n\n\n\n記号\n名称\n内容\n\n\n\n\n\\(x\\)\n説明変数\nモデルに入力する値\n\n\n\\(y\\)\n目的変数\nデータとして観測された値\n\n\n\\(\\hat{y}\\)\n予測値\nモデルが出力する目的変数の推定値\n\n\n\\(w\\)\n重み（傾き）\n\\(x\\) の変化に対する \\(\\hat{y}\\) の変化率\n\n\n\\(b\\)\nバイアス（切片）\n\\(x=0\\) における予測値\n\n\n\n\\(w\\) と \\(b\\) は、単回帰モデルの予測結果を規定するパラメータです。 パラメータの値が変われば、同じ \\(x\\) を入力しても予測値 \\(\\hat{y}\\) は変化します。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#単回帰モデルによる予測",
+    "href": "chapters/01-simple-linear-regression.html#単回帰モデルによる予測",
+    "title": "1  単回帰",
+    "section": "1.3 単回帰モデルによる予測",
+    "text": "1.3 単回帰モデルによる予測\nまず、載荷実験で得られたと仮定した荷重と中央たわみのデータに対して、 任意に設定したパラメータから予測値を計算します。\n\nimport numpy as np\nimport matplotlib.pyplot as plt\n\n# 荷重 [kN]\nx = np.array([10, 20, 30, 40, 50], dtype=float)\n\n# 梁中央で計測したたわみ [mm]\ny = np.array([1.2, 2.1, 3.2, 4.0, 5.1], dtype=float)\n\n# 仮に決めたパラメータ\nw = 0.08  # [mm/kN]\nb = 0.5   # [mm]\n\n# 単回帰モデルによる予測\ny_pred = w * x + b\n\nprint(y_pred)\n\n[1.3 2.1 2.9 3.7 4.5]\n\n\nNumPyでは配列に対する演算が要素ごとに適用されるため、w * x + b によって すべての荷重条件に対する予測値を一度に計算できます。\nデータと予測直線をグラフにすると、モデルの振る舞いを視覚的に確認できます。\n\nx_line = np.linspace(0, 55, 200)\ny_line = w * x_line + b\n\nfig, ax = plt.subplots()\nax.scatter(x, y, color=\"tab:blue\", label=\"Observed data\")\nax.plot(x_line, y_line, color=\"tab:orange\", label=\"Prediction\")\nax.set_xlabel(\"Load [kN]\")\nax.set_ylabel(\"Midspan deflection [mm]\")\nax.legend()\nax.grid(alpha=0.3)\nplt.show()\n\n\n\n\n\n\n\n図 1.1: 荷重と梁中央たわみの観測値、および単回帰モデルによる予測\n\n\n\n\n\n図 1.1 の各点は載荷実験の観測値、直線はモデルの予測値を表します。 予測値は観測値と完全には一致しませんが、荷重の増加に伴って中央たわみが増加する 全体的な傾向を表現しています。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#残差と損失関数",
+    "href": "chapters/01-simple-linear-regression.html#残差と損失関数",
+    "title": "1  単回帰",
+    "section": "1.4 残差と損失関数",
+    "text": "1.4 残差と損失関数\n\\(i\\) 番目のデータに対する実際の値を \\(y_i\\)、予測値を \\(\\hat{y}_i\\) とします。 両者の差\n\\[\ne_i = y_i - \\hat{y}_i\n\\]\nを残差と呼びます。残差は、観測値のうちモデルでは説明できなかった成分に相当します。 残差の絶対値が小さいほど、その観測点に対するモデルの適合度は高いといえます。\n\nresiduals = y - y_pred\n\nfor load, actual, predicted, residual in zip(x, y, y_pred, residuals):\n    print(\n        f\"荷重={load:&gt;4.0f} kN, 計測値={actual:&gt;4.1f} mm, \"\n        f\"予測={predicted:&gt;4.1f}, 残差={residual:&gt;5.1f}\"\n    )\n\n荷重=  10 kN, 計測値= 1.2 mm, 予測= 1.3, 残差= -0.1\n荷重=  20 kN, 計測値= 2.1 mm, 予測= 2.1, 残差=  0.0\n荷重=  30 kN, 計測値= 3.2 mm, 予測= 2.9, 残差=  0.3\n荷重=  40 kN, 計測値= 4.0 mm, 予測= 3.7, 残差=  0.3\n荷重=  50 kN, 計測値= 5.1 mm, 予測= 4.5, 残差=  0.6\n\n\nモデル全体の適合度を定量的に評価するには、各観測点の残差を1つの指標に集約する 必要があります。ここでは、残差の二乗平均である平均二乗誤差 （mean squared error; MSE）を用います。\n\\[\nL(w,b)\n=\n\\frac{1}{N}\\sum_{i=1}^{N}\n\\left(y_i-\\hat{y}_i\\right)^2\n=\n\\frac{1}{N}\\sum_{i=1}^{N}\n\\left\\{y_i-(wx_i+b)\\right\\}^2\n\\tag{1.2}\\]\nここで、\\(N\\) は観測データ数、\\(L\\) はモデルの誤差を評価する損失関数です。 MSEが小さいほど、モデルは観測データに適合しています。残差を二乗するため正負の残差が 相殺されず、さらに絶対値の大きな残差が評価に強く反映されます。\n\nmse = np.mean((y - y_pred) ** 2)\nprint(f\"MSE: {mse:.3f}\")\n\nMSE: 0.110",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#モデルパラメータと損失関数",
+    "href": "chapters/01-simple-linear-regression.html#モデルパラメータと損失関数",
+    "title": "1  単回帰",
+    "section": "1.5 モデルパラメータと損失関数",
+    "text": "1.5 モデルパラメータと損失関数\n切片 \\(b=0.5\\) mmを固定し、回帰係数 \\(w\\) を変化させたときのMSEを調べます。 各 \\(w\\) に対して 式 1.2 を評価することで、パラメータと損失関数の関係を可視化します。\n\nw_candidates = np.linspace(0.04, 0.14, 200)\nlosses = []\n\nfor w_candidate in w_candidates:\n    candidate_pred = w_candidate * x + b\n    loss = np.mean((y - candidate_pred) ** 2)\n    losses.append(loss)\n\nlosses = np.array(losses)\nbest_index = np.argmin(losses)\n\nfig, ax = plt.subplots()\nax.plot(w_candidates, losses)\nax.scatter(\n    w_candidates[best_index],\n    losses[best_index],\n    color=\"tab:red\",\n    zorder=3,\n    label=\"Smallest loss\",\n)\nax.set_xlabel(\"Weight w\")\nax.set_ylabel(\"Mean squared error\")\nax.legend()\nax.grid(alpha=0.3)\nplt.show()\n\nprint(f\"この範囲で損失が最小となるw: {w_candidates[best_index]:.3f}\")\n\n\n\n\n\n\n\n図 1.2: 回帰係数 \\(w\\) と平均二乗誤差の関係（\\(b=0.5\\) mmに固定）\n\n\n\n\n\nこの範囲で損失が最小となるw: 0.089\n\n\n図 1.2 から、回帰係数に応じて損失が変化し、MSEを最小にする値が存在することが 確認できます。この最小点に対応する \\(w\\) が、切片を固定した条件における最適な回帰係数です。\nここでは、あらかじめ用意した候補を順番に評価することで最小値を探索しました。 しかし、ニューラルネットワークのように多数のパラメータを含むモデルでは、すべての 組み合わせを網羅的に評価することは現実的ではありません。そのため、損失関数の微分を 利用し、損失が減少する方向へパラメータを逐次更新します。この最適化手法が、次章で扱う 勾配降下法です。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#損失関数と学習",
+    "href": "chapters/01-simple-linear-regression.html#損失関数と学習",
+    "title": "1  単回帰",
+    "section": "1.4 損失関数と学習",
+    "text": "1.4 損失関数と学習\n単回帰モデルを作成するには、そのパラメータ（\\(w\\) と \\(b\\)）を決めればいいです。 何かしらの観測データが与えられる場合、そのデータに最も適合するように決めます。 その適合度合いを定量的に評価するために、損失関数を定義します。 損失関数は、モデルの予測値と観測値の差を定量化する関数です。 ここで、損失関数を観測値と予測値の平均二乗誤差（MSE: Mean Squared Error）で表す場合、損失関数は次式で表すことができます。\n\\[\nL(w,b)\n=\n\\frac{1}{N}\\sum_{i=1}^{N}\n\\left(y_i-\\hat{y}_i\\right)^2\n=\n\\frac{1}{N}\\sum_{i=1}^{N}\n\\left\\{y_i-(wx_i+b)\\right\\}^2\n\\tag{1.2}\\]\n図 1.1 は、単回帰モデルにおける残差と損失関数の関係を示したものです。 赤い破線は、各観測値 \\(y_i\\) と予測値 \\(\\hat{y}_i\\) の差、すなわち残差を表します。 MSEは、これらの残差を二乗して平均した値です。\n\n\n\n\n\n\n\n\n図 1.1: 単回帰モデルの残差と平均二乗誤差\n\n\n\n\n\nここで、\\(i\\) 番目のデータに対する観測値を \\(y_i\\)、予測値を \\(\\hat{y}_i\\) とし、\\(N\\) はデータ数としています。 ここで考える単回帰モデルの学習とは、 この損失関数を最小にするパラメータ \\(w\\) と \\(b\\) をデータに基づいて求めることです。\n\n1.4.1 偏微分によるパラメータの決定\n式 1.2 は \\(w\\) と \\(b\\) に関する二次関数です。したがって、\\(x_i\\) がすべて同じ値でない場合、 損失関数は唯一の最小値をもちます。その最小値では、\\(w\\) と \\(b\\) に関する偏微分がともに 0になります。\nまず、\\(w\\) に関する偏微分は\n\\[\n\\frac{\\partial L}{\\partial w}\n=\n-\\frac{2}{N}\\sum_{i=1}^{N}\nx_i\\left\\{y_i-(wx_i+b)\\right\\}\n\\tag{1.3}\\]\nとなります。同様に、\\(b\\) に関する偏微分は\n\\[\n\\frac{\\partial L}{\\partial b}\n=\n-\\frac{2}{N}\\sum_{i=1}^{N}\n\\left\\{y_i-(wx_i+b)\\right\\}\n\\tag{1.4}\\]\nです。式 1.4 を0とおくと、\n\\[\n\\sum_{i=1}^{N}y_i\n-w\\sum_{i=1}^{N}x_i\n-Nb=0\n\\]\nが得られます。ここで、\\(x\\) と \\(y\\) の標本平均を\n\\[\n\\bar{x}=\\frac{1}{N}\\sum_{i=1}^{N}x_i,\n\\qquad\n\\bar{y}=\\frac{1}{N}\\sum_{i=1}^{N}y_i\n\\]\nとすると、切片 \\(b\\) は\n\\[\nb=\\bar{y}-w\\bar{x}\n\\tag{1.5}\\]\nと表されます。これを 式 1.3 に代入して整理すると、\n\\[\n\\sum_{i=1}^{N}\n(x_i-\\bar{x})(y_i-\\bar{y})\n-w\\sum_{i=1}^{N}(x_i-\\bar{x})^2\n=0\n\\]\nとなります。したがって、損失関数を最小にするパラメータは\n\\[\nw^*\n=\n\\frac{\n\\displaystyle\\sum_{i=1}^{N}(x_i-\\bar{x})(y_i-\\bar{y})\n}{\n\\displaystyle\\sum_{i=1}^{N}(x_i-\\bar{x})^2\n}\n\\tag{1.6}\\]\nおよび\n\\[\nb^*=\\bar{y}-w^*\\bar{x}\n\\tag{1.7}\\]\nです。 このように、単回帰では損失関数を最小にするパラメータを解析的に直接計算できます（もっと複雑な回帰モデルの場合は、損失関数が2次関数のような単純形状とはならないため、最適化のための手法を使います）。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#例題荷重から梁の中央たわみを予測する",
+    "href": "chapters/01-simple-linear-regression.html#例題荷重から梁の中央たわみを予測する",
+    "title": "1  単回帰",
+    "section": "1.5 例題：荷重から梁の中央たわみを予測する",
+    "text": "1.5 例題：荷重から梁の中央たわみを予測する\nここからは、単回帰による予測と学習の具体例として、単純支持梁に作用する集中荷重から 梁中央のたわみを予測します。対象とする梁と載荷条件を 図 1.2 に示します。\n\n\n\n\n\n\n図 1.2: 中央集中荷重を受ける単純支持梁と中央たわみ\n\n\n\n支間長 \\(L\\) の単純支持梁の中央に集中荷重 \\(P\\) が作用するとき、Euler–Bernoulli の梁理論に よれば、線形弾性範囲における中央たわみ \\(\\delta\\) は\n\\[\n\\delta = \\frac{PL^3}{48EI}\n\\]\nで与えられます。ここで、\\(L\\) は梁の長さ、\\(E\\) はヤング率、\\(I\\) は断面二次モーメントです。 \\(L\\)、\\(E\\)、\\(I\\) が一定であれば、\\(\\delta\\) は \\(P\\) に比例するため、両者の関係を単回帰で モデル化できます。\nこの例では、単回帰モデルの各変数を次のように対応させます。\n\n\n\n機械学習上の変数\nこの例における物理量\n\n\n\n\n説明変数 \\(x\\)\n梁に作用する荷重 [kN]\n\n\n目的変数 \\(y\\)\n梁中央で計測したたわみ [mm]\n\n\n予測値 \\(\\hat{y}\\)\nモデルが予測した中央たわみ [mm]\n\n\n回帰係数 \\(w\\)\n単位荷重当たりのたわみ [mm/kN]\n\n\n切片 \\(b\\)\n荷重が0のときの推定たわみ [mm]\n\n\n\nこのとき、\\(w\\) は梁のたわみやすさ、すなわち柔性に相当します。理想化した理論式では \\(b=0\\) ですが、実験では初期たわみ、変位計のゼロ点誤差などにより、 推定された切片が0にならない場合があります。\n\n1.5.1 物性値と観測データの作成\n載荷実験を模擬するため、鋼製の単純支持梁を想定し、材料特性と断面寸法を次のように 設定します。\n\n\n\n物理量\n記号\n設定値\n\n\n\n\nYoung率\n\\(E\\)\n\\(205\\ \\mathrm{GPa}\\)\n\n\n支間長\n\\(L\\)\n\\(3.0\\ \\mathrm{m}\\)\n\n\n断面幅\n\\(B\\)\n\\(0.10\\ \\mathrm{m}\\)\n\n\n断面高さ\n\\(H\\)\n\\(0.20\\ \\mathrm{m}\\)\n\n\n\n矩形断面の断面二次モーメントは \\(I=BH^3/12\\) です。これらの物性値と寸法を用いて 理論たわみを計算し、そこへ平均0、標準偏差 \\(0.03\\ \\mathrm{mm}\\) の正規分布に従う 測定誤差を加えて観測データを模擬したデータを作成します。\n\n# 梁の物性値と寸法\nyoung_modulus = 205e9       # Young率 [Pa]\nspan_length = 3.0           # 支間長 [m]\nsection_width = 0.10        # 断面幅 [m]\nsection_height = 0.20       # 断面高さ [m]\nsecond_moment = section_width * section_height**3 / 12  # [m^4]\n\n# 載荷条件\nx = np.linspace(0, 50, 11)  # 荷重 [kN]\nload_newton = x * 1e3       # kNからNへ変換\n\n# Euler--Bernoulli梁理論による中央たわみ\ny_true = (\n    load_newton * span_length**3 / (48 * young_modulus * second_moment)\n) * 1e3  # mからmmへ変換\n\n# 測定誤差を加えた観測値\nrng = np.random.default_rng(42)\nmeasurement_std = 0.03  # 測定誤差の標準偏差 [mm]\ny = y_true + rng.normal(0.0, measurement_std, size=x.size)\n\n実際の学習で利用できるのは、荷重 \\(x\\) と観測されたたわみ \\(y\\) の組だけです。 まず、作成した観測データのみを 図 1.3 に示します。\n\n\n\n\n\n\n\n\n図 1.3: 載荷実験を模擬して作成した荷重と中央たわみの観測データ\n\n\n\n\n\n観測値は荷重とともにほぼ直線的に増加していますが、測定誤差を加えているため、 理論上の一直線上には並びません。以下では、理論式や設定した物性値を学習には使用せず、 観測データ \\((x_i,y_i)\\) のみから単回帰モデルのパラメータを決定します。\n\n\n1.5.2 切片を固定した場合の損失関数\nまず、理想的な梁では無載荷時のたわみが0になることを利用し、切片を \\(b=0\\) mmに固定します。 回帰係数 \\(w\\) だけを変化させると、損失関数 \\(L(w,0)\\) は1変数の二次関数になります。\n\n\n\n\n\n\n\n\n図 1.4: 切片を \\(b=0\\) mmに固定した場合の回帰係数 \\(w\\) とMSEの関係\n\n\n\n\n\n図 1.4 の最小点が、\\(b=0\\) mmという制約のもとで観測データに最も適合する 回帰係数です。切片を固定したため、損失は \\(w\\) のみの関数として平面上に表示できます。\n\n\n1.5.3 回帰係数と切片を変化させた場合の損失関数\n次に、\\(w\\) と \\(b\\) の両方を変化させます。この場合、入力となるパラメータが2つ、出力となる 損失が1つであるため、損失関数 \\(L(w,b)\\) を3次元曲面として表現できます。\n\n# 最小二乗解\nx_mean = np.mean(x)\ny_mean = np.mean(y)\nw_opt = np.sum((x - x_mean) * (y - y_mean)) / np.sum((x - x_mean) ** 2)\nb_opt = y_mean - w_opt * x_mean\ny_fitted = w_opt * x + b_opt\nmse_opt = np.mean((y - y_fitted) ** 2)\n\n\n\n\n\n\n\n\n\n図 1.5: 回帰係数 \\(w\\) と切片 \\(b\\) に対するMSEの3次元損失曲面\n\n\n\n\n\n図 1.5 の曲面は下に凸の形状をしており、赤い点で示した位置で最小となります。 この点の \\(w\\) 座標と \\(b\\) 座標が、MSEを最小にする単回帰モデルのパラメータです。\n\n\n1.5.4 最小二乗解と回帰結果\n式 1.6 と 式 1.7 から得られたパラメータとMSEを確認します。\n\nprint(f\"最適な回帰係数 w*: {w_opt:.5f} mm/kN\")\nprint(f\"最適な切片 b*: {b_opt:.5f} mm\")\nprint(f\"最小MSE: {mse_opt:.6f} mm²\")\n\n最適な回帰係数 w*: 0.04121 mm/kN\n最適な切片 b*: -0.00796 mm\n最小MSE: 0.000751 mm²\n\n\n最後に、観測データと学習後の回帰直線を 図 1.6 に示します。\n\n\n\n\n\n\n\n\n図 1.6: 観測された中央たわみと学習後の単回帰モデル\n\n\n\n\n\n回帰直線は測定誤差を含む各観測点を完全には通過しません。単回帰では、個々の観測点に 一致することではなく、すべての観測点に対する残差の二乗平均を最小にすることを目的として パラメータを決定します。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-simple-linear-regression.html#教師あり学習",
+    "href": "chapters/01-simple-linear-regression.html#教師あり学習",
+    "title": "1  単回帰",
+    "section": "1.2 教師あり学習",
+    "text": "1.2 教師あり学習\n本資料で扱う機械学習のほとんどは教師あり学習です。 教師あり学習では、入力とそれに対応する出力の組がデータとして与えられる場合に、その入出力間の関係をデータから学習します。",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>単回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html",
+    "href": "chapters/02-multiple-linear-regression.html",
+    "title": "2  重回帰",
+    "section": "",
+    "text": "2.1 この章で学ぶこと\n第1章では、1つの説明変数から目的変数を予測する単回帰を扱いました。本章では、 複数の説明変数を同時に用いる重回帰へモデルを拡張します。\n本章の目的は、次の事項を理解することです。\n重回帰で用いる\n\\[\n\\boldsymbol{w}^{\\mathsf T}\\boldsymbol{x}+b\n\\]\nという計算は、ニューラルネットワークを構成するニューロンの基本的な計算でもあります。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#この章で学ぶこと",
+    "href": "chapters/02-multiple-linear-regression.html#この章で学ぶこと",
+    "title": "2  重回帰",
+    "section": "",
+    "text": "複数の説明変数を用いる線形回帰モデル\nベクトルと行列によるモデルの表現\n平均二乗誤差を最小にするパラメータの導出\n逆行列を用いた最小二乗解の計算\n重回帰モデルにおける重みの解釈",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#単回帰から重回帰へ",
+    "href": "chapters/02-multiple-linear-regression.html#単回帰から重回帰へ",
+    "title": "2  重回帰",
+    "section": "2.2 単回帰から重回帰へ",
+    "text": "2.2 単回帰から重回帰へ\n単回帰モデルは、1つの説明変数 \\(x\\) に対して\n\\[\n\\hat{y}=wx+b\n\\]\nと表されます。説明変数が2つの場合、モデルは\n\\[\n\\hat{y}=w_1x_1+w_2x_2+b\n\\tag{2.1}\\]\nとなります。一般に、説明変数が \\(M\\) 個ある場合の重回帰モデルは\n\\[\n\\hat{y}\n=\n\\sum_{j=1}^{M}w_jx_j+b\n\\tag{2.2}\\]\nと表されます。\n\n\n\n記号\n名称\n内容\n\n\n\n\n\\(x_j\\)\n\\(j\\) 番目の説明変数\nモデルへ入力する値\n\n\n\\(w_j\\)\n\\(j\\) 番目の重み\n\\(x_j\\) が予測値に及ぼす影響を表す係数\n\n\n\\(b\\)\nバイアス\nすべての説明変数が0のときの予測値\n\n\n\\(y\\)\n目的変数\nデータとして観測された値\n\n\n\\(\\hat{y}\\)\n予測値\nモデルが出力する目的変数の推定値\n\n\n\n\\(w_j\\) は、ほかの説明変数を固定した状態で \\(x_j\\) が1増加したとき、予測値がどれだけ 変化するかを表します。\n説明変数が2つの場合、式 2.1 は3次元空間内の平面を表します。 説明変数が3つ以上になると図として直接描くことは困難ですが、モデルは同様に 高次元空間内の超平面を表します。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#ベクトルによるモデルの表現",
+    "href": "chapters/02-multiple-linear-regression.html#ベクトルによるモデルの表現",
+    "title": "2  重回帰",
+    "section": "2.3 ベクトルによるモデルの表現",
+    "text": "2.3 ベクトルによるモデルの表現\n1つのデータに含まれる説明変数と、それらに対応する重みを\n\\[\n\\boldsymbol{x}\n=\n\\begin{bmatrix}\nx_1\\\\\nx_2\\\\\n\\vdots\\\\\nx_M\n\\end{bmatrix},\n\\qquad\n\\boldsymbol{w}\n=\n\\begin{bmatrix}\nw_1\\\\\nw_2\\\\\n\\vdots\\\\\nw_M\n\\end{bmatrix}\n\\]\nと定義します。このとき、式 2.2 は内積を用いて\n\\[\n\\hat{y}\n=\n\\boldsymbol{w}^{\\mathsf T}\\boldsymbol{x}+b\n\\tag{2.3}\\]\nと簡潔に表せます。\\(\\boldsymbol{w}^{\\mathsf T}\\boldsymbol{x}\\) は\n\\[\n\\boldsymbol{w}^{\\mathsf T}\\boldsymbol{x}\n=w_1x_1+w_2x_2+\\cdots+w_Mx_M\n\\]\nを意味します。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#行列による複数データの表現",
+    "href": "chapters/02-multiple-linear-regression.html#行列による複数データの表現",
+    "title": "2  重回帰",
+    "section": "2.4 行列による複数データの表現",
+    "text": "2.4 行列による複数データの表現\n\\(N\\) 個の観測データがあるとします。\\(i\\) 番目のデータにおける \\(j\\) 番目の説明変数を \\(x_{ij}\\) とすると、すべての説明変数をまとめた行列は\n\\[\n\\mathbf{X}\n=\n\\begin{bmatrix}\nx_{11} & x_{12} & \\cdots & x_{1M}\\\\\nx_{21} & x_{22} & \\cdots & x_{2M}\\\\\n\\vdots & \\vdots & \\ddots & \\vdots\\\\\nx_{N1} & x_{N2} & \\cdots & x_{NM}\n\\end{bmatrix}\n\\in\\mathbb{R}^{N\\times M}\n\\]\nとなります。バイアスも行列演算に含めるため、\\(\\mathbf{X}\\) の第1列に1を追加した 行列を\n\\[\n\\tilde{\\mathbf{X}}\n=\n\\begin{bmatrix}\n1 & x_{11} & \\cdots & x_{1M}\\\\\n1 & x_{21} & \\cdots & x_{2M}\\\\\n\\vdots & \\vdots & \\ddots & \\vdots\\\\\n1 & x_{N1} & \\cdots & x_{NM}\n\\end{bmatrix}\n\\]\nとします。また、バイアスと重みをまとめたパラメータベクトルを\n\\[\n\\boldsymbol{\\theta}\n=\n\\begin{bmatrix}\nb\\\\\nw_1\\\\\n\\vdots\\\\\nw_M\n\\end{bmatrix}\n\\]\nとします。すると、重回帰モデルにおける予測値は\n\\[\n\\hat{\\boldsymbol{y}}\n=\n\\tilde{\\mathbf{X}}\\boldsymbol{\\theta}\n\\tag{2.4}\\]\nとなります。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#損失関数と最小二乗解",
+    "href": "chapters/02-multiple-linear-regression.html#損失関数と最小二乗解",
+    "title": "2  重回帰",
+    "section": "2.5 損失関数と最小二乗解",
+    "text": "2.5 損失関数と最小二乗解\n重回帰においても、単回帰と同じ平均二乗誤差を損失関数として使用できます。\n\\[\nL(\\boldsymbol{\\theta})\n=\n\\frac{1}{N}\n\\left\\|\n\\boldsymbol{y}\n-\\tilde{\\mathbf{X}}\\boldsymbol{\\theta}\n\\right\\|_2^2\n\\tag{2.5}\\]\nここで、\\(\\|\\cdot\\|_2\\) はベクトルのEuclid距離を用いたノルムです。 もう少し理解しやすいように、式 2.5 を成分で書けば、\n\\[\nL(\\boldsymbol{\\theta})\n=\n\\frac{1}{N}\\sum_{i=1}^{N}\n\\left(y_i-\\hat{y}_i\\right)^2\n\\]\nであり、第1章のMSEと同じであることが分かります。\nこの損失関数を行列の内積を用いて展開すると、\n\\[\nL(\\boldsymbol{\\theta})\n=\n\\frac{1}{N}\n\\left(\n\\boldsymbol{y}^{\\mathsf T}\\boldsymbol{y}\n- 2\\boldsymbol{\\theta}^{\\mathsf T}\\tilde{\\mathbf{X}}^{\\mathsf T}\\boldsymbol{y}\n+ \\boldsymbol{\\theta}^{\\mathsf T}\\tilde{\\mathbf{X}}^{\\mathsf T}\\tilde{\\mathbf{X}}\\boldsymbol{\\theta}\n\\right)\n\\]\nと表されます。 これを \\(\\boldsymbol{\\theta}\\) で微分すると、勾配は\n\\[\n\\nabla_{\\boldsymbol{\\theta}}L\n=\n\\frac{2}{N}\n\\tilde{\\mathbf{X}}^{\\mathsf T}\n\\left(\n\\tilde{\\mathbf{X}}\\boldsymbol{\\theta}\n-\\boldsymbol{y}\n\\right)\n\\tag{2.6}\\]\nとなります。最小点では勾配が0になるため、\n\\[\n\\tilde{\\mathbf{X}}^{\\mathsf T}\n\\tilde{\\mathbf{X}}\\boldsymbol{\\theta}\n=\n\\tilde{\\mathbf{X}}^{\\mathsf T}\\boldsymbol{y}\n\\tag{2.7}\\]\nが得られます。 \\(\\tilde{\\mathbf{X}}^{\\mathsf T}\\tilde{\\mathbf{X}}\\) が逆行列をもつ場合、 最小二乗解は\n\\[\n\\boldsymbol{\\theta}^*\n=\n\\left(\n\\tilde{\\mathbf{X}}^{\\mathsf T}\n\\tilde{\\mathbf{X}}\n\\right)^{-1}\n\\tilde{\\mathbf{X}}^{\\mathsf T}\\boldsymbol{y}\n\\tag{2.8}\\]\nと表されます。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#例題2種類の荷重から梁の中央たわみを予測する",
+    "href": "chapters/02-multiple-linear-regression.html#例題2種類の荷重から梁の中央たわみを予測する",
+    "title": "2  重回帰",
+    "section": "2.6 例題：2種類の荷重から梁の中央たわみを予測する",
+    "text": "2.6 例題：2種類の荷重から梁の中央たわみを予測する\n重回帰の例として、中央集中荷重 \\(P\\) と等分布荷重 \\(q\\) が同時に作用する単純支持梁を 考えます。梁は線形弾性体であり、微小変形の範囲にあるものとします。\n\n\n\n\n\n\n図 2.1: 中央集中荷重と等分布荷重を同時に受ける単純支持梁\n\n\n\n図 2.1 に示すように、支間長 \\(L\\) の梁全体に等分布荷重 \\(q\\) が作用し、 さらに梁中央に集中荷重 \\(P\\) が作用する条件を考えます。\n梁中央のたわみ \\(\\delta\\) は\n\\[\n\\delta\n=\n\\frac{PL^3}{48EI}\n+\n\\frac{5qL^4}{384EI}\n\\tag{2.9}\\]\nで与えられます。\\(L\\)、\\(E\\)、\\(I\\) が一定であれば、\\(\\delta\\) は \\(P\\) と \\(q\\) の線形結合です。 したがって、重回帰モデル\n\\[\n\\hat{\\delta}=w_1P+w_2q+b\n\\tag{2.10}\\]\nを適用できます。\n\n\n\n機械学習上の変数\nこの例における物理量\n\n\n\n\n\\(x_1\\)\n中央集中荷重 \\(P\\) [kN]\n\n\n\\(x_2\\)\n等分布荷重 \\(q\\) [kN/m]\n\n\n\\(y\\)\n観測された中央たわみ \\(\\delta\\) [mm]\n\n\n\\(w_1\\)\n集中荷重に対する柔性 [mm/kN]\n\n\n\\(w_2\\)\n等分布荷重に対する柔性 [mm/(kN/m)]\n\n\n\\(b\\)\n初期たわみや測定器のゼロ点誤差 [mm]\n\n\n\n\n2.6.1 観測データの作成\n第1章と同じ鋼製の矩形断面の梁を使用します。\n\n\n\n物理量\n記号\n設定値\n\n\n\n\nヤング率\n\\(E\\)\n\\(205\\ \\mathrm{GPa}\\)\n\n\n支間長\n\\(L\\)\n\\(3.0\\ \\mathrm{m}\\)\n\n\n断面幅\n\\(B\\)\n\\(0.10\\ \\mathrm{m}\\)\n\n\n断面高さ\n\\(H\\)\n\\(0.20\\ \\mathrm{m}\\)\n\n\n\n中央集中荷重と等分布荷重を複数の条件で組み合わせ、式 2.9 から理論たわみを 計算します。その後、平均0、標準偏差 \\(0.04\\ \\mathrm{mm}\\) の正規分布に従う測定誤差を 加えて観測データを作成します。\n\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport scienceplots\n\nplt.style.use([\"science\", \"no-latex\"])\nplt.rcParams[\"font.family\"] = \"Noto Sans CJK JP\"\nplt.rcParams[\"mathtext.fontset\"] = \"cm\"\nplt.rcParams[\"axes.unicode_minus\"] = False\n\n# 梁の物性値と寸法\nyoung_modulus = 205e9       # Young率 [Pa]\nspan_length = 3.0           # 支間長 [m]\nsection_width = 0.10        # 断面幅 [m]\nsection_height = 0.20       # 断面高さ [m]\nsecond_moment = section_width * section_height**3 / 12  # [m^4]\n\n# 集中荷重Pと等分布荷重qの組合せ\npoint_load_levels = np.linspace(0, 50, 6)       # [kN]\ndistributed_load_levels = np.linspace(0, 10, 5) # [kN/m]\nP_grid, q_grid = np.meshgrid(point_load_levels, distributed_load_levels)\nP = P_grid.ravel()\nq = q_grid.ravel()\n\n# 梁理論による中央たわみ [mm]\ndeflection_from_P = (\n    (P * 1e3) * span_length**3\n    / (48 * young_modulus * second_moment)\n) * 1e3\ndeflection_from_q = (\n    5 * (q * 1e3) * span_length**4\n    / (384 * young_modulus * second_moment)\n) * 1e3\ny_true = deflection_from_P + deflection_from_q\n\n# 測定誤差を加えた観測値\nrng = np.random.default_rng(123)\nmeasurement_std = 0.04\ny = y_true + rng.normal(0.0, measurement_std, size=y_true.size)\n\nデータ生成には梁理論を用いましたが、これ以降の学習でモデルに与えるのは、観測された \\((P_i,q_i,y_i)\\) の組だけです。\n\n\n2.6.2 観測データの可視化\n説明変数が2つであるため、観測データを3次元空間に表示できます。\n\n\n\n\n\n\n\n\n図 2.2: 集中荷重、等分布荷重、および中央たわみの観測データ\n\n\n\n\n\n図 2.2 では、観測点がおおむね1つの平面上に分布しています。ただし、 測定誤差が含まれるため、完全に同一平面上にはありません。\n\n\n2.6.3 設計行列の作成\n切片、集中荷重、等分布荷重の順に列を並べ、行列 \\(\\tilde{\\mathbf{X}}\\) を作成します。\n\nX_tilde = np.column_stack([\n    np.ones_like(P),\n    P,\n    q,\n])\n\nprint(f\"行列の形状: {X_tilde.shape}\")\nprint(f\"目的変数の形状: {y.shape}\")\nprint(X_tilde[:5])\n\n行列の形状: (30, 3)\n目的変数の形状: (30,)\n[[ 1.  0.  0.]\n [ 1. 10.  0.]\n [ 1. 20.  0.]\n [ 1. 30.  0.]\n [ 1. 40.  0.]]\n\n\nこの例には30個の観測データと、切片を含む3個の入力列があるため、 \\(\\tilde{\\mathbf{X}}\\) の形状は \\((30,3)\\) です。\n\n\n2.6.4 逆行列による最小二乗解の計算\n式 2.8 に従い、MSEを最小にするパラメータを逆行列から求めます。 まず、方程式の係数行列 \\(\\tilde{\\mathbf{X}}^{\\mathsf T}\\tilde{\\mathbf{X}}\\) と右辺 \\(\\tilde{\\mathbf{X}}^{\\mathsf T}\\boldsymbol{y}\\) を計算します。\n\nnormal_matrix = X_tilde.T @ X_tilde\nnormal_vector = X_tilde.T @ y\n\ntheta_opt = np.linalg.inv(normal_matrix) @ normal_vector\n\nb_opt, w_P_opt, w_q_opt = theta_opt\ny_pred = X_tilde @ theta_opt\nresiduals = y - y_pred\nmse = np.mean(residuals**2)\nrank = np.linalg.matrix_rank(X_tilde)\n\nprint(f\"切片 b*: {b_opt:.5f} mm\")\nprint(f\"集中荷重の重み w1*: {w_P_opt:.5f} mm/kN\")\nprint(f\"等分布荷重の重み w2*: {w_q_opt:.5f} mm/(kN/m)\")\nprint(f\"MSE: {mse:.6f} mm²\")\nprint(f\"行列 X_tilde のランク: {rank}\")\n\n切片 b*: -0.00770 mm\n集中荷重の重み w1*: 0.04145 mm/kN\n等分布荷重の重み w2*: 0.07903 mm/(kN/m)\nMSE: 0.001232 mm²\n行列 X_tilde のランク: 3\n\n\nX_tilde.T は転置行列\\(\\tilde{\\mathbf{X}}^{\\mathsf T}\\)、np.linalg.inv(normal_matrix) は \\((\\tilde{\\mathbf{X}}^{\\mathsf T}\\tilde{\\mathbf{X}})^{-1}\\) に対応します。また、@ は 行列積を表す演算子です。したがって、パラメータを求めるコードは 式 2.8、X_tilde @ theta_opt は 式 2.4 に対応します。\nこの計算で逆行列が存在するには、拡大設計行列\\(\\tilde{\\mathbf{X}}\\)が列フルランク（すべての列ベクトルが1次独立である状態）である必要があります。 この例では列数が3、ランクも3であるため、逆行列を用いて一意な解を求められます。\n\n\n2.6.5 回帰平面と残差\n学習によって得られたモデルを平面として表示し、観測データと比較します。\n\n\n\n\n\n\n\n\n図 2.3: 観測データ、学習された回帰平面、および残差\n\n\n\n\n\n図 2.3 の橙色の平面が重回帰モデルの予測、青い点が観測値です。 各観測点と回帰平面を結ぶ赤い線分が残差を表します。最小二乗法は、これらの残差の 二乗和が最小になる平面を求めています。\n\n\n2.6.6 梁理論から得られる係数との比較\n式 2.9 から、各荷重に対する理論上の係数を計算できます。\n\nw_P_theory = (\n    span_length**3 / (48 * young_modulus * second_moment)\n) * 1e6\nw_q_theory = (\n    5 * span_length**4 / (384 * young_modulus * second_moment)\n) * 1e6\n\nprint(\"集中荷重に対する係数\")\nprint(f\"  理論値: {w_P_theory:.5f} mm/kN\")\nprint(f\"  学習値: {w_P_opt:.5f} mm/kN\")\n\nprint(\"等分布荷重に対する係数\")\nprint(f\"  理論値: {w_q_theory:.5f} mm/(kN/m)\")\nprint(f\"  学習値: {w_q_opt:.5f} mm/(kN/m)\")\n\n集中荷重に対する係数\n  理論値: 0.04116 mm/kN\n  学習値: 0.04145 mm/kN\n等分布荷重に対する係数\n  理論値: 0.07717 mm/(kN/m)\n  学習値: 0.07903 mm/(kN/m)\n\n\n学習には梁理論の係数を与えていません。それにもかかわらず、十分に異なる荷重条件を 観測することで、重回帰は理論値に近い重みをデータから推定できます。推定値が理論値と 完全には一致しないのは、観測データに測定誤差が含まれているためです。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#重回帰を利用する際の注意点",
+    "href": "chapters/02-multiple-linear-regression.html#重回帰を利用する際の注意点",
+    "title": "2  重回帰",
+    "section": "2.7 重回帰を利用する際の注意点",
+    "text": "2.7 重回帰を利用する際の注意点\n重回帰では説明変数を増やせますが、変数を追加すれば常に適切なモデルになるわけでは ありません。特に、次の点に注意が必要です。\n\n2.7.1 説明変数間の相関\n説明変数同士に強い線形関係がある状態を多重共線性と呼びます。多重共線性があると、 異なる重みの組合せが類似した予測を与えるため、個々の重みの推定が不安定になります。\n\n\n2.7.2 学習データへの適合と未知データの予測\n説明変数を増やすと、一般に学習データに対するMSEは小さくなります。しかし、学習データに よく適合することと、未知データを正確に予測できることは同じではありません。未知データに 対する性能を評価する方法は、後の章で扱います。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#まとめ",
+    "href": "chapters/02-multiple-linear-regression.html#まとめ",
+    "title": "2  重回帰",
+    "section": "2.9 まとめ",
+    "text": "2.9 まとめ\n\n重回帰は、複数の説明変数から1つの目的変数を予測する線形モデルである。\nモデルは \\(\\hat{y}=\\boldsymbol{w}^{\\mathsf T}\\boldsymbol{x}+b\\) と表される。\n複数データの予測は \\(\\hat{\\boldsymbol{y}}=\\tilde{\\mathbf{X}}\\boldsymbol{\\theta}\\) と表せる。\nMSEの勾配を0とおくことで正規方程式が得られる。\n説明変数 \\(x\\) と目的変数 \\(y\\) の関係が非線形な場合、重回帰では関係全体を表現できない。\n非線形な活性化関数をもつMLPは、平面では表せない曲がった応答面を表現できる。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#確認問題",
+    "href": "chapters/02-multiple-linear-regression.html#確認問題",
+    "title": "2  重回帰",
+    "section": "2.10 確認問題",
+    "text": "2.10 確認問題\n\n説明変数が3個の場合、パラメータベクトル \\(\\boldsymbol{\\theta}\\) は何個の要素をもちますか。\n設計行列の第1列に1を追加するのはなぜでしょうか。\n重み \\(w_j\\) はどのような条件のもとで解釈する必要がありますか。\n\\((\\tilde{\\mathbf{X}}^{\\mathsf T}\\tilde{\\mathbf{X}})^{-1}\\) が存在するために必要な条件を 説明してください。\n例題の測定誤差の標準偏差を変更し、学習された重みとMSEがどのように変化するか 確認してください。\n集中荷重 \\(P\\) と等分布荷重 \\(q\\) が常に比例するデータを作成すると、設計行列のランクと 推定される重みがどのように変化するか考えてください。\n\\(P\\) と \\(E\\) を説明変数とする重回帰が、\\(P/E\\) に比例する関係を厳密に表せない理由を 幾何学的に説明してください。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#重回帰では表現できない関係",
+    "href": "chapters/02-multiple-linear-regression.html#重回帰では表現できない関係",
+    "title": "2  重回帰",
+    "section": "2.8 重回帰では表現できない関係",
+    "text": "2.8 重回帰では表現できない関係\nここまでの例では、中央たわみが集中荷重 \\(P\\) と等分布荷重 \\(q\\) の線形結合で表されるため、 重回帰を適用できました。しかし、説明変数を増やしても、重回帰で任意の関係を表現できる わけではありません。\n例として、断面形状と支間長を固定した単純支持梁に中央集中荷重 \\(P\\) を作用させ、Young率 \\(E\\) が異なる場合を考えます。梁中央のたわみは\n\\[\n\\delta\n=\n\\frac{PL^3}{48EI}\n=\nC\\frac{P}{E},\n\\qquad\nC=\\frac{L^3}{48I}\n\\tag{2.11}\\]\nと表されます。\\(P\\) と \\(E\\) をそのまま説明変数とする重回帰モデルは\n\\[\n\\hat{\\delta}=w_1P+w_2E+b\n\\tag{2.12}\\]\nです。式 2.12 は \\(P\\)–\\(E\\)–\\(\\delta\\) 空間内の平面を表します。一方、 式 2.11 は \\(P/E\\) に比例する曲面であり、\\(E\\) に対して反比例します。 したがって、重み \\(w_1,w_2\\) と切片 \\(b\\) をどのように選んでも、この曲面全体を1枚の 平面で表すことはできません。\n\n2.8.1 重回帰で表現できないことを確かめる\nPとEが説明変数となる重回帰モデルを構築して、図示することで、重回帰では表現できないことを確認できます。 ここでは、集中荷重を \\(5\\)–\\(50\\ \\mathrm{kN}\\)、ヤング率を \\(100\\)–\\(300\\ \\mathrm{GPa}\\) の範囲で 変化させます。\n\n# 集中荷重とYoung率の組合せ\nP_nonlinear_levels = np.linspace(5, 50, 10)       # [kN]\nE_nonlinear_levels = np.linspace(100, 300, 9)     # [GPa]\nP_nonlinear_grid, E_nonlinear_grid = np.meshgrid(\n    P_nonlinear_levels,\n    E_nonlinear_levels,\n)\nP_nonlinear = P_nonlinear_grid.ravel()\nE_nonlinear = E_nonlinear_grid.ravel()\n\n# 梁理論による中央たわみ（測定誤差なし）\ny_nonlinear = (\n    (P_nonlinear * 1e3) * span_length**3\n    / (48 * (E_nonlinear * 1e9) * second_moment)\n) * 1e3\n\n# PとEを説明変数とする重回帰\nX_nonlinear = np.column_stack([\n    np.ones_like(P_nonlinear),\n    P_nonlinear,\n    E_nonlinear,\n])\nnormal_matrix_nonlinear = X_nonlinear.T @ X_nonlinear\nnormal_vector_nonlinear = X_nonlinear.T @ y_nonlinear\ntheta_nonlinear = np.linalg.inv(normal_matrix_nonlinear) @ normal_vector_nonlinear\n\ny_nonlinear_pred = X_nonlinear @ theta_nonlinear\nresiduals_nonlinear = y_nonlinear - y_nonlinear_pred\nmse_nonlinear = np.mean(residuals_nonlinear**2)\n\nprint(f\"重回帰モデルのMSE: {mse_nonlinear:.6f} mm²\")\nprint(f\"残差の最大絶対値: {np.max(np.abs(residuals_nonlinear)):.5f} mm\")\n\n重回帰モデルのMSE: 0.086464 mm²\n残差の最大絶対値: 1.12059 mm\n\n\n\n\n2.8.2 理論曲面と重回帰平面の比較\n図 2.4 に、梁理論による曲面と、重回帰で学習された平面を重ねて 示します。\n\nfrom matplotlib.lines import Line2D\nfrom matplotlib.patches import Patch\n\nP_surface_nonlinear, E_surface_nonlinear = np.meshgrid(\n    np.linspace(P_nonlinear.min(), P_nonlinear.max(), 45),\n    np.linspace(E_nonlinear.min(), E_nonlinear.max(), 45),\n)\ny_surface_theory = (\n    (P_surface_nonlinear * 1e3) * span_length**3\n    / (48 * (E_surface_nonlinear * 1e9) * second_moment)\n) * 1e3\ny_surface_linear = (\n    theta_nonlinear[0]\n    + theta_nonlinear[1] * P_surface_nonlinear\n    + theta_nonlinear[2] * E_surface_nonlinear\n)\n\nfig = plt.figure(figsize=(7.6, 5.8))\nax = fig.add_subplot(111, projection=\"3d\", computed_zorder=False)\nax.plot_surface(\n    P_surface_nonlinear,\n    E_surface_nonlinear,\n    y_surface_theory,\n    color=\"tab:blue\",\n    alpha=0.55,\n    linewidth=0,\n    zorder=1,\n)\nax.plot_wireframe(\n    P_surface_nonlinear,\n    E_surface_nonlinear,\n    y_surface_linear,\n    color=\"tab:red\",\n    rstride=4,\n    cstride=4,\n    linewidth=0.9,\n    zorder=2,\n)\nax.scatter(\n    P_nonlinear,\n    E_nonlinear,\n    y_nonlinear,\n    color=\"black\",\n    s=12,\n    depthshade=False,\n    zorder=3,\n)\n\nax.set_xlabel(r\"集中荷重 $P$ [kN]\")\nax.set_ylabel(r\"Young率 $E$ [GPa]\")\nax.set_zlabel(r\"中央たわみ $\\delta$ [mm]\")\nax.view_init(elev=25, azim=-128)\nax.legend(handles=[\n    Patch(facecolor=\"tab:blue\", alpha=0.55, label=\"梁理論の曲面\"),\n    Line2D([0], [0], color=\"tab:red\", label=\"重回帰の平面\"),\n    Line2D([0], [0], marker=\"o\", color=\"black\", linestyle=\"none\", label=\"観測データ\"),\n])\nplt.show()\n\n\n\n\n\n\n\n図 2.4: Young率を説明変数とした場合の理論曲面と重回帰平面\n\n\n\n\n\n図 2.4 から、限定された範囲では重回帰平面が理論曲面を近似できるものの、 両者は一致しないことが分かります。ここでは測定誤差を加えていないため、残差の原因は データのばらつきではなく、重回帰モデルが \\(P/E\\) という非線形な関係を表現できないことに あります。\nなお、\\(P/E\\) を新しい説明変数として人があらかじめ作れば、\n\\[\nx_1=\\frac{P}{E},\n\\qquad\n\\hat{\\delta}=w_1x_1+b\n\\]\nとして線形回帰を適用できます。このように、元の説明変数を変換してモデルが扱いやすい 変数を作ることを特徴量設計（feature engineering）と呼びます。しかし、対象の関係が 未知である場合、人が適切な変換をあらかじめ決められるとは限りません。\nこうした線形回帰の適用とかが難しい場合に用いることができる回帰手法として、次章で説明する多層パーセプトロン（Multilayer Perceptron; MLP）があります。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-multiple-linear-regression.html#mlpへの接続",
+    "href": "chapters/02-multiple-linear-regression.html#mlpへの接続",
+    "title": "2  重回帰",
+    "section": "2.9 MLPへの接続",
+    "text": "2.9 MLPへの接続\n重回帰モデルは、入力の線形結合\n\\[\n\\boldsymbol{w}^{\\mathsf T}\\boldsymbol{x}+b\n\\]\nしか表現できません。これに対して、多層パーセプトロン （multilayer perceptron; MLP）では、まず複数の中間ユニットで\n\\[\nh_k\n=\n\\phi\\left(\n\\boldsymbol{w}_k^{\\mathsf T}\\boldsymbol{x}+b_k\n\\right)\n\\]\nを計算し、それらを組み合わせて出力を求めます。\\(\\phi\\) は活性化関数と呼ばれる 非線形関数です。非線形な活性化関数を導入することで、MLPは1枚の平面に限定されず、 曲がった応答面を表現できます。\n次章では、\\(P\\) と \\(E\\) から \\(P/E\\) に比例するたわみを予測する問題を題材として、MLPの 構造、順伝播、活性化関数、および勾配降下法による学習を扱います。",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>重回帰</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html",
+    "href": "chapters/03-multilayer-perceptron.html",
+    "title": "3  多層パーセプトロン",
+    "section": "",
+    "text": "3.1 この章で学ぶこと\n第2章では、重回帰モデルが複数の説明変数を扱える一方で、予測結果は平面または超平面に 限定されることを確認しました。本章では、線形変換と非線形変換を組み合わせた 多層パーセプトロン（multilayer perceptron; MLP）を扱います。\n本章の目的は、次の事項を理解することです。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#この章で学ぶこと",
+    "href": "chapters/03-multilayer-perceptron.html#この章で学ぶこと",
+    "title": "3  多層パーセプトロン",
+    "section": "",
+    "text": "ニューロンが行う線形変換と非線形変換\n入力層、隠れ層、出力層からなるMLPの構造\n行列を用いた順伝播の計算\n活性化関数が必要な理由\n誤差逆伝播法による勾配の計算\n勾配降下法によるパラメータの更新\nNumPyによる1隠れ層MLPの実装",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#重回帰モデルからニューロンへ",
+    "href": "chapters/03-multilayer-perceptron.html#重回帰モデルからニューロンへ",
+    "title": "3  多層パーセプトロン",
+    "section": "3.2 重回帰モデルからニューロンへ",
+    "text": "3.2 重回帰モデルからニューロンへ\n前章でやったように、重回帰モデルは\n\\[\n\\hat{y}\n=\n\\boldsymbol{w}^{\\mathsf T}\\boldsymbol{x}+b\n\\tag{3.1}\\]\nと表されます。ここで、\\(\\boldsymbol{x}\\in\\mathbb{R}^{D}\\) は入力ベクトル、 \\(\\boldsymbol{w}\\in\\mathbb{R}^{D}\\) は重みベクトル、\\(b\\) はバイアスです。\nMLPを構成する1つのニューロンも、まず同じ線形結合を計算します。\n\\[\nz\n=\n\\boldsymbol{w}^{\\mathsf T}\\boldsymbol{x}+b\n\\tag{3.2}\\]\nその後、\\(z\\) に活性化関数 \\(\\phi\\) を適用し、ニューロンの出力を\n\\[\nh=\\phi(z)\n\\tag{3.3}\\]\nとします。\\(z\\) は活性化関数を適用する前の値であり、\\(h\\) は活性化後の出力です。活性化関数というとわかりにくいですが、代表的にはTanh関数などの非線形関数を指します。活性化関数を適用することで、ニューロンは入力に対して非線形な応答を示すことができます。\n重回帰とニューロンの本質的な違いは、式 3.3 の非線形変換にあります。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#mlpの構造",
+    "href": "chapters/03-multilayer-perceptron.html#mlpの構造",
+    "title": "3  多層パーセプトロン",
+    "section": "3.3 MLPの構造",
+    "text": "3.3 MLPの構造\nMLPは複数のニューロンを層状に接続したモデルです。最も基本的なMLPは、 次の3種類の層から構成されます。\n\n入力層：説明変数をモデルへ入力する\n隠れ層：線形変換と活性化関数による非線形変換を行う\n出力層：隠れ層の出力を組み合わせて予測値を計算する\n\n図 3.1 に、2入力、4隠れユニット、1出力のMLPを示します。\n\n\n\n\n\n\n\n\n図 3.1: 2入力、1隠れ層、1出力からなるMLP\n\n\n\n\n\n入力層は通常、値を保持するだけで、学習可能な計算は行いません。学習対象となる重みと バイアスは、入力層から隠れ層、および隠れ層から出力層への接続に含まれます。\n図 3.1 に示した 2入力（\\(x_1, x_2\\)）、4隠れユニット（\\(h_1, h_2, h_3, h_4\\)）、1出力（\\(\\hat{y}\\)）のモデルを例にして、順伝播の計算を各ニューロンの数式で具体的に書き下してみましょう。\n\n3.3.1 入力層から隠れ層への計算\nまず、各隠れユニットにおいて、入力の線形結合にバイアスを加えた隠れ状態 \\(z_j^{(1)}\\)（\\(j=1,2,3,4\\)）を計算します。\n\\[\n\\begin{aligned}\nz_1^{(1)} &= w_{11}^{(1)} x_1 + w_{21}^{(1)} x_2 + b_1^{(1)} \\\\\nz_2^{(1)} &= w_{12}^{(1)} x_1 + w_{22}^{(1)} x_2 + b_2^{(1)} \\\\\nz_3^{(1)} &= w_{13}^{(1)} x_1 + w_{23}^{(1)} x_2 + b_3^{(1)} \\\\\nz_4^{(1)} &= w_{14}^{(1)} x_1 + w_{24}^{(1)} x_2 + b_4^{(1)}\n\\end{aligned}\n\\]\nここで、\\(w_{ij}^{(1)}\\) は入力 \\(x_i\\) から隠れユニット \\(j\\) への重み、\\(b_j^{(1)}\\) は隠れユニット \\(j\\) のバイアスです。 これらに活性化関数 \\(\\phi\\) を適用し、隠れ層の出力 \\(h_j\\) を得ます。\n\\[\nh_1 = \\phi\\left(z_1^{(1)}\\right), \\quad\nh_2 = \\phi\\left(z_2^{(1)}\\right), \\quad\nh_3 = \\phi\\left(z_3^{(1)}\\right), \\quad\nh_4 = \\phi\\left(z_4^{(1)}\\right)\n\\]\n\n\n3.3.2 隠れ層から出力層への計算\n得られた隠れ層の出力 \\(h_1, \\dots, h_4\\) を重み付けして足し合わせ、バイアス \\(b^{(2)}\\) を加えて最終的な予測値 \\(\\hat{y}\\) を計算します。\n\\[\n\\hat{y} = w_1^{(2)} h_1 + w_2^{(2)} h_2 + w_3^{(2)} h_3 + w_4^{(2)} h_4 + b^{(2)}\n\\]\nここで、\\(w_j^{(2)}\\) は隠れユニット \\(h_j\\) から出力層への重み、\\(b^{(2)}\\) は出力層のバイアスです。\n\n\n3.3.3 ベクトル・行列による行列表現\n上記の計算は、ベクトルと行列を用いると簡潔に表現できます。 入力ベクトル \\(\\boldsymbol{x} \\in \\mathbb{R}^2\\)、重み行列 \\(\\mathbf{W}^{(1)} \\in \\mathbb{R}^{2 \\times 4}\\)、バイアスベクトル \\(\\boldsymbol{b}^{(1)} \\in \\mathbb{R}^4\\) を\n\\[\n\\boldsymbol{x} = \\begin{bmatrix} x_1 \\\\ x_2 \\end{bmatrix},\n\\qquad\n\\mathbf{W}^{(1)} = \\begin{bmatrix} w_{11}^{(1)} & w_{12}^{(1)} & w_{13}^{(1)} & w_{14}^{(1)} \\\\ w_{21}^{(1)} & w_{22}^{(1)} & w_{23}^{(1)} & w_{24}^{(1)} \\end{bmatrix},\n\\qquad\n\\boldsymbol{b}^{(1)} = \\begin{bmatrix} b_1^{(1)} \\\\ b_2^{(1)} \\\\ b_3^{(1)} \\\\ b_4^{(1)} \\end{bmatrix}\n\\]\nとおくと、隠れ層の事前活性化ベクトル \\(\\boldsymbol{z}^{(1)} \\in \\mathbb{R}^4\\) は\n\\[\n\\boldsymbol{z}^{(1)}\n=\n\\begin{bmatrix}\nz_1^{(1)} \\\\ z_2^{(1)} \\\\ z_3^{(1)} \\\\ z_4^{(1)}\n\\end{bmatrix}\n=\n\\begin{bmatrix}\nw_{11}^{(1)} & w_{21}^{(1)} \\\\\nw_{12}^{(1)} & w_{22}^{(1)} \\\\\nw_{13}^{(1)} & w_{23}^{(1)} \\\\\nw_{14}^{(1)} & w_{24}^{(1)}\n\\end{bmatrix}\n\\begin{bmatrix}\nx_1 \\\\ x_2\n\\end{bmatrix}\n+\n\\begin{bmatrix}\nb_1^{(1)} \\\\ b_2^{(1)} \\\\ b_3^{(1)} \\\\ b_4^{(1)}\n\\end{bmatrix}\n=\n\\mathbf{W}^{(1)\\mathsf T}\\boldsymbol{x} + \\boldsymbol{b}^{(1)}\n\\tag{3.4}\\]\nとまとめられます。隠れ層の出力ベクトル \\(\\boldsymbol{h} \\in \\mathbb{R}^4\\) は、活性化関数 \\(\\phi\\) を要素ごとに適用して\n\\[\n\\boldsymbol{h}\n=\n\\begin{bmatrix}\nh_1 \\\\ h_2 \\\\ h_3 \\\\ h_4\n\\end{bmatrix}\n=\n\\phi\\left(\\boldsymbol{z}^{(1)}\\right)\n\\tag{3.5}\\]\nとなり、重みベクトル \\(\\boldsymbol{w}^{(2)} = \\begin{bmatrix} w_1^{(2)} & w_2^{(2)} & w_3^{(2)} & w_4^{(2)} \\end{bmatrix}^{\\mathsf T} \\in \\mathbb{R}^4\\) を用いて予測値 \\(\\hat{y}\\) は\n\\[\n\\hat{y}\n=\n\\boldsymbol{w}^{(2)\\mathsf T}\\boldsymbol{h}+b^{(2)}\n\\tag{3.6}\\]\nと表されます。\nこのように、式 3.4、式 3.5、式 3.6 の順に入力から出力へ計算を進める処理を順伝播（forward propagation）と呼びます。 入力の次元を \\(D\\)、隠れユニット数を \\(H\\) とした一般的な場合も、\\(\\mathbf{W}^{(1)}\\in\\mathbb{R}^{D\\times H}, \\boldsymbol{b}^{(1)}\\in\\mathbb{R}^H, \\boldsymbol{w}^{(2)}\\in\\mathbb{R}^H\\) とすれば全く同じ形式の式が成り立ちます。\n\n\n3.3.4 複数データの行列表現\n\\(N\\) 個の入力を行ごとに並べた入力行列を \\(\\mathbf{X}\\in\\mathbb{R}^{N\\times D}\\) とします。すべてのデータに対する順伝播は\n\\[\n\\mathbf{Z}^{(1)}\n=\n\\mathbf{X}\\mathbf{W}^{(1)}\n+\\boldsymbol{1}\\boldsymbol{b}^{(1)\\mathsf T}\n\\tag{3.7}\\]\n\\[\n\\mathbf{H}\n=\n\\phi\\left(\\mathbf{Z}^{(1)}\\right)\n\\tag{3.8}\\]\n\\[\n\\hat{\\boldsymbol{y}}\n=\n\\mathbf{H}\\boldsymbol{w}^{(2)}\n+b^{(2)}\\boldsymbol{1}\n\\tag{3.9}\\]\nと表せます。ここで、\\(\\boldsymbol{1}\\in\\mathbb{R}^{N}\\) はすべての成分が1のベクトルです。\n\n\n\n変数\n形状\n内容\n\n\n\n\n\\(\\mathbf{X}\\)\n\\(N\\times D\\)\n入力行列\n\n\n\\(\\mathbf{W}^{(1)}\\)\n\\(D\\times H\\)\n入力層から隠れ層への重み行列\n\n\n\\(\\boldsymbol{b}^{(1)}\\)\n\\(H\\)\n隠れ層のバイアスベクトル\n\n\n\\(\\mathbf{Z}^{(1)}\\)\n\\(N\\times H\\)\n隠れ層の事前活性化行列\n\n\n\\(\\mathbf{H}\\)\n\\(N\\times H\\)\n隠れ層の出力行列\n\n\n\\(\\boldsymbol{w}^{(2)}\\)\n\\(H\\)\n隠れ層から出力層への重みベクトル\n\n\n\\(\\hat{\\boldsymbol{y}}\\)\n\\(N\\)\n予測値ベクトル\n\n\n\n\n\n3.3.5 複数の隠れ層をもつ場合への拡張\nニューラルネットワークでは、表現力を高めるために隠れ層を2層以上重ねることが一般的です（一応、一説によると、隠れ層が2層以上あるものを深層学習モデルと呼ぶとかいう話もあります）。\n図 3.2 に、2つの隠れ層をもつMLP（2入力、第1隠れ層4ユニット、第2隠れ層3ユニット、1出力）を示します。\n\n\n\n\n\n\n\n\n図 3.2: 2入力、2隠れ層（4ユニット、3ユニット）、1出力からなる深層MLP\n\n\n\n\n\n隠れ層の総数を \\(L\\) 層とします。便宜上、入力層を第0層の出力 \\(\\boldsymbol{h}^{(0)} = \\boldsymbol{x} \\in \\mathbb{R}^D\\) とみなすと、各隠れ層 \\(l = 1, 2, \\ldots, L\\) における順伝播は次のような再帰的な関係式で一般化できます。\n\\[\n\\boldsymbol{z}^{(l)}\n=\n\\mathbf{W}^{(l)\\mathsf T}\\boldsymbol{h}^{(l-1)}\n+\\boldsymbol{b}^{(l)}\n\\tag{3.10}\\]\n\\[\n\\boldsymbol{h}^{(l)}\n=\n\\phi\\left(\\boldsymbol{z}^{(l)}\\right)\n\\tag{3.11}\\]\nここで、第 \\(l\\) 層のユニット数を \\(H_l\\)（\\(H_0 = D\\)）とすると、 \\(\\mathbf{W}^{(l)} \\in \\mathbb{R}^{H_{l-1} \\times H_l}\\)、\\(\\boldsymbol{b}^{(l)} \\in \\mathbb{R}^{H_l}\\)、\\(\\boldsymbol{z}^{(l)}, \\boldsymbol{h}^{(l)} \\in \\mathbb{R}^{H_l}\\) です。\nそして最終出力層（第 \\(L+1\\) 層）では、最後の隠れ層の出力 \\(\\boldsymbol{h}^{(L)}\\) を用いて予測値 \\(\\hat{y}\\) を計算します。\n\\[\n\\hat{y}\n=\n\\boldsymbol{w}^{(L+1)\\mathsf T}\\boldsymbol{h}^{(L)}\n+b^{(L+1)}\n\\tag{3.12}\\]\n複数データ（入力行列 \\(\\mathbf{X} \\in \\mathbb{R}^{N \\times D}\\)）に対するバッチ処理も同様に、\\(\\mathbf{H}^{(0)} = \\mathbf{X}\\) として各層で\n\\[\n\\mathbf{Z}^{(l)} = \\mathbf{H}^{(l-1)}\\mathbf{W}^{(l)} + \\boldsymbol{1}\\boldsymbol{b}^{(l)\\mathsf T}\n\\]\n\\[\n\\mathbf{H}^{(l)} = \\phi\\left(\\mathbf{Z}^{(l)}\\right)\n\\]\nを繰り返し、最終的に \\(\\hat{\\boldsymbol{y}} = \\mathbf{H}^{(L)}\\boldsymbol{w}^{(L+1)} + b^{(L+1)}\\boldsymbol{1}\\) を計算します。\nこのように、前の層の出力 \\(\\boldsymbol{h}^{(l-1)}\\) が次の層への「新しい特徴量（入力）」となり、「線形変換 \\(\\to\\) 非線形変換」を繰り返すことで、より複雑で高度な関数の表現が可能になります。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#隠れ層mlpの順伝播",
+    "href": "chapters/03-multilayer-perceptron.html#隠れ層mlpの順伝播",
+    "title": "3  多層パーセプトロン",
+    "section": "3.4 1隠れ層MLPの順伝播",
+    "text": "3.4 1隠れ層MLPの順伝播\n入力の次元を \\(D\\)、隠れユニット数を \\(H\\) とします。1つの入力 \\(\\boldsymbol{x}\\in\\mathbb{R}^{D}\\) に対して、隠れ層の事前活性化ベクトルは\n\\[\n\\boldsymbol{z}^{(1)}\n=\n\\mathbf{W}^{(1)\\mathsf T}\\boldsymbol{x}\n+\\boldsymbol{b}^{(1)}\n\\tag{3.4}\\]\nです。ここで、\n\\[\n\\mathbf{W}^{(1)}\\in\\mathbb{R}^{D\\times H},\n\\qquad\n\\boldsymbol{b}^{(1)}\\in\\mathbb{R}^{H}\n\\]\nです。活性化関数を要素ごとに適用すると、隠れ層の出力は\n\\[\n\\boldsymbol{h}\n=\n\\phi\\left(\\boldsymbol{z}^{(1)}\\right)\n\\tag{3.5}\\]\nとなります。回帰問題では、出力層に活性化関数を適用せず、\n\\[\n\\hat{y}\n=\n\\boldsymbol{w}^{(2)\\mathsf T}\\boldsymbol{h}+b^{(2)}\n\\tag{3.6}\\]\nとすることが一般的です。\n式 3.4、式 3.5、式 3.6 の順に入力から出力へ 計算を進める処理を順伝播（forward propagation）と呼びます。\n\n3.4.1 複数データの行列表現\n\\(N\\) 個の入力を行ごとに並べた入力行列を \\(\\mathbf{X}\\in\\mathbb{R}^{N\\times D}\\) とします。すべてのデータに対する順伝播は\n\\[\n\\mathbf{Z}^{(1)}\n=\n\\mathbf{X}\\mathbf{W}^{(1)}\n+\\boldsymbol{1}\\boldsymbol{b}^{(1)\\mathsf T}\n\\tag{3.7}\\]\n\\[\n\\mathbf{H}\n=\n\\phi\\left(\\mathbf{Z}^{(1)}\\right)\n\\tag{3.8}\\]\n\\[\n\\hat{\\boldsymbol{y}}\n=\n\\mathbf{H}\\boldsymbol{w}^{(2)}\n+b^{(2)}\\boldsymbol{1}\n\\tag{3.9}\\]\nと表せます。ここで、\\(\\boldsymbol{1}\\in\\mathbb{R}^{N}\\) はすべての成分が1のベクトルです。\n\n\n\n変数\n形状\n内容\n\n\n\n\n\\(\\mathbf{X}\\)\n\\(N\\times D\\)\n入力行列\n\n\n\\(\\mathbf{W}^{(1)}\\)\n\\(D\\times H\\)\n入力層から隠れ層への重み行列\n\n\n\\(\\boldsymbol{b}^{(1)}\\)\n\\(H\\)\n隠れ層のバイアスベクトル\n\n\n\\(\\mathbf{Z}^{(1)}\\)\n\\(N\\times H\\)\n隠れ層の事前活性化行列\n\n\n\\(\\mathbf{H}\\)\n\\(N\\times H\\)\n隠れ層の出力行列\n\n\n\\(\\boldsymbol{w}^{(2)}\\)\n\\(H\\)\n隠れ層から出力層への重みベクトル\n\n\n\\(\\hat{\\boldsymbol{y}}\\)\n\\(N\\)\n予測値ベクトル",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#活性化関数",
+    "href": "chapters/03-multilayer-perceptron.html#活性化関数",
+    "title": "3  多層パーセプトロン",
+    "section": "3.4 活性化関数",
+    "text": "3.4 活性化関数\n活性化関数は、MLPに非線形性を導入します。代表的な活性化関数には、ReLU、sigmoid、 双曲線正接関数があります。\n\\[\n\\operatorname{ReLU}(z)=\\max(0,z)\n\\]\n\\[\n\\operatorname{sigmoid}(z)=\\frac{1}{1+\\exp(-z)}\n\\]\n\\[\n\\tanh(z)=\\frac{\\exp(z)-\\exp(-z)}{\\exp(z)+\\exp(-z)}\n\\]\n\n\n\n\n\n\n\n\n図 3.3: 代表的な活性化関数\n\n\n\n\n\n本章の実装では、出力が \\(-1\\) から \\(1\\) の範囲で滑らかに変化する tanh を隠れ層に 使用します。その微分は\n\\[\n\\frac{d}{dz}\\tanh(z)\n=\n1-\\tanh^2(z)\n\\tag{3.13}\\]\nです。\n\n3.4.1 活性化関数がない場合\n活性化関数を恒等関数 \\(\\phi(z)=z\\) とすると、1隠れ層MLPは\n\\[\n\\hat{y}\n=\n\\boldsymbol{w}^{(2)\\mathsf T}\n\\left(\n\\mathbf{W}^{(1)\\mathsf T}\\boldsymbol{x}\n+\\boldsymbol{b}^{(1)}\n\\right)\n+b^{(2)}\n\\]\nとなります。これを整理すると、\n\\[\n\\hat{y}\n=\n\\tilde{\\boldsymbol{w}}^{\\mathsf T}\\boldsymbol{x}\n+\\tilde{b}\n\\]\nという1つの線形モデルになります。層を何層重ねても、線形変換だけでは全体も線形変換です。 MLPが重回帰では表せない関係を学習するためには、非線形な活性化関数が必要です。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#損失関数",
+    "href": "chapters/03-multilayer-perceptron.html#損失関数",
+    "title": "3  多層パーセプトロン",
+    "section": "3.5 損失関数",
+    "text": "3.5 損失関数\n回帰問題であるため、本章でも平均二乗誤差を使用します。\n\\[\nL\n=\n\\frac{1}{N}\\sum_{i=1}^{N}\n\\left(y_i-\\hat{y}_i\\right)^2\n\\tag{3.14}\\]\n重回帰ではMSEを最小にするパラメータを閉じた式で求められました。一方、MLPでは 活性化関数を含むため、一般に最適なパラメータを逆行列などの閉じた式で求められません。 そこで、損失関数の勾配を誤差逆伝播法により計算し、勾配降下法でパラメータを更新します。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#誤差逆伝播法",
+    "href": "chapters/03-multilayer-perceptron.html#誤差逆伝播法",
+    "title": "3  多層パーセプトロン",
+    "section": "3.6 誤差逆伝播法",
+    "text": "3.6 誤差逆伝播法\n誤差逆伝播法（backpropagation）は、合成関数の微分である連鎖律（chain rule）を利用して、損失関数 \\(L\\) を起点とし、出力側から入力側へ逆向きに勾配を伝播させる計算方法です。\nここでは、図 3.1 で示した1つの隠れ層をもつMLP（入力次元 \\(D\\)、隠れユニット数 \\(H\\)、隠れ層の活性化関数に tanh、1出力）を対象に、損失関数 \\(L\\) から各層のパラメータに対する勾配を行列表現で順に導出します。\n順伝播が入力から出力へ向かう計算であるのに対し、\n\\[\n\\mathbf{X} \\longrightarrow \\mathbf{Z}^{(1)} \\longrightarrow \\mathbf{H} \\longrightarrow \\hat{\\boldsymbol{y}} \\longrightarrow L\n\\]\n誤差逆伝播法ではこの計算の流れを逆向きに辿り、各層のパラメータに対する勾配を求めます。\n\\[\nL \\longrightarrow \\hat{\\boldsymbol{y}} \\longrightarrow \\begin{cases} \\boldsymbol{w}^{(2)}, b^{(2)} & (\\text{出力層パラメータの勾配}) \\\\ \\mathbf{H} \\longrightarrow \\mathbf{Z}^{(1)} \\longrightarrow \\mathbf{W}^{(1)}, \\boldsymbol{b}^{(1)} & (\\text{隠れ層パラメータの勾配}) \\end{cases}\n\\]\n\n3.6.1 ステップ1：損失関数 \\(L\\) の出力 \\(\\hat{\\boldsymbol{y}}\\) による微分\n出発点は、損失関数（平均二乗誤差 \\(L\\)）です。\n\\[\nL = \\frac{1}{N}\\sum_{i=1}^{N} \\left(y_i - \\hat{y}_i\\right)^2 = \\frac{1}{N}\\left\\|\\hat{\\boldsymbol{y}} - \\boldsymbol{y}\\right\\|_2^2\n\\]\nまず、この損失関数 \\(L\\) をモデルの予測値ベクトル \\(\\hat{\\boldsymbol{y}} \\in \\mathbb{R}^N\\) で微分します。予測誤差を表すベクトルを \\(\\boldsymbol{e} = \\hat{\\boldsymbol{y}} - \\boldsymbol{y}\\) とおくと、\n\\[\n\\frac{\\partial L}{\\partial\\hat{\\boldsymbol{y}}}\n=\n\\frac{2}{N}\\left(\\hat{\\boldsymbol{y}} - \\boldsymbol{y}\\right)\n=\n\\frac{2}{N}\\boldsymbol{e}\n\\tag{3.15}\\]\nとなります。この出力誤差勾配を \\(\\boldsymbol{g}^{(2)} \\in \\mathbb{R}^N\\) とおきます。\n\n\n3.6.2 ステップ2：出力層パラメータの勾配と隠れ層への逆伝播\n出力層の順伝播の式は \\(\\hat{\\boldsymbol{y}} = \\mathbf{H}\\boldsymbol{w}^{(2)} + b^{(2)}\\boldsymbol{1}\\) でした。連鎖律を適用して、出力層の重み \\(\\boldsymbol{w}^{(2)}\\)、バイアス \\(b^{(2)}\\)、および隠れ層の出力 \\(\\mathbf{H}\\) に関する勾配を計算します。\n重み \\(\\boldsymbol{w}^{(2)} \\in \\mathbb{R}^H\\) に対する勾配は、\n\\[\n\\frac{\\partial L}{\\partial\\boldsymbol{w}^{(2)}}\n=\n\\mathbf{H}^{\\mathsf T}\\boldsymbol{g}^{(2)}\n\\tag{3.16}\\]\nバイアス \\(b^{(2)} \\in \\mathbb{R}\\) に対する勾配は、各データの勾配の総和として\n\\[\n\\frac{\\partial L}{\\partial b^{(2)}}\n=\n\\boldsymbol{1}^{\\mathsf T}\\boldsymbol{g}^{(2)}\n\\tag{3.17}\\]\nとなります。また、さらに前の隠れ層へ勾配を伝えるために、隠れ層の出力 \\(\\mathbf{H} \\in \\mathbb{R}^{N \\times H}\\) に対する勾配を計算すると、\n\\[\n\\frac{\\partial L}{\\partial\\mathbf{H}}\n=\n\\boldsymbol{g}^{(2)}\\boldsymbol{w}^{(2)\\mathsf T}\n\\]\nが得られます。\n\n\n3.6.3 ステップ3：活性化関数の逆伝播（事前活性化の勾配）\n隠れ層の出力は \\(\\mathbf{H} = \\phi\\left(\\mathbf{Z}^{(1)}\\right) = \\tanh\\left(\\mathbf{Z}^{(1)}\\right)\\) です。連鎖律と tanh の微分 \\(\\phi'(z) = 1 - \\tanh^2(z) = 1 - h^2\\)（式 3.13）を用いると、隠れ状態からなる行列 \\(\\mathbf{Z}^{(1)} \\in \\mathbb{R}^{N \\times H}\\) に関する勾配 \\(\\mathbf{G}^{(1)}\\) は\n\\[\n\\mathbf{G}^{(1)}\n=\n\\frac{\\partial L}{\\partial\\mathbf{Z}^{(1)}}\n=\n\\frac{\\partial L}{\\partial\\mathbf{H}}\n\\odot\n\\left(\n\\mathbf{1}_{N\\times H}\n-\\mathbf{H}\\odot\\mathbf{H}\n\\right)\n\\tag{3.18}\\]\nとなります。ここで、\\(\\mathbf{1}_{N\\times H}\\) はすべての成分が1の行列、\\(\\odot\\) は要素ごとの積（Hadamard積）を表します。\n\n\n3.6.4 ステップ4：隠れ層パラメータの勾配\n隠れ層の事前活性化は \\(\\mathbf{Z}^{(1)} = \\mathbf{X}\\mathbf{W}^{(1)} + \\boldsymbol{1}\\boldsymbol{b}^{(1)\\mathsf T}\\) でした。\\(\\mathbf{G}^{(1)}\\) を用いて、入力層から隠れ層への重み \\(\\mathbf{W}^{(1)}\\) とバイアス \\(\\boldsymbol{b}^{(1)}\\) の勾配を計算します。\n\\[\n\\frac{\\partial L}{\\partial\\mathbf{W}^{(1)}}\n=\n\\mathbf{X}^{\\mathsf T}\\mathbf{G}^{(1)}\n\\tag{3.19}\\]\n\\[\n\\frac{\\partial L}{\\partial\\boldsymbol{b}^{(1)}}\n=\n\\mathbf{G}^{(1)\\mathsf T}\\boldsymbol{1}\n\\tag{3.20}\\]\nこのように、損失関数 \\(L\\) を起点として順伝播と逆順に連鎖律を適用していくことで、すべての層のパラメータの勾配を漏れなく効率的に計算できます。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#勾配降下法",
+    "href": "chapters/03-multilayer-perceptron.html#勾配降下法",
+    "title": "3  多層パーセプトロン",
+    "section": "3.7 勾配降下法",
+    "text": "3.7 勾配降下法\n誤差逆伝播法によって各パラメータに関する損失関数の勾配が求まったら、勾配降下法（gradient descent）を用いてパラメータを更新し、損失を最小化します。\n\n3.7.1 パラメータの更新式\n学習率を \\(\\eta &gt; 0\\)（learning rate）とすると、すべてのパラメータは勾配と反対の方向へ更新されます。\n\\[\n\\begin{aligned}\n\\mathbf{W}^{(1)} &\\leftarrow \\mathbf{W}^{(1)} - \\eta \\frac{\\partial L}{\\partial\\mathbf{W}^{(1)}} \\\\\n\\boldsymbol{b}^{(1)} &\\leftarrow \\boldsymbol{b}^{(1)} - \\eta \\frac{\\partial L}{\\partial\\boldsymbol{b}^{(1)}} \\\\\n\\boldsymbol{w}^{(2)} &\\leftarrow \\boldsymbol{w}^{(2)} - \\eta \\frac{\\partial L}{\\partial\\boldsymbol{w}^{(2)}} \\\\\nb^{(2)} &\\leftarrow b^{(2)} - \\eta \\frac{\\partial L}{\\partial b^{(2)}}\n\\end{aligned}\n\\tag{3.21}\\]\n勾配 \\(\\nabla L\\) は「損失関数が最も急激に増加する方向」を指すベクトルです。したがって、その反対方向（\\(-\\nabla L\\)）へ学習率 \\(\\eta\\) のステップ幅でパラメータを移動させることで、損失を局所的に減少させることができます。\nなお、この勾配降下によるパラメータ更新の回数をエポック（epoch）と呼びます。1エポックは、すべての訓練データを1回ずつ用いてパラメータを更新することを意味します。\n\n\n3.7.2 勾配降下法の直感的理解\n図 3.7 に、勾配降下法の直感的な概念図を示します。\n\n\n\n\n\n\n\n\n図 3.7: 勾配降下法の概念図。(a) 1次元損失曲線における接線の傾きと更新方向、(b) 2次元パラメータ空間における等高線と最小点への降下軌跡\n\n\n\n\n\n\n(a) 1次元における考え方：パラメータ \\(\\theta\\) での接線の傾き（勾配）が正（右上がり）であれば、左方向（負の方向）へ進むことで損失が減少します。傾きが負（右下がり）であれば右方向へ進みます。いずれの場合も「\\(-\\nabla L\\)」の向きへ進むことで最小点 \\(\\theta^*\\) に近づきます。\n(b) 多次元における考え方：パラメータが複数ある場合、損失関数の等高線に対して最も直角に降る方向（最急降下方向）へステップを進めることで、すり鉢状の底（最小点）へ向かって探索が進みます。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#例題荷重とyoung率から梁のたわみを予測する",
+    "href": "chapters/03-multilayer-perceptron.html#例題荷重とyoung率から梁のたわみを予測する",
+    "title": "3  多層パーセプトロン",
+    "section": "3.8 例題：荷重とYoung率から梁のたわみを予測する",
+    "text": "3.8 例題：荷重とYoung率から梁のたわみを予測する\n第2章の最後に扱った問題をMLPで学習します。断面と支間を固定した単純支持梁に中央集中荷重 \\(P\\) が作用するとき、中央たわみは\n\\[\n\\delta\n=\n\\frac{PL^3}{48EI}\n\\tag{3.22}\\]\nです。説明変数を \\(P\\) と \\(E\\) とすると、\\(delta\\propto P/E\\) であるため、重回帰の平面では 関係全体を表現できません。本章では、梁理論の式をMLPには与えず、観測された \\((P_i,E_i,\\delta_i)\\) の組だけから関係を学習します。\n\n3.8.1 データの作成\n荷重とYoung率を指定範囲内からランダムに生成し、梁理論から中央たわみを計算します。 ここではMLPの表現能力を確認するため、測定誤差は加えません。\n\nrng = np.random.default_rng(2026)\nn_samples = 600\n\nP = rng.uniform(5.0, 50.0, n_samples)       # 集中荷重 [kN]\nE = rng.uniform(100.0, 300.0, n_samples)    # Young率 [GPa]\n\nspan_length = 3.0\nsection_width = 0.10\nsection_height = 0.20\nsecond_moment = section_width * section_height**3 / 12\n\ny = (\n    (P * 1e3) * span_length**3\n    / (48 * (E * 1e9) * second_moment)\n) * 1e3\n\nX = np.column_stack([P, E])\n\n\n\n3.8.2 学習データとテストデータ\nモデルの学習に使うデータと、学習後の性能を評価するデータを分けます。ここでは全データの 80%を学習データ、20%をテストデータとします。\n\nindices = rng.permutation(n_samples)\nn_train = int(0.8 * n_samples)\ntrain_indices = indices[:n_train]\ntest_indices = indices[n_train:]\n\nX_train = X[train_indices]\ny_train = y[train_indices]\nX_test = X[test_indices]\ny_test = y[test_indices]\n\nprint(f\"学習データ数: {X_train.shape[0]}\")\nprint(f\"テストデータ数: {X_test.shape[0]}\")\n\n学習データ数: 480\nテストデータ数: 120\n\n\nテストデータはパラメータの更新には使用せず、学習後の評価にのみ使用します。\n\n\n3.8.3 標準化\n\\(P\\) と \\(E\\) では値の範囲が異なるため、各説明変数を平均0、標準偏差1となるように 標準化します。目的変数も同様に標準化します。\n\\[\nx'_{ij}\n=\n\\frac{x_{ij}-\\mu_j}{\\sigma_j}\n\\]\n平均と標準偏差は学習データだけから計算します。テストデータに対しても、学習データから 得た平均と標準偏差を使用します。\n\nX_mean = X_train.mean(axis=0)\nX_std = X_train.std(axis=0)\ny_mean = y_train.mean()\ny_std = y_train.std()\n\nX_train_std = (X_train - X_mean) / X_std\nX_test_std = (X_test - X_mean) / X_std\ny_train_std = (y_train - y_mean) / y_std\n\n\n\n3.8.4 パラメータの初期化\n隠れユニット数を16とし、重みを小さな乱数、バイアスを0で初期化します。\n\ninput_dim = 2\nhidden_dim = 16\n\nW1 = rng.normal(0.0, 0.3, size=(input_dim, hidden_dim))\nb1 = np.zeros(hidden_dim)\nw2 = rng.normal(0.0, 0.3, size=hidden_dim)\nb2 = 0.0\n\nprint(f\"W1の形状: {W1.shape}\")\nprint(f\"b1の形状: {b1.shape}\")\nprint(f\"w2の形状: {w2.shape}\")\n\nW1の形状: (2, 16)\nb1の形状: (16,)\nw2の形状: (16,)\n\n\n\n\n3.8.5 順伝播・誤差逆伝播・更新\n全学習データを使って1回パラメータを更新する処理を1エポックとします。ここでは 5000エポック学習します。\n\nlearning_rate = 0.03\nn_epochs = 5000\nloss_history = []\n\nfor epoch in range(n_epochs):\n    # 順伝播\n    Z1 = X_train_std @ W1 + b1\n    H = np.tanh(Z1)\n    y_pred_std = H @ w2 + b2\n\n    # MSE\n    error = y_pred_std - y_train_std\n    loss = np.mean(error**2)\n    loss_history.append(loss)\n\n    # 誤差逆伝播\n    d_y_pred = (2.0 / X_train_std.shape[0]) * error\n\n    d_w2 = H.T @ d_y_pred\n    d_b2 = np.sum(d_y_pred)\n\n    d_H = d_y_pred[:, None] * w2[None, :]\n    d_Z1 = d_H * (1.0 - H**2)\n\n    d_W1 = X_train_std.T @ d_Z1\n    d_b1 = np.sum(d_Z1, axis=0)\n\n    # 勾配降下法による更新\n    W1 -= learning_rate * d_W1\n    b1 -= learning_rate * d_b1\n    w2 -= learning_rate * d_w2\n    b2 -= learning_rate * d_b2\n\n\n\n3.8.6 学習曲線\n\n\n\n\n\n\n\n\n図 3.8: MLPの学習に伴うMSEの変化\n\n\n\n\n\n図 3.8 から、パラメータの更新に伴ってMSEが減少していることを確認できます。\n\n\n3.8.7 学習後の予測\n順伝播を関数として定義し、標準化された予測値を元のたわみの単位へ戻します。\n\ndef predict_mlp(X_input):\n    X_input_std = (X_input - X_mean) / X_std\n    H = np.tanh(X_input_std @ W1 + b1)\n    y_output_std = H @ w2 + b2\n    return y_output_std * y_std + y_mean\n\n\ny_train_pred = predict_mlp(X_train)\ny_test_pred = predict_mlp(X_test)\n\ntrain_rmse = np.sqrt(np.mean((y_train - y_train_pred) ** 2))\ntest_rmse = np.sqrt(np.mean((y_test - y_test_pred) ** 2))\n\nprint(f\"学習データのRMSE: {train_rmse:.5f} mm\")\nprint(f\"テストデータのRMSE: {test_rmse:.5f} mm\")\n\n学習データのRMSE: 0.03760 mm\nテストデータのRMSE: 0.04936 mm\n\n\nRMSEはMSEの平方根であり、目的変数と同じ単位をもちます。\n\n\n3.8.8 MLPが学習した応答曲面\n\n\n\n\n\n\n\n\n図 3.9: 梁理論の曲面とMLPが学習した応答曲面\n\n\n\n\n\n図 3.9 では、MLPが学習した赤い曲面が梁理論の曲面に沿っています。 MLPには \\(P/E\\) という特徴量や梁理論を与えていませんが、非線形な活性化関数をもつ 隠れユニットの組合せにより、観測データから曲がった応答面を近似しています。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#mlpを利用する際の注意点",
+    "href": "chapters/03-multilayer-perceptron.html#mlpを利用する際の注意点",
+    "title": "3  多層パーセプトロン",
+    "section": "3.9 MLPを利用する際の注意点",
+    "text": "3.9 MLPを利用する際の注意点\n\n3.9.1 初期値による違い\nMLPを用いた際の損失関数の形状は、一般に重回帰のような単純な凸二次関数ではありません。重みの初期値に よって学習経路や最終的な結果が変わる場合があります。そのため、乱数シードを記録し、 複数の初期値で結果を確認することが重要です。\n\n\n3.9.2 ハイパーパラメータ\n隠れユニット数、層数、学習率、エポック数などは、データから直接求めるモデルパラメータ ではなく、学習前に設定するハイパーパラメータです。値によってモデルの表現能力や 学習の安定性が変わります。\n\n\n3.9.3 補間と外挿\n本章のMLPは、\\(5\\le P\\le50\\ \\mathrm{kN}\\)、 \\(100\\le E\\le300\\ \\mathrm{GPa}\\) の範囲内で学習しました。この範囲内の補間が正確でも、 学習範囲外の外挿が正確であるとは限りません。MLPが物理法則そのものを獲得したと 解釈することはできません。\n\n\n3.9.4 データと物理知識\nMLPは特徴量設計を行わずに非線形関係を近似できますが、必要なデータ量が増え、予測理由も 線形モデルほど直接的ではありません。\\(P/E\\) という関係が既知なら、その物理知識を特徴量や モデル構造へ取り入れる方が、少ないデータで高い精度を得られる場合があります。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#まとめ",
+    "href": "chapters/03-multilayer-perceptron.html#まとめ",
+    "title": "3  多層パーセプトロン",
+    "section": "3.10 まとめ",
+    "text": "3.10 まとめ\n\nニューロンは線形結合に活性化関数を適用する。\nMLPは入力層、1つ以上の隠れ層、出力層から構成される。\n非線形な活性化関数がなければ、層を重ねても全体は線形モデルである。\n順伝播では、入力側から出力側へ予測値を計算する。\n誤差逆伝播法では、連鎖律を使って出力側から入力側へ勾配を伝える。\n勾配降下法は、損失を減少させる方向へパラメータを反復的に更新する。\nMLPは、重回帰の平面では表現できない非線形な応答面を近似できる。\n学習範囲内の予測性能が高くても、範囲外の外挿精度は保証されない。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#確認問題",
+    "href": "chapters/03-multilayer-perceptron.html#確認問題",
+    "title": "3  多層パーセプトロン",
+    "section": "3.11 確認問題",
+    "text": "3.11 確認問題\n\n活性化関数を恒等関数にすると、MLP全体が線形モデルになる理由を説明してください。\n\\(\\mathbf{X}\\in\\mathbb{R}^{N\\times D}\\)、 \\(\\mathbf{W}^{(1)}\\in\\mathbb{R}^{D\\times H}\\) のとき、 \\(\\mathbf{Z}^{(1)}\\) の形状を答えてください。\ntanh の出力 \\(\\mathbf{H}\\) から、その微分を 1 - H**2 と計算できる理由を説明してください。\n学習率が大きすぎる場合と小さすぎる場合に、学習曲線がどのようになるか考えてください。\n隠れユニット数を変更し、学習データとテストデータのRMSEがどのように変化するか 確認してください。\n活性化関数をReLUへ変更する場合、順伝播と誤差逆伝播のどの部分を変更する必要が あるか説明してください。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#隠れ層一つ分のmlpの順伝播",
+    "href": "chapters/03-multilayer-perceptron.html#隠れ層一つ分のmlpの順伝播",
+    "title": "3  多層パーセプトロン",
+    "section": "3.4 隠れ層一つ分のMLPの順伝播",
+    "text": "3.4 隠れ層一つ分のMLPの順伝播\n入力(\\(\\boldsymbol{x} = x_1, x_2, \\ldots, x_D\\))の次元を \\(D\\)、隠れユニット数を \\(H\\) とします。1つの入力 \\(\\boldsymbol{x}\\in\\mathbb{R}^{D}\\) に対して、隠れ層の事前活性化ベクトルは\n\\[\n\\boldsymbol{z}^{(1)}\n=\n\\mathbf{W}^{(1)\\mathsf T}\\boldsymbol{x}\n+\\boldsymbol{b}^{(1)}\n\\tag{3.4}\\]\nです。ここで、\n\\[\n\\mathbf{W}^{(1)}\\in\\mathbb{R}^{D\\times H},\n\\qquad\n\\boldsymbol{b}^{(1)}\\in\\mathbb{R}^{H}\n\\]\nです。活性化関数を要素ごとに適用すると、隠れ層の出力は\n\\[\n\\boldsymbol{h}\n=\n\\phi\\left(\\boldsymbol{z}^{(1)}\\right)\n\\tag{3.5}\\]\nとなります。回帰問題では、出力層に活性化関数を適用せず、\n\\[\n\\hat{y}\n=\n\\boldsymbol{w}^{(2)\\mathsf T}\\boldsymbol{h}+b^{(2)}\n\\tag{3.6}\\]\nとすることが一般的です。\n式 3.4、式 3.5、式 3.6 の順に入力から出力へ 計算を進める処理を順伝播（forward propagation）と呼びます。\n\n3.4.1 複数データの行列表現\n\\(N\\) 個の入力を行ごとに並べた入力行列を \\(\\mathbf{X}\\in\\mathbb{R}^{N\\times D}\\) とします。すべてのデータに対する順伝播は\n\\[\n\\mathbf{Z}^{(1)}\n=\n\\mathbf{X}\\mathbf{W}^{(1)}\n+\\boldsymbol{1}\\boldsymbol{b}^{(1)\\mathsf T}\n\\tag{3.7}\\]\n\\[\n\\mathbf{H}\n=\n\\phi\\left(\\mathbf{Z}^{(1)}\\right)\n\\tag{3.8}\\]\n\\[\n\\hat{\\boldsymbol{y}}\n=\n\\mathbf{H}\\boldsymbol{w}^{(2)}\n+b^{(2)}\\boldsymbol{1}\n\\tag{3.9}\\]\nと表せます。ここで、\\(\\boldsymbol{1}\\in\\mathbb{R}^{N}\\) はすべての成分が1のベクトルです。\n\n\n\n変数\n形状\n内容\n\n\n\n\n\\(\\mathbf{X}\\)\n\\(N\\times D\\)\n入力行列\n\n\n\\(\\mathbf{W}^{(1)}\\)\n\\(D\\times H\\)\n入力層から隠れ層への重み行列\n\n\n\\(\\boldsymbol{b}^{(1)}\\)\n\\(H\\)\n隠れ層のバイアスベクトル\n\n\n\\(\\mathbf{Z}^{(1)}\\)\n\\(N\\times H\\)\n隠れ層の事前活性化行列\n\n\n\\(\\mathbf{H}\\)\n\\(N\\times H\\)\n隠れ層の出力行列\n\n\n\\(\\boldsymbol{w}^{(2)}\\)\n\\(H\\)\n隠れ層から出力層への重みベクトル\n\n\n\\(\\hat{\\boldsymbol{y}}\\)\n\\(N\\)\n予測値ベクトル",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#活性化関数とその微分",
+    "href": "chapters/03-multilayer-perceptron.html#活性化関数とその微分",
+    "title": "3  多層パーセプトロン",
+    "section": "3.4 活性化関数とその微分",
+    "text": "3.4 活性化関数とその微分\n活性化関数は、MLPに非線形性を導入するだけでなく、後から説明する学習時（誤差逆伝播法）における勾配の伝播にも大きな影響を与えます。 （後から詳しく説明しますが）連鎖律により、損失関数の隠れ状態 \\(z\\) に関する勾配は\n\\[\n\\frac{\\partial L}{\\partial z} = \\frac{\\partial L}{\\partial h} \\cdot \\frac{d\\phi(z)}{dz}\n\\]\nとして計算されるため、活性化関数の形状だけでなく、その導関数 \\(\\phi'(z) = \\frac{d\\phi(z)}{dz}\\) の大きさや性質がネットワークの学習のしやすさを左右します。\n代表的な3つの活性化関数とその導関数を次に示します。 代表的な活性化関数とその導関数を次に示します。\n\n3.4.1 ReLU（Rectified Linear Unit）\n\\[\n\\operatorname{ReLU}(z) = \\max(0, z)\n\\]\n\\[\n\\frac{d}{dz}\\operatorname{ReLU}(z) = \\begin{cases} 1 & (z &gt; 0) \\\\ 0 & (z &lt; 0) \\end{cases}\n\\]\n\\(z &gt; 0\\) の領域で微分が常に \\(1\\) であるため、層を深く重ねても勾配が小さくならず（特に層数の多いモデルを作ろうとすると、これがかなり重要だったりします）、現代の深層学習で標準的に用いられています。\n\n\n\n\n\n\n\n\n図 3.3: ReLU関数（実線）とその導関数（破線）\n\n\n\n\n\n\n\n3.4.2 シグモイド関数（Sigmoid）\n\\[\n\\operatorname{sigmoid}(z) = \\frac{1}{1 + \\exp(-z)}\n\\]\n\\[\n\\frac{d}{dz}\\operatorname{sigmoid}(z) = \\operatorname{sigmoid}(z)\\left(1 - \\operatorname{sigmoid}(z)\\right)\n\\]\n出力を \\((0, 1)\\) の確率的な範囲に収めるため二値分類の出力層などで使われます。ただし、導関数の最大値が \\(z=0\\) で \\(0.25\\) であり、\\(|z|\\) が大きい領域では導関数がほぼ \\(0\\) になるため、多層化すると入力層へ向かうにつれて勾配が急激に減衰する勾配消失問題（vanishing gradient problem）を引き起こしやすい性質があります。\n\n\n\n\n\n\n\n\n図 3.4: シグモイド関数（実線）とその導関数（破線）\n\n\n\n\n\n\n\n3.4.3 双曲線正接関数（tanh）\n\\[\n\\tanh(z) = \\frac{\\exp(z) - \\exp(-z)}{\\exp(z) + \\exp(-z)}\n\\]\n\\[\n\\frac{d}{dz}\\tanh(z) = 1 - \\tanh^2(z)\n\\tag{3.13}\\]\n出力が \\((-1, 1)\\) で原点対称（平均が0付近）となるため、シグモイド関数よりも勾配の伝播が安定しやすい利点があります。導関数の最大値は \\(z=0\\) で \\(1.0\\) ですが、\\(|z|\\) が大きい領域（飽和領域）では導関数が \\(0\\) に近づきます。本章の実装では、滑らかで原点対称な tanh を使用します（MLPの場合は、tanhが用いられることも多いです）。\n\n\n\n\n\n\n\n\n図 3.5: 双曲線正接関数（実線）とその導関数（破線）\n\n\n\n\n\n\n\n3.4.4 Swish（SiLU）\n\\[\n\\operatorname{Swish}(z) = z \\cdot \\operatorname{sigmoid}(z) = \\frac{z}{1 + \\exp(-z)}\n\\]\n\\[\n\\frac{d}{dz}\\operatorname{Swish}(z) = \\operatorname{Swish}(z) + \\operatorname{sigmoid}(z)\\left(1 - \\operatorname{Swish}(z)\\right)\n\\]\nSwish（PyTorchなどでは SiLU; Sigmoid Linear Unit とも呼ばれます）は、Googleの研究チームによって発見された活性化関数です。 ReLUと同様に \\(z &gt; 0\\) で入力がそのまま伝わり勾配消失を防ぐ性質を持ちながら、原点付近で折れ曲がらず滑らかに微分可能であり、\\(z &lt; 0\\) でわずかに負の値（最小値約 \\(-0.28\\)）をとる非単調性（non-monotonicity）を持ちます。これにより多くの深層モデルでReLU以上の高い表現力と学習の安定性を発揮し、近年（LLaMAなどの大規模言語モデルや画像生成モデルなど）広く採用されています。\n\n\n\n\n\n\n\n\n図 3.6: Swish関数（実線）とその導関数（破線）\n\n\n\n\n\n\n\n3.4.5 活性化関数がない場合\n活性化関数を恒等関数 \\(\\phi(z)=z\\) とすると、1つの隠れ層からなるMLPは\n\\[\n\\hat{y}\n=\n\\boldsymbol{w}^{(2)\\mathsf T}\n\\left(\n\\mathbf{W}^{(1)\\mathsf T}\\boldsymbol{x}\n+\\boldsymbol{b}^{(1)}\n\\right)\n+b^{(2)}\n\\]\nとなります。これを整理すると、\n\\[\n\\hat{y}\n=\n\\tilde{\\boldsymbol{w}}^{\\mathsf T}\\boldsymbol{x}\n+\\tilde{b}\n\\]\nという1つの線形モデルになります。層を何層重ねても、線形変換だけでは全体も線形変換です。 MLPが重回帰では表せない関係を学習するためには、非線形な活性化関数が必要です。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-multilayer-perceptron.html#例題荷重とヤング率から梁のたわみを予測する",
+    "href": "chapters/03-multilayer-perceptron.html#例題荷重とヤング率から梁のたわみを予測する",
+    "title": "3  多層パーセプトロン",
+    "section": "3.8 例題：荷重とヤング率から梁のたわみを予測する",
+    "text": "3.8 例題：荷重とヤング率から梁のたわみを予測する\n第2章の最後に扱った問題をMLPで学習します。断面と支間を固定した単純支持梁に中央集中荷重 \\(P\\) が作用するとき、中央たわみは\n\\[\n\\delta\n=\n\\frac{PL^3}{48EI}\n\\tag{3.22}\\]\nです。説明変数を \\(P\\) と \\(E\\) とすると、\\(delta\\propto P/E\\) であるため、前章で説明したように重回帰の平面では 関係全体を表現できません。本章では、梁理論の式をMLPには与えず、観測された \\((P_i,E_i,\\delta_i)\\) の組だけから関係を学習します。\n\n3.8.1 データの作成\n荷重とYoung率を指定範囲内からランダムに生成し、梁理論から中央たわみを計算します。 ここではMLPの表現能力を確認するため、測定誤差は加えません。\n\nrng = np.random.default_rng(2026)\nn_samples = 600\n\nP = rng.uniform(5.0, 50.0, n_samples)       # 集中荷重 [kN]\nE = rng.uniform(100.0, 300.0, n_samples)    # Young率 [GPa]\n\nspan_length = 3.0\nsection_width = 0.10\nsection_height = 0.20\nsecond_moment = section_width * section_height**3 / 12\n\ny = (\n    (P * 1e3) * span_length**3\n    / (48 * (E * 1e9) * second_moment)\n) * 1e3\n\nX = np.column_stack([P, E])\n\n\n\n3.8.2 学習データとテストデータ\nモデルの学習に使うデータと、学習後の性能を評価するデータを分けます。ここでは全データの 80%を学習データ、20%をテストデータとします。\n\nindices = rng.permutation(n_samples)\nn_train = int(0.8 * n_samples)\ntrain_indices = indices[:n_train]\ntest_indices = indices[n_train:]\n\nX_train = X[train_indices]\ny_train = y[train_indices]\nX_test = X[test_indices]\ny_test = y[test_indices]\n\nprint(f\"学習データ数: {X_train.shape[0]}\")\nprint(f\"テストデータ数: {X_test.shape[0]}\")\n\n学習データ数: 480\nテストデータ数: 120\n\n\nテストデータはパラメータの更新には使用せず、学習後の評価にのみ使用します。\n\n\n3.8.3 標準化\n\\(P\\) と \\(E\\) では値の範囲が異なるため、各説明変数を平均0、標準偏差1となるように 標準化します。目的変数も同様に標準化します。\n\\[\nx'_{ij}\n=\n\\frac{x_{ij}-\\mu_j}{\\sigma_j}\n\\]\n平均と標準偏差は学習データだけから計算します。テストデータに対しても、学習データから 得た平均と標準偏差を使用します。\n\nX_mean = X_train.mean(axis=0)\nX_std = X_train.std(axis=0)\ny_mean = y_train.mean()\ny_std = y_train.std()\n\nX_train_std = (X_train - X_mean) / X_std\nX_test_std = (X_test - X_mean) / X_std\ny_train_std = (y_train - y_mean) / y_std\n\n\n\n3.8.4 パラメータの初期化\n隠れユニット数を16とし、重みを小さな乱数、バイアスを0で初期化します。\n\ninput_dim = 2\nhidden_dim = 16\n\nW1 = rng.normal(0.0, 0.3, size=(input_dim, hidden_dim))\nb1 = np.zeros(hidden_dim)\nw2 = rng.normal(0.0, 0.3, size=hidden_dim)\nb2 = 0.0\n\nprint(f\"W1の形状: {W1.shape}\")\nprint(f\"b1の形状: {b1.shape}\")\nprint(f\"w2の形状: {w2.shape}\")\n\nW1の形状: (2, 16)\nb1の形状: (16,)\nw2の形状: (16,)\n\n\n\n\n3.8.5 順伝播・誤差逆伝播・更新\n全学習データを使って1回パラメータを更新する処理を1エポックとします。ここでは 10000エポック学習します。\n\nlearning_rate = 0.03\nn_epochs = 50000\nloss_history = []\n\nfor epoch in range(n_epochs):\n    # 順伝播\n    Z1 = X_train_std @ W1 + b1\n    H = np.tanh(Z1)\n    y_pred_std = H @ w2 + b2\n\n    # 損失関数（MSE）\n    error = y_pred_std - y_train_std\n    loss = np.mean(error**2)\n    loss_history.append(loss)\n\n    # 誤差逆伝播\n    d_y_pred = (2.0 / X_train_std.shape[0]) * error\n\n    d_w2 = H.T @ d_y_pred\n    d_b2 = np.sum(d_y_pred)\n\n    d_H = d_y_pred[:, None] * w2[None, :]\n    d_Z1 = d_H * (1.0 - H**2)\n\n    d_W1 = X_train_std.T @ d_Z1\n    d_b1 = np.sum(d_Z1, axis=0)\n\n    # 勾配降下法によるパラメータ更新\n    W1 -= learning_rate * d_W1\n    b1 -= learning_rate * d_b1\n    w2 -= learning_rate * d_w2\n    b2 -= learning_rate * d_b2\n\n\n\n3.8.6 学習曲線\n\nfig, ax = plt.subplots()\nax.plot(np.arange(1, n_epochs + 1), loss_history)\nax.set_xlabel(\"エポック\")\nax.set_ylabel(\"標準化空間におけるMSE\")\nax.set_yscale(\"log\")\nax.grid(alpha=0.25)\nplt.show()\n\n\n\n\n\n\n\n図 3.8: MLPの学習に伴うMSEの変化\n\n\n\n\n\n図 3.8 から、パラメータの更新に伴ってMSEが減少していることを確認できます。\n\n\n3.8.7 学習後の予測\n順伝播を関数として定義し、標準化された予測値を元のたわみの単位へ戻します。\n\ndef predict_mlp(X_input):\n    X_input_std = (X_input - X_mean) / X_std\n    H = np.tanh(X_input_std @ W1 + b1)\n    y_output_std = H @ w2 + b2\n    return y_output_std * y_std + y_mean\n\n\ny_train_pred = predict_mlp(X_train)\ny_test_pred = predict_mlp(X_test)\n\ntrain_rmse = np.sqrt(np.mean((y_train - y_train_pred) ** 2))\ntest_rmse = np.sqrt(np.mean((y_test - y_test_pred) ** 2))\n\nprint(f\"学習データのRMSE: {train_rmse:.5f} mm\")\nprint(f\"テストデータのRMSE: {test_rmse:.5f} mm\")\n\n学習データのRMSE: 0.01020 mm\nテストデータのRMSE: 0.01248 mm\n\n\nRMSEはMSEの平方根であり、目的変数と同じ単位をもちます。\n\n\n3.8.8 MLPが学習した応答曲面\n\n\n\n\n\n\n\n\n図 3.9: 梁理論の曲面とMLPが学習した応答曲面\n\n\n\n\n\n図 3.9 では、MLPが学習した赤い曲面が梁理論の曲面に沿っています。 MLPには \\(P/E\\) という特徴量や梁理論からなる数式を与えていませんが、非線形な活性化関数をもつ 隠れユニットの組合せにより、観測データから曲がった応答面を近似しています。",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>多層パーセプトロン</span>"
+    ]
+  }
+]
