@@ -575,7 +575,7 @@ L(\boldsymbol{\theta})
 </tbody>
 </table>
 <p>中央集中荷重と等分布荷重を複数の条件で組み合わせ、<a href="#eq-beam-two-loads" class="quarto-xref">式&nbsp;<span>2.9</span></a> から理論たわみを 計算します。その後、平均0、標準偏差 <span class="math inline">\(0.04\ \mathrm{mm}\)</span> の正規分布に従う測定誤差を 加えて観測データを作成します。</p>
-<div id="da5192b5" class="cell" data-execution_count="1">
+<div id="e0478988" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scienceplots</span>
@@ -620,7 +620,7 @@ L(\boldsymbol{\theta})
 <section id="観測データの可視化" class="level3" data-number="2.6.2">
 <h3 data-number="2.6.2" class="anchored" data-anchor-id="観測データの可視化"><span class="header-section-number">2.6.2</span> 観測データの可視化</h3>
 <p>説明変数が2つであるため、観測データを3次元空間に表示できます。</p>
-<div id="cell-fig-multiple-observations" class="cell" data-execution_count="2">
+<div id="cell-fig-multiple-observations" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div id="fig-multiple-observations" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -639,7 +639,7 @@ L(\boldsymbol{\theta})
 <section id="設計行列の作成" class="level3" data-number="2.6.3">
 <h3 data-number="2.6.3" class="anchored" data-anchor-id="設計行列の作成"><span class="header-section-number">2.6.3</span> 設計行列の作成</h3>
 <p>切片、集中荷重、等分布荷重の順に列を並べ、行列 <span class="math inline">\(\tilde{\mathbf{X}}\)</span> を作成します。</p>
-<div id="9f95a3a1" class="cell" data-execution_count="3">
+<div id="b0231bf4" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>X_tilde <span class="op">=</span> np.column_stack([</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    np.ones_like(P),</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    P,</span>
@@ -664,7 +664,7 @@ L(\boldsymbol{\theta})
 <section id="逆行列による最小二乗解の計算" class="level3" data-number="2.6.4">
 <h3 data-number="2.6.4" class="anchored" data-anchor-id="逆行列による最小二乗解の計算"><span class="header-section-number">2.6.4</span> 逆行列による最小二乗解の計算</h3>
 <p><a href="#eq-multiple-closed-form" class="quarto-xref">式&nbsp;<span>2.8</span></a> に従い、MSEを最小にするパラメータを逆行列から求めます。 まず、方程式の係数行列 <span class="math inline">\(\tilde{\mathbf{X}}^{\mathsf T}\tilde{\mathbf{X}}\)</span> と右辺 <span class="math inline">\(\tilde{\mathbf{X}}^{\mathsf T}\boldsymbol{y}\)</span> を計算します。</p>
-<div id="195cfd7b" class="cell" data-execution_count="4">
+<div id="ebe32c74" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>normal_matrix <span class="op">=</span> X_tilde.T <span class="op">@</span> X_tilde</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>normal_vector <span class="op">=</span> X_tilde.T <span class="op">@</span> y</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -695,7 +695,7 @@ MSE: 0.001232 mm²
 <section id="回帰平面と残差" class="level3" data-number="2.6.5">
 <h3 data-number="2.6.5" class="anchored" data-anchor-id="回帰平面と残差"><span class="header-section-number">2.6.5</span> 回帰平面と残差</h3>
 <p>学習によって得られたモデルを平面として表示し、観測データと比較します。</p>
-<div id="cell-fig-multiple-regression-plane" class="cell" data-execution_count="5">
+<div id="cell-fig-multiple-regression-plane" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div id="fig-multiple-regression-plane" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -714,7 +714,7 @@ MSE: 0.001232 mm²
 <section id="梁理論から得られる係数との比較" class="level3" data-number="2.6.6">
 <h3 data-number="2.6.6" class="anchored" data-anchor-id="梁理論から得られる係数との比較"><span class="header-section-number">2.6.6</span> 梁理論から得られる係数との比較</h3>
 <p><a href="#eq-beam-two-loads" class="quarto-xref">式&nbsp;<span>2.9</span></a> から、各荷重に対する理論上の係数を計算できます。</p>
-<div id="68938475" class="cell" data-execution_count="6">
+<div id="866e2681" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>w_P_theory <span class="op">=</span> (</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    span_length<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> young_modulus <span class="op">*</span> second_moment)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e6</span></span>
@@ -774,7 +774,7 @@ C=\frac{L^3}{48I}
 <section id="重回帰で表現できないことを確かめる" class="level3" data-number="2.8.1">
 <h3 data-number="2.8.1" class="anchored" data-anchor-id="重回帰で表現できないことを確かめる"><span class="header-section-number">2.8.1</span> 重回帰で表現できないことを確かめる</h3>
 <p>PとEが説明変数となる重回帰モデルを構築して、図示することで、重回帰では表現できないことを確認できます。 ここでは、集中荷重を <span class="math inline">\(5\)</span>–<span class="math inline">\(50\ \mathrm{kN}\)</span>、ヤング率を <span class="math inline">\(100\)</span>–<span class="math inline">\(300\ \mathrm{GPa}\)</span> の範囲で 変化させます。</p>
-<div id="24a57f6f" class="cell" data-execution_count="7">
+<div id="5836047c" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 集中荷重とYoung率の組合せ</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>P_nonlinear_levels <span class="op">=</span> np.linspace(<span class="dv">5</span>, <span class="dv">50</span>, <span class="dv">10</span>)       <span class="co"># [kN]</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>E_nonlinear_levels <span class="op">=</span> np.linspace(<span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">9</span>)     <span class="co"># [GPa]</span></span>
@@ -816,7 +816,7 @@ C=\frac{L^3}{48I}
 <section id="理論曲面と重回帰平面の比較" class="level3" data-number="2.8.2">
 <h3 data-number="2.8.2" class="anchored" data-anchor-id="理論曲面と重回帰平面の比較"><span class="header-section-number">2.8.2</span> 理論曲面と重回帰平面の比較</h3>
 <p><a href="#fig-linear-model-limitation" class="quarto-xref">図&nbsp;<span>2.4</span></a> に、梁理論による曲面と、重回帰で学習された平面を重ねて 示します。</p>
-<div id="cell-fig-linear-model-limitation" class="cell" data-execution_count="8">
+<div id="cell-fig-linear-model-limitation" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Patch</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -914,7 +914,7 @@ x_1=\frac{P}{E},
 <section id="付録完全な実行コード" class="level2" data-number="2.10">
 <h2 data-number="2.10" class="anchored" data-anchor-id="付録完全な実行コード"><span class="header-section-number">2.10</span> 付録：完全な実行コード</h2>
 <p>本章で解説した重回帰の処理（複数荷重データの生成、行列計算・正規方程式によるパラメータ同定、および3次元回帰平面の可視化）を、単一のPythonファイル（<code>.py</code>）としてそのまま実行できる完全なコードです。</p>
-<div id="980add7c" class="cell" data-execution_count="9">
+<div id="abfbce08" class="cell" data-execution_count="10">
 <details class="code-fold">
 <summary>完全なPythonスクリプトを表示</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>

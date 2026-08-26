@@ -337,7 +337,7 @@ h=\phi(z)
 <li><strong>出力層</strong>：隠れ層の出力を組み合わせて予測値を計算する</li>
 </ul>
 <p><a href="#fig-mlp-architecture" class="quarto-xref">図&nbsp;<span>3.1</span></a> に、2入力、4隠れユニット、1出力のMLPを示します。</p>
-<div id="cell-fig-mlp-architecture" class="cell" data-execution_count="1">
+<div id="cell-fig-mlp-architecture" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
 <div id="fig-mlp-architecture" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -505,7 +505,7 @@ h_1 \\ h_2 \\ h_3 \\ h_4
 <h3 data-number="3.3.5" class="anchored" data-anchor-id="複数の隠れ層をもつ場合への拡張"><span class="header-section-number">3.3.5</span> 複数の隠れ層をもつ場合への拡張</h3>
 <p>ニューラルネットワークでは、表現力を高めるために隠れ層を2層以上重ねることが一般的です（一応、一説によると、隠れ層が2層以上あるものを深層学習モデルと呼ぶとかいう話もあります）。</p>
 <p><a href="#fig-deep-mlp-architecture" class="quarto-xref">図&nbsp;<span>3.2</span></a> に、2つの隠れ層をもつMLP（2入力、第1隠れ層4ユニット、第2隠れ層3ユニット、1出力）を示します。</p>
-<div id="cell-fig-deep-mlp-architecture" class="cell" data-execution_count="2">
+<div id="cell-fig-deep-mlp-architecture" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div id="fig-deep-mlp-architecture" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -567,7 +567,7 @@ h_1 \\ h_2 \\ h_3 \\ h_4
 \frac{d}{dz}\operatorname{ReLU}(z) = \begin{cases} 1 &amp; (z &gt; 0) \\ 0 &amp; (z &lt; 0) \end{cases}
 \]</span></p>
 <p><span class="math inline">\(z &gt; 0\)</span> の領域で微分が常に <span class="math inline">\(1\)</span> であるため、<strong>層を深く重ねても勾配が小さくなりにくく</strong>（特に層数の多いモデルを作ろうとすると、これがかなり重要だったりします）、現代の深層学習で標準的に用いられています。</p>
-<div id="cell-fig-activation-relu" class="cell" data-execution_count="3">
+<div id="cell-fig-activation-relu" class="cell" data-execution_count="4">
 <div class="cell-output cell-output-display">
 <div id="fig-activation-relu" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -591,7 +591,7 @@ h_1 \\ h_2 \\ h_3 \\ h_4
 \frac{d}{dz}\operatorname{sigmoid}(z) = \operatorname{sigmoid}(z)\left(1 - \operatorname{sigmoid}(z)\right)
 \]</span></p>
 <p>出力を <span class="math inline">\((0, 1)\)</span> の確率的な範囲に収めるため二値分類の出力層などで使われます。ただし、導関数の最大値が <span class="math inline">\(z=0\)</span> で <span class="math inline">\(0.25\)</span> であり、<span class="math inline">\(|z|\)</span> が大きい領域では導関数がほぼ <span class="math inline">\(0\)</span> になるため、多層化すると入力層へ向かうにつれて勾配が急激に減衰する<strong>勾配消失問題</strong>（vanishing gradient problem）を引き起こしやすい性質があります。</p>
-<div id="cell-fig-activation-sigmoid" class="cell" data-execution_count="4">
+<div id="cell-fig-activation-sigmoid" class="cell" data-execution_count="5">
 <div class="cell-output cell-output-display">
 <div id="fig-activation-sigmoid" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -615,7 +615,7 @@ h_1 \\ h_2 \\ h_3 \\ h_4
 \frac{d}{dz}\tanh(z) = 1 - \tanh^2(z)
 \tag{3.13}\]</span></span></p>
 <p>出力が <span class="math inline">\((-1, 1)\)</span> で原点対称（平均が0付近）となるため、シグモイド関数よりも勾配の伝播が安定しやすい利点があります。導関数の最大値は <span class="math inline">\(z=0\)</span> で <span class="math inline">\(1.0\)</span> ですが、<span class="math inline">\(|z|\)</span> が大きい領域（飽和領域）では導関数が <span class="math inline">\(0\)</span> に近づきます。本章の実装では、滑らかで原点対称な <code>tanh</code> を使用します（MLPの場合は、<code>tanh</code>が用いられることも多いです）。</p>
-<div id="cell-fig-activation-tanh" class="cell" data-execution_count="5">
+<div id="cell-fig-activation-tanh" class="cell" data-execution_count="6">
 <div class="cell-output cell-output-display">
 <div id="fig-activation-tanh" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -639,7 +639,7 @@ h_1 \\ h_2 \\ h_3 \\ h_4
 \frac{d}{dz}\operatorname{Swish}(z) = \operatorname{Swish}(z) + \operatorname{sigmoid}(z)\left(1 - \operatorname{Swish}(z)\right)
 \]</span></p>
 <p>Swish（PyTorchなどでは <strong>SiLU</strong>; Sigmoid Linear Unit とも呼ばれます）は、Googleの研究チームによって発見された活性化関数です。 ReLUと同様に <span class="math inline">\(z &gt; 0\)</span> で入力がそのまま伝わり勾配消失を防ぐ性質を持ちながら、<strong>原点付近で折れ曲がらず滑らかに微分可能</strong>であり、<span class="math inline">\(z &lt; 0\)</span> でわずかに負の値（最小値約 <span class="math inline">\(-0.28\)</span>）をとる<strong>非単調性</strong>（non-monotonicity）を持ちます。これにより多くの深層モデルでReLU以上の高い表現力と学習の安定性を発揮し、近年（LLaMAなどの大規模言語モデルや画像生成モデルなど）広く採用されています。</p>
-<div id="cell-fig-activation-swish" class="cell" data-execution_count="6">
+<div id="cell-fig-activation-swish" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div id="fig-activation-swish" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -792,7 +792,7 @@ b^{(2)} &amp;\leftarrow b^{(2)} - \eta \frac{\partial L}{\partial b^{(2)}}
 <section id="勾配降下法の直感的理解" class="level3" data-number="3.7.2">
 <h3 data-number="3.7.2" class="anchored" data-anchor-id="勾配降下法の直感的理解"><span class="header-section-number">3.7.2</span> 勾配降下法の直感的理解</h3>
 <p><a href="#fig-gradient-descent" class="quarto-xref">図&nbsp;<span>3.7</span></a> に、勾配降下法の直感的な概念図を示します。</p>
-<div id="cell-fig-gradient-descent" class="cell" data-execution_count="7">
+<div id="cell-fig-gradient-descent" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>描画コードを表示</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">8</span>))</span>
@@ -957,7 +957,7 @@ b^{(2)} &amp;\leftarrow b^{(2)} - \eta \frac{\partial L}{\partial b^{(2)}}
 <section id="データの作成" class="level3" data-number="3.8.1">
 <h3 data-number="3.8.1" class="anchored" data-anchor-id="データの作成"><span class="header-section-number">3.8.1</span> データの作成</h3>
 <p>荷重とヤング率を指定範囲内からランダムに生成し、梁理論から中央たわみを計算します。</p>
-<div id="1345e03e" class="cell" data-execution_count="8">
+<div id="3fa75fb0" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">600</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -980,7 +980,7 @@ b^{(2)} &amp;\leftarrow b^{(2)} - \eta \frac{\partial L}{\partial b^{(2)}}
 <section id="学習データとテストデータ" class="level3" data-number="3.8.2">
 <h3 data-number="3.8.2" class="anchored" data-anchor-id="学習データとテストデータ"><span class="header-section-number">3.8.2</span> 学習データとテストデータ</h3>
 <p>モデルの学習に使うデータと、学習後の性能を評価するデータを分けます。ここでは全データの 80%を学習データ、20%をテストデータとします。</p>
-<div id="3abf3f13" class="cell" data-execution_count="9">
+<div id="8f2abe92" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>indices <span class="op">=</span> rng.permutation(n_samples)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>n_train <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> n_samples)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>train_indices <span class="op">=</span> indices[:n_train]</span>
@@ -1009,7 +1009,7 @@ x'_{ij}
 \frac{x_{ij}-\mu_j}{\sigma_j}
 \]</span></p>
 <p>平均と標準偏差は学習データだけから計算します。テストデータに対しても、学習データから 得た平均と標準偏差を使用します。</p>
-<div id="005f2422" class="cell" data-execution_count="10">
+<div id="b926cc02" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X_mean <span class="op">=</span> X_train.mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>X_std <span class="op">=</span> X_train.std(axis<span class="op">=</span><span class="dv">0</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y_mean <span class="op">=</span> y_train.mean()</span>
@@ -1024,7 +1024,7 @@ x'_{ij}
 <section id="パラメータの初期化" class="level3" data-number="3.8.4">
 <h3 data-number="3.8.4" class="anchored" data-anchor-id="パラメータの初期化"><span class="header-section-number">3.8.4</span> パラメータの初期化</h3>
 <p>隠れユニット数を16とし、重みを小さな乱数、バイアスを0で初期化します。</p>
-<div id="4a5b6b3a" class="cell" data-execution_count="11">
+<div id="665e0b3d" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>input_dim <span class="op">=</span> <span class="dv">2</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>hidden_dim <span class="op">=</span> <span class="dv">16</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1046,7 +1046,7 @@ w2の形状: (16,)</code></pre>
 <section id="順伝播誤差逆伝播更新" class="level3" data-number="3.8.5">
 <h3 data-number="3.8.5" class="anchored" data-anchor-id="順伝播誤差逆伝播更新"><span class="header-section-number">3.8.5</span> 順伝播・誤差逆伝播・更新</h3>
 <p>全学習データを使って1回パラメータを更新する処理を1エポックとします。ここでは 50000エポック学習します。</p>
-<div id="3c90a348" class="cell" data-execution_count="12">
+<div id="c5487428" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">0.03</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>n_epochs <span class="op">=</span> <span class="dv">50000</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>loss_history <span class="op">=</span> []</span>
@@ -1104,7 +1104,7 @@ w2の形状: (16,)</code></pre>
 </section>
 <section id="学習曲線" class="level3" data-number="3.8.6">
 <h3 data-number="3.8.6" class="anchored" data-anchor-id="学習曲線"><span class="header-section-number">3.8.6</span> 学習曲線</h3>
-<div id="cell-fig-mlp-learning-curve" class="cell" data-execution_count="13">
+<div id="cell-fig-mlp-learning-curve" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ax.plot(np.arange(<span class="dv">1</span>, n_epochs <span class="op">+</span> <span class="dv">1</span>), loss_history)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"エポック"</span>)</span>
@@ -1130,7 +1130,7 @@ w2の形状: (16,)</code></pre>
 <section id="学習後の予測" class="level3" data-number="3.8.7">
 <h3 data-number="3.8.7" class="anchored" data-anchor-id="学習後の予測"><span class="header-section-number">3.8.7</span> 学習後の予測</h3>
 <p>順伝播を関数として定義し、標準化された予測値を元のたわみの単位へ戻します。</p>
-<div id="4009b62f" class="cell" data-execution_count="14">
+<div id="b4adf01a" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict_mlp(X_input):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    X_input_std <span class="op">=</span> (X_input <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    H <span class="op">=</span> np.tanh(X_input_std <span class="op">@</span> W1 <span class="op">+</span> b1)</span>
@@ -1155,7 +1155,7 @@ w2の形状: (16,)</code></pre>
 </section>
 <section id="mlpが学習した応答曲面" class="level3" data-number="3.8.8">
 <h3 data-number="3.8.8" class="anchored" data-anchor-id="mlpが学習した応答曲面"><span class="header-section-number">3.8.8</span> MLPが学習した応答曲面</h3>
-<div id="cell-fig-mlp-response-surface" class="cell" data-execution_count="15">
+<div id="cell-fig-mlp-response-surface" class="cell" data-execution_count="16">
 <details class="code-fold">
 <summary>描画コードを表示</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>P_surface, E_surface <span class="op">=</span> np.meshgrid(</span>
@@ -1235,7 +1235,7 @@ w2の形状: (16,)</code></pre>
 <p>しかし、層数が多い深層モデルや複雑なネットワークを扱う場合、手動で連鎖律の数式を導出して勾配を実装するのは非常に手間がかかり、バグの原因にもなります。現代の深層学習の実務や研究開発では、<strong>PyTorch</strong> などの深層学習フレームワークを使用するのが標準です。</p>
 <p>PyTorchの最大の特長は、<strong>自動微分（Autograd）機能</strong>を備えている点です。順伝播の計算フローを記述するだけで、損失関数の勾配計算（誤差逆伝播）を自動的に実行してくれます。</p>
 <p>ここでは、全く同じ梁のたわみ予測問題を PyTorch を用いて実装してみましょう。</p>
-<div id="d80c3bd2" class="cell" data-execution_count="16">
+<div id="aaef2c5c" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
@@ -1386,7 +1386,7 @@ w2の形状: (16,)</code></pre>
 <section id="付録完全な実行コード" class="level2" data-number="3.11">
 <h2 data-number="3.11" class="anchored" data-anchor-id="付録完全な実行コード"><span class="header-section-number">3.11</span> 付録：完全な実行コード</h2>
 <p>本章で解説した多層パーセプトロン（NumPyによるスクラッチ実装およびPyTorchによる実装、3次元応答曲面の可視化）を、単一のPythonファイル（<code>.py</code>）としてそのまま実行できる完全なコードです。</p>
-<div id="0ddfbf9f" class="cell" data-execution_count="17">
+<div id="bc07817c" class="cell" data-execution_count="18">
 <details class="code-fold">
 <summary>完全なPythonスクリプトを表示</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>

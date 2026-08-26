@@ -372,26 +372,103 @@ L(\boldsymbol{\theta}) = \lambda_{\text{PDE}} L_{\text{PDE}}(\boldsymbol{\theta}
 <p>各項の意味は次の通りです。</p>
 <section id="支配方程式からなる損失l_textpde" class="level3" data-number="4.4.1">
 <h3 data-number="4.4.1" class="anchored" data-anchor-id="支配方程式からなる損失l_textpde"><span class="header-section-number">4.4.1</span> 支配方程式からなる損失（<span class="math inline">\(L_{\text{PDE}}\)</span>）</h3>
-<p>解析領域 <span class="math inline">\(x \in (0, L)\)</span> 内に配置した <span class="math inline">\(N_f\)</span> 個の点（この点のことを<strong>Collocation points</strong>と呼びます） <span class="math inline">\(\{x_f^{(i)}\}_{i=1}^{N_f}\)</span> において、支配方程式の残差（residual）がゼロになる度合いを測ります。</p>
-<p>例えば、支配方程式が <span class="math inline">\(\mathcal{N}[u](x) = 0\)</span>（例: <span class="math inline">\(\frac{d^2 u}{dx^2} - f(x) = 0\)</span>）である場合、</p>
-<p><span id="eq-loss-pde"><span class="math display">\[
-L_{\text{PDE}}(\boldsymbol{\theta}) = \frac{1}{N_f} \sum_{i=1}^{N_f} \left| \mathcal{N}[\hat{u}](x_f^{(i)}) \right|^2
+<p>まず、解析領域内の<strong>ある1点</strong> <span class="math inline">\(x_f\)</span> だけを考えます。例として、未知の関数 <span class="math inline">\(u(x)\)</span> が</p>
+<p><span class="math display">\[
+\frac{d^2u}{dx^2}-f(x)=0
+\]</span></p>
+<p>という支配方程式を満たす問題を考えます。ニューラルネットワークが予測した関数を <span class="math inline">\(\hat{u}(x)\)</span> とし、自動微分で求めた <span class="math inline">\(d^2\hat{u}/dx^2\)</span> を支配方程式へ代入します。このとき、点 <span class="math inline">\(x_f\)</span> における<strong>残差（residual）</strong>を</p>
+<p><span id="eq-pde-residual-one-point"><span class="math display">\[
+r_{\boldsymbol{\theta}}(x_f)
+=
+\left.\frac{d^2\hat{u}}{dx^2}\right|_{x=x_f}
+-f(x_f)
 \tag{4.3}\]</span></span></p>
-<p>となります。</p>
+<p>と定義します。予測 <span class="math inline">\(\hat{u}\)</span> がこの点で支配方程式を完全に満たしていれば、残差は <span class="math inline">\(r_{\boldsymbol{\theta}}(x_f)=0\)</span> になります。そこで、まず1点に対する物理損失を残差の二乗</p>
+<p><span id="eq-loss-pde-one-point"><span class="math display">\[
+\ell_{\text{PDE}}(x_f)
+=
+r_{\boldsymbol{\theta}}(x_f)^2
+\tag{4.4}\]</span></span></p>
+<p>で表します。つまり、PINNでは次の処理を行っています。</p>
+<ol type="1">
+<li>ニューラルネットワークから <span class="math inline">\(\hat{u}(x_f)\)</span> を求める。</li>
+<li>自動微分から <span class="math inline">\(d^2\hat{u}/dx^2\)</span> を求める。</li>
+<li>支配方程式へ代入し、0からのずれを二乗する。</li>
+</ol>
+<p>ただし、1点だけで残差が0になっても、領域全体で支配方程式を満たしているとはいえません。そのため、実際には解析領域 <span class="math inline">\(x\in(0,L)\)</span> 内に <span class="math inline">\(N_f\)</span> 個の点</p>
+<p><span class="math display">\[
+x_f^{(1)},\ x_f^{(2)},\ \ldots,\ x_f^{(N_f)}
+\]</span></p>
+<p>を配置します。これらを<strong>コロケーション点（collocation points）</strong>と呼びます。各点で <a href="#eq-loss-pde-one-point" class="quarto-xref">式&nbsp;<span>4.4</span></a> を計算し、その合計を点の数 <span class="math inline">\(N_f\)</span> で割った平均を、支配方程式からなる損失とします。</p>
+<p><span id="eq-loss-pde"><span class="math display">\[
+L_{\text{PDE}}(\boldsymbol{\theta})
+=
+\frac{1}{N_f}
+\sum_{i=1}^{N_f}
+r_{\boldsymbol{\theta}}\!\left(x_f^{(i)}\right)^2
+\tag{4.5}\]</span></span></p>
+<p>したがって、<span class="math inline">\(L_{\text{PDE}}\)</span> を小さくすることは、領域内の多数の点で支配方程式の左辺を0に近づけることを意味します。一般に、支配方程式を微分演算子 <span class="math inline">\(\mathcal{D}\)</span> を用いて <span class="math inline">\(\mathcal{D}[u](x)=0\)</span> と書く場合は、残差を <span class="math inline">\(r_{\boldsymbol{\theta}}(x_f)=\mathcal{D}[\hat{u}](x_f)\)</span> と表せます。</p>
+<p>後述する梁の例では、1点 <span class="math inline">\(x_f\)</span> における残差は具体的に</p>
+<p><span class="math display">\[
+r_{\boldsymbol{\theta}}(x_f)
+=
+\left.\frac{d^2\hat{u}}{dx^2}\right|_{x=x_f}
++\frac{q}{2EI}x_f(L-x_f)
+\]</span></p>
+<p>となり、この値の二乗を多数のコロケーション点について平均します。</p>
 </section>
 <section id="境界条件損失l_textbc" class="level3" data-number="4.4.2">
 <h3 data-number="4.4.2" class="anchored" data-anchor-id="境界条件損失l_textbc"><span class="header-section-number">4.4.2</span> 境界条件損失（<span class="math inline">\(L_{\text{BC}}\)</span>）</h3>
-<p>境界点（例えば長さ <span class="math inline">\(L\)</span> の梁であれば、両端 <span class="math inline">\(x=0, L\)</span>）において、所定の境界値 <span class="math inline">\(u_{\text{bc}}\)</span> を満たす度合いを測ります（境界条件や初期条件については、後述の例題のように、厳密に課してしまって、損失の計算をしないことも最近はよくやられています）。</p>
+<p>まず、ある1つの境界点 <span class="math inline">\(x_b\)</span> を考えます。その点でニューラルネットワークの予測値 <span class="math inline">\(\hat{u}(x_b)\)</span> が、指定された境界値 <span class="math inline">\(u_{\text{bc}}(x_b)\)</span> からどれだけずれているかを</p>
+<p><span id="eq-bc-residual-one-point"><span class="math display">\[
+b_{\boldsymbol{\theta}}(x_b)
+=
+\hat{u}(x_b)-u_{\text{bc}}(x_b)
+\tag{4.6}\]</span></span></p>
+<p>と表します。このずれを二乗した</p>
+<p><span id="eq-loss-bc-one-point"><span class="math display">\[
+\ell_{\text{BC}}(x_b)
+=
+b_{\boldsymbol{\theta}}(x_b)^2
+\tag{4.7}\]</span></span></p>
+<p>が、1点に対する境界条件損失です。この値が <span class="math inline">\(0\)</span> であれば、その点では境界条件を満たしています。</p>
+<p>実際には、<span class="math inline">\(N_b\)</span> 個の境界点 <span class="math inline">\(x_b^{(1)},\ldots,x_b^{(N_b)}\)</span> を用意し、各点で求めた損失を平均します。</p>
 <p><span id="eq-loss-bc"><span class="math display">\[
-L_{\text{BC}}(\boldsymbol{\theta}) = \frac{1}{N_b} \sum_{j=1}^{N_b} \left( \hat{u}(x_b^{(j)}) - u_{\text{bc}}(x_b^{(j)}) \right)^2
-\tag{4.4}\]</span></span></p>
+L_{\text{BC}}(\boldsymbol{\theta})
+=
+\frac{1}{N_b}\sum_{j=1}^{N_b}
+b_{\boldsymbol{\theta}}\!\left(x_b^{(j)}\right)^2
+\tag{4.8}\]</span></span></p>
+<p>例えば、長さ <span class="math inline">\(L\)</span> の単純支持梁で <span class="math inline">\(u(0)=u(L)=0\)</span> を課す場合は <span class="math inline">\(N_b=2\)</span> であり、</p>
+<p><span class="math display">\[
+L_{\text{BC}}(\boldsymbol{\theta})
+=
+\frac{1}{2}\left\{\hat{u}(0)^2+\hat{u}(L)^2\right\}
+\]</span></p>
+<p>となります。なお、後述の例題のように、試行関数の形を工夫して境界条件や初期条件を厳密に満たす場合は、この損失を設ける必要はありません。</p>
 </section>
 <section id="データ損失l_textdata" class="level3" data-number="4.4.3">
 <h3 data-number="4.4.3" class="anchored" data-anchor-id="データ損失l_textdata"><span class="header-section-number">4.4.3</span> データ損失（<span class="math inline">\(L_{\text{data}}\)</span>）</h3>
-<p>実験やセンサー計測による観測データ点 <span class="math inline">\(\{(x_d^{(k)}, y_d^{(k)})\}_{k=1}^{N_d}\)</span> が利用可能な場合、その二乗誤差を加えます（観測データがない純粋な順問題の場合は@eq-pinn-total-loss の <span class="math inline">\(L_{\text{data}}\)</span> 項は不要です）。</p>
+<p>次に、ある1つの観測データ <span class="math inline">\((x_d,y_d)\)</span> を考えます。ここで、<span class="math inline">\(x_d\)</span> は観測位置、<span class="math inline">\(y_d\)</span> はその位置で実験やセンサーから得られた値です。予測値と観測値のずれを</p>
+<p><span id="eq-data-residual-one-point"><span class="math display">\[
+e_{\boldsymbol{\theta}}(x_d)
+=
+\hat{u}(x_d)-y_d
+\tag{4.9}\]</span></span></p>
+<p>と表すと、1点に対するデータ損失は</p>
+<p><span id="eq-loss-data-one-point"><span class="math display">\[
+\ell_{\text{data}}(x_d)
+=
+e_{\boldsymbol{\theta}}(x_d)^2
+\tag{4.10}\]</span></span></p>
+<p>です。観測データが <span class="math inline">\(N_d\)</span> 点ある場合は、各点の損失を平均して</p>
 <p><span id="eq-loss-data"><span class="math display">\[
-L_{\text{data}}(\boldsymbol{\theta}) = \frac{1}{N_d} \sum_{k=1}^{N_d} \left( \hat{u}(x_d^{(k)}) - y_d^{(k)} \right)^2
-\tag{4.5}\]</span></span></p>
+L_{\text{data}}(\boldsymbol{\theta})
+=
+\frac{1}{N_d}\sum_{k=1}^{N_d}
+e_{\boldsymbol{\theta}}\!\left(x_d^{(k)}\right)^2
+\tag{4.11}\]</span></span></p>
+<p>とします。観測データがない純粋な順問題では、<a href="#eq-pinn-total-loss" class="quarto-xref">式&nbsp;<span>4.2</span></a> の <span class="math inline">\(L_{\text{data}}\)</span> 項は不要です。</p>
 <p>重み係数 <span class="math inline">\(\lambda_{\text{PDE}}, \lambda_{\text{BC}}, \lambda_{\text{data}}\)</span> は、各損失項のスケールを調整するハイパーパラメータです。</p>
 <hr>
 </section>
@@ -419,15 +496,15 @@ EI \frac{d^2 u}{dx^2} = -M(x)
 <p>支点反力とつり合いから、断面の曲げモーメントは <span class="math inline">\(M(x) = \frac{q}{2} x (L - x)\)</span> であるため、解くべき支配方程式は</p>
 <p><span id="eq-beam-ode"><span class="math display">\[
 \frac{d^2 u}{dx^2} + \frac{q}{2EI} x (L - x) = 0 \qquad (0 &lt; x &lt; L)
-\tag{4.6}\]</span></span></p>
+\tag{4.12}\]</span></span></p>
 <p>となります。境界条件は、左端と右端で変位が拘束されているため、</p>
 <p><span id="eq-beam-bc"><span class="math display">\[
 u(0) = 0, \qquad u(L) = 0
-\tag{4.7}\]</span></span></p>
+\tag{4.13}\]</span></span></p>
 <p>です。この問題の厳密な理論解は、</p>
 <p><span id="eq-beam-exact"><span class="math display">\[
 u_{\text{exact}}(x) = \frac{q x}{24 EI} \left( L^3 - 2Lx^2 + x^3 \right)
-\tag{4.8}\]</span></span></p>
+\tag{4.14}\]</span></span></p>
 <p>となります。</p>
 </section>
 <section id="境界条件の厳密な埋め込み距離関数法-hard-constraints" class="level3" data-number="4.5.2">
@@ -444,7 +521,7 @@ D(x) = x(L - x)
 <p>を用い、ネットワークの予測解 <span class="math inline">\(\hat{u}(x)\)</span> を次のように定義します。</p>
 <p><span id="eq-hard-bc"><span class="math display">\[
 \hat{u}(x) = x(L - x) \cdot \text{NN}(x; \boldsymbol{\theta})
-\tag{4.9}\]</span></span></p>
+\tag{4.15}\]</span></span></p>
 <p>このとき、</p>
 <ul>
 <li><span class="math inline">\(x = 0\)</span> において： <span class="math inline">\(\hat{u}(0) = 0 \cdot (L - 0) \cdot \text{NN}(0) = 0\)</span></li>
@@ -460,7 +537,7 @@ D(x) = x(L - x)
 <li>等分布荷重 <span class="math inline">\(q = 10.0\ \mathrm{kN/m} = 1.0 \times 10^4\ \mathrm{N/m}\)</span></li>
 <li>曲げ剛性 <span class="math inline">\(EI = 1.0 \times 10^4\ \mathrm{kN\cdot m^2} = 1.0 \times 10^7\ \mathrm{N\cdot m^2}\)</span></li>
 </ul>
-<div id="0635e7cf" class="cell" data-execution_count="1">
+<div id="91323faf" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
@@ -477,7 +554,7 @@ D(x) = x(L - x)
 <section id="ネットワークの定義距離関数の組み込み" class="level4" data-number="4.5.3.1">
 <h4 data-number="4.5.3.1" class="anchored" data-anchor-id="ネットワークの定義距離関数の組み込み"><span class="header-section-number">4.5.3.1</span> ネットワークの定義（距離関数の組み込み）</h4>
 <p>活性化関数には、2階微分を計算しても滑らかに勾配が残る <code>tanh</code> を使用します。 <code>forward</code> メソッド内で距離関数 <span class="math inline">\(x(L - x)\)</span> を掛けることで、境界条件を厳密に保証します。</p>
-<div id="e5321ec7" class="cell" data-execution_count="2">
+<div id="4fe52f9e" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BeamPINN(nn.Module):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, L<span class="op">=</span><span class="fl">5.0</span>, hidden_dim<span class="op">=</span><span class="dv">64</span>, num_layers<span class="op">=</span><span class="dv">4</span>):</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
@@ -500,7 +577,7 @@ D(x) = x(L - x)
 <section id="コロケーション点の設定" class="level4" data-number="4.5.3.2">
 <h4 data-number="4.5.3.2" class="anchored" data-anchor-id="コロケーション点の設定"><span class="header-section-number">4.5.3.2</span> コロケーション点の設定</h4>
 <p>境界条件はモデル構造により自動的に満たされるため、境界点を損失関数で評価する必要はありません。領域内部のコロケーション点のみを配置します。</p>
-<div id="bedcd127" class="cell" data-execution_count="3">
+<div id="601f5d9b" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 領域内のコロケーション点（30点、勾配追跡を有効化）</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>N_f <span class="op">=</span> <span class="dv">30</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>x_f <span class="op">=</span> torch.linspace(<span class="fl">0.01</span>, L <span class="op">-</span> <span class="fl">0.01</span>, N_f, dtype<span class="op">=</span>torch.float32).unsqueeze(<span class="dv">1</span>)</span>
@@ -542,7 +619,7 @@ D(x) = x(L - x)
 <section id="自動微分を用いた損失関数の計算と学習" class="level4" data-number="4.5.3.3">
 <h4 data-number="4.5.3.3" class="anchored" data-anchor-id="自動微分を用いた損失関数の計算と学習"><span class="header-section-number">4.5.3.3</span> 自動微分を用いた損失関数の計算と学習</h4>
 <p>境界条件損失 <span class="math inline">\(L_{\text{BC}}\)</span> が不要なため、支配方程式残差 <span class="math inline">\(L_{\text{PDE}}\)</span> のみを最小化します。</p>
-<div id="1c7fc07a" class="cell" data-execution_count="4">
+<div id="d7f52fc1" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> optim.Adam(pinn_model.parameters(), lr<span class="op">=</span><span class="fl">0.001</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>n_epochs <span class="op">=</span> <span class="dv">50000</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>loss_history <span class="op">=</span> []</span>
@@ -582,7 +659,7 @@ D(x) = x(L - x)
 <section id="損失関数の推移の可視化" class="level4" data-number="4.5.3.4">
 <h4 data-number="4.5.3.4" class="anchored" data-anchor-id="損失関数の推移の可視化"><span class="header-section-number">4.5.3.4</span> 損失関数の推移の可視化</h4>
 <p>損失関数を学習過程で記録し、学習の収束を確認します。</p>
-<div id="cell-fig-pinn-forward-loss" class="cell" data-execution_count="5">
+<div id="cell-fig-pinn-forward-loss" class="cell" data-execution_count="6">
 <details class="code-fold">
 <summary>描画コードを表示</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -623,7 +700,7 @@ D(x) = x(L - x)
 </section>
 <section id="学習結果の検証とプロット" class="level4" data-number="4.5.3.5">
 <h4 data-number="4.5.3.5" class="anchored" data-anchor-id="学習結果の検証とプロット"><span class="header-section-number">4.5.3.5</span> 学習結果の検証とプロット</h4>
-<div id="cell-fig-pinn-forward-result" class="cell" data-execution_count="6">
+<div id="cell-fig-pinn-forward-result" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>描画コードを表示</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>x_test <span class="op">=</span> torch.linspace(<span class="dv">0</span>, L, <span class="dv">100</span>, dtype<span class="op">=</span>torch.float32).unsqueeze(<span class="dv">1</span>)</span>
@@ -695,7 +772,7 @@ PINNによる最大たわみ: 8.1363 mm
 <section id="逆問題のpytorch実装" class="level3" data-number="4.6.2">
 <h3 data-number="4.6.2" class="anchored" data-anchor-id="逆問題のpytorch実装"><span class="header-section-number">4.6.2</span> 逆問題のPyTorch実装</h3>
 <p>未知パラメータ <span class="math inline">\(EI\)</span> を <code>nn.Parameter</code> として定義し、ニューラルネットワークの重みと一緒に勾配降下法で最適化します。 ここでも <code>BeamPINN</code> を使用するため、境界条件は自動的に満たされ、<span class="math inline">\(L_{\text{BC}}\)</span> は不要です。</p>
-<div id="d0d5dddd" class="cell" data-execution_count="7">
+<div id="40cc5cea" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 未知パラメータEIを学習対象として定義（初期値: 0.3e7）</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>log_EI <span class="op">=</span> nn.Parameter(torch.tensor([np.log(<span class="fl">0.3e7</span>)], dtype<span class="op">=</span>torch.float32))</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -751,7 +828,7 @@ PINNによる最大たわみ: 8.1363 mm
 </div>
 <section id="推定過程の可視化" class="level4" data-number="4.6.2.1">
 <h4 data-number="4.6.2.1" class="anchored" data-anchor-id="推定過程の可視化"><span class="header-section-number">4.6.2.1</span> 推定過程の可視化</h4>
-<div id="cell-fig-pinn-inverse-result" class="cell" data-execution_count="8">
+<div id="cell-fig-pinn-inverse-result" class="cell" data-execution_count="9">
 <details class="code-fold">
 <summary>描画コードを表示</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="fl">6.2</span>, <span class="fl">3.6</span>))</span>
@@ -825,18 +902,18 @@ PINNによる最大たわみ: 8.1363 mm
 <p>膜の面外たわみ <span class="math inline">\(u(x, y)\)</span>（鉛直下向きを正）が満たす支配方程式は、以下の<strong>2次元ポアソン方程式</strong>で表すことができます。</p>
 <p><span id="eq-membrane-pde"><span class="math display">\[
 \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = -\frac{q}{T} \qquad ((x, y) \in \Omega)
-\tag{4.10}\]</span></span></p>
+\tag{4.16}\]</span></span></p>
 <p>境界条件は、4辺すべてで枠に固定されている（たわみゼロ）とします。</p>
 <p><span id="eq-membrane-bc"><span class="math display">\[
 \begin{aligned}
 u(0, y) &amp;= u(a, y) = 0 \quad (0 \le y \le b) \\
 u(x, 0) &amp;= u(x, b) = 0 \quad (0 \le x \le a)
 \end{aligned}
-\tag{4.11}\]</span></span></p>
+\tag{4.17}\]</span></span></p>
 <p>この問題の理論解は、次式で与えられます（この解とPINNで解いた解が一致するかを確認しましょう）。</p>
 <p><span id="eq-membrane-exact"><span class="math display">\[
 u_{\text{exact}}(x, y) = \sum_{m=1,3,5,\dots}^{\infty} \sum_{n=1,3,5,\dots}^{\infty} A_{mn} \sin\left(\frac{m\pi x}{a}\right) \sin\left(\frac{n\pi y}{b}\right)
-\tag{4.12}\]</span></span></p>
+\tag{4.18}\]</span></span></p>
 <p><span class="math display">\[
 A_{mn} = \frac{16 q}{\pi^4 T m n \left[ \left(\frac{m}{a}\right)^2 + \left(\frac{n}{b}\right)^2 \right]}
 \]</span></p>
@@ -870,8 +947,8 @@ L_{\text{PDE}} = \frac{1}{N_f} \sum_{i=1}^{N_f} \left( \frac{\partial^2 \hat{u}}
 </section>
 <section id="学習と3次元曲面プロット" class="level4" data-number="4.9.2.4">
 <h4 data-number="4.9.2.4" class="anchored" data-anchor-id="学習と3次元曲面プロット"><span class="header-section-number">4.9.2.4</span> 学習と3次元曲面プロット</h4>
-<p>学習後、領域全体のたわみ曲面 <span class="math inline">\(\hat{u}(x, y)\)</span> を3Dサーフェスプロットまたは等高線（Contour）で可視化し、理論解 <a href="#eq-membrane-exact" class="quarto-xref">式&nbsp;<span>4.12</span></a> と比較してください。 なお、理論解はフーリエ級数をモード次数15まで計算して近似しましょう。これだけは書いておくので、参考ください（この関数に、xとyの値を入力すれば、理論解が得られます）。</p>
-<div id="61db454e" class="cell" data-execution_count="9">
+<p>学習後、領域全体のたわみ曲面 <span class="math inline">\(\hat{u}(x, y)\)</span> を3Dサーフェスプロットまたは等高線（Contour）で可視化し、理論解 <a href="#eq-membrane-exact" class="quarto-xref">式&nbsp;<span>4.18</span></a> と比較してください。 なお、理論解はフーリエ級数をモード次数15まで計算して近似しましょう。これだけは書いておくので、参考ください（この関数に、xとyの値を入力すれば、理論解が得られます）。</p>
+<div id="2e5c7038" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 理論解（フーリエ級数をモード次数15まで計算）</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> exact_membrane(x, y, n_terms<span class="op">=</span><span class="dv">15</span>):</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> np.zeros_like(x)</span>
@@ -887,7 +964,7 @@ L_{\text{PDE}} = \frac{1}{N_f} \sum_{i=1}^{N_f} \left( \frac{\partial^2 \hat{u}}
 <section id="解答実装例" class="level3" data-number="4.9.3">
 <h3 data-number="4.9.3" class="anchored" data-anchor-id="解答実装例"><span class="header-section-number">4.9.3</span> 解答・実装例</h3>
 <p>解答例は、以下のようになりますが、できれば見ずに書けるようになると良いかと思います。 ただ、最初は行き詰ってしまうこともあるかと思うので、その場合は参考にしてください。</p>
-<div class="cell" data-execution_count="10">
+<div class="cell" data-execution_count="11">
 <details class="code-fold">
 <summary>演習課題の解答コードを表示</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
@@ -1043,7 +1120,7 @@ L_{\text{PDE}} = \frac{1}{N_f} \sum_{i=1}^{N_f} \left( \frac{\partial^2 \hat{u}}
 中央部の最大たわみ（PINN）  : 29.4533 mm
 最大予測誤差                : 0.062438 mm</code></pre>
 </div>
-<div id="fig-membrane-pinn-result" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="10">
+<div id="fig-membrane-pinn-result" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="11">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-membrane-pinn-result-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
@@ -1084,7 +1161,7 @@ L_{\text{PDE}} = \frac{1}{N_f} \sum_{i=1}^{N_f} \left( \frac{\partial^2 \hat{u}}
 <section id="付録完全な実行コード" class="level2" data-number="4.10">
 <h2 data-number="4.10" class="anchored" data-anchor-id="付録完全な実行コード"><span class="header-section-number">4.10</span> 付録：完全な実行コード</h2>
 <p>本章で解説した Physics-Informed Neural Networks（順問題による梁のたわみ解析、逆問題による曲げ剛性 <span class="math inline">\(EI\)</span> の同定）を、単一のPythonファイル（<code>.py</code>）としてそのまま実行できる完全なコードです。</p>
-<div id="759b33b8" class="cell" data-execution_count="11">
+<div id="9c2fc73e" class="cell" data-execution_count="12">
 <details class="code-fold">
 <summary>完全なPythonスクリプトを表示</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
