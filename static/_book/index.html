@@ -164,6 +164,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">重回帰</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/03-multilayer-perceptron.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">多層パーセプトロン</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./chapters/04-physics-informed-neural-networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Physics-Informed Neural Networks</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -221,11 +233,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>グラフによる確認</li>
 <li>より複雑なモデルへの拡張</li>
 </ol>
-<p>最初に単回帰を取り上げ、その後、重回帰、ニューラルネットワーク、 誤差逆伝播へと進みます。</p>
+<p>最初に単回帰を取り上げ、その後、重回帰、ニューラルネットワーク、 誤差逆伝播、そして物理法則を融合した Physics-Informed Neural Networks (PINN) へと進みます。</p>
 <section id="実行環境" class="level2">
 <h2 class="anchored" data-anchor-id="実行環境">実行環境</h2>
-<p>本文中のコードはPythonで記述します。数値計算にはNumPy、 グラフの描画にはMatplotlibを使用します。</p>
-<div id="7d3ce235" class="cell" data-execution_count="1">
+<p>本文中のコードはPythonで記述します。数値計算にはNumPy、 グラフの描画にはMatplotlib、深層学習や自動微分にはPyTorchを使用します。</p>
+<div id="95b18a73" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Python </span><span class="sc">{</span>sys<span class="sc">.</span>version_info<span class="sc">.</span>major<span class="sc">}</span><span class="ss">.</span><span class="sc">{</span>sys<span class="sc">.</span>version_info<span class="sc">.</span>minor<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>

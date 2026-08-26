@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,13 +12,10 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
+code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: 1.5em;}
-div.column{flex: auto;}
-@media screen {
-div.columns{gap: min(4vw, 1.5em);}
-div.column{overflow-x: auto;}
-}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -79,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-cdb0db408418ad9d86fa88eebd80e6d4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-3eceaf82ce6a16ee02925bf124246cb7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -112,7 +109,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -202,6 +199,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">多層パーセプトロン</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-physics-informed-neural-networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Physics-Informed Neural Networks</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -227,6 +230,7 @@ window.Quarto = {
   <li><a href="#最小二乗解と回帰結果" id="toc-最小二乗解と回帰結果" class="nav-link" data-scroll-target="#最小二乗解と回帰結果"><span class="header-section-number">1.5.4</span> 最小二乗解と回帰結果</a></li>
   </ul></li>
   <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ"><span class="header-section-number">1.6</span> まとめ</a></li>
+  <li><a href="#付録完全な実行コード" id="toc-付録完全な実行コード" class="nav-link" data-scroll-target="#付録完全な実行コード"><span class="header-section-number">1.7</span> 付録：完全な実行コード</a></li>
   </ul>
 </nav>
     </div>
@@ -445,7 +449,7 @@ b^*=\bar{y}-w^*\bar{x}
 </tr>
 </tbody>
 </table>
-<p>このとき、<span class="math inline">\(w\)</span> は梁のたわみやすさ、すなわち柔性に相当します。理想化した理論式では <span class="math inline">\(b=0\)</span> ですが、実験では初期たわみ、変位計のゼロ点誤差などにより、 推定された切片が0にならない場合があります。</p>
+<p>このとき、<span class="math inline">\(w\)</span> は梁のたわみやすさに相当します。理想化した理論式では <span class="math inline">\(b=0\)</span> ですが、実験では初期たわみ、変位計のゼロ点誤差などにより、 推定された切片が0にならない場合があります。</p>
 <section id="物性値と観測データの作成" class="level3" data-number="1.5.1">
 <h3 data-number="1.5.1" class="anchored" data-anchor-id="物性値と観測データの作成"><span class="header-section-number">1.5.1</span> 物性値と観測データの作成</h3>
 <p>載荷実験を模擬するため、鋼製の単純支持梁を想定し、材料特性と断面寸法を次のように 設定します。</p>
@@ -459,7 +463,7 @@ b^*=\bar{y}-w^*\bar{x}
 </thead>
 <tbody>
 <tr class="odd">
-<td>Young率</td>
+<td>ヤング率</td>
 <td><span class="math inline">\(E\)</span></td>
 <td><span class="math inline">\(205\ \mathrm{GPa}\)</span></td>
 </tr>
@@ -481,7 +485,7 @@ b^*=\bar{y}-w^*\bar{x}
 </tbody>
 </table>
 <p>矩形断面の断面二次モーメントは <span class="math inline">\(I=BH^3/12\)</span> です。これらの物性値と寸法を用いて 理論たわみを計算し、そこへ平均0、標準偏差 <span class="math inline">\(0.03\ \mathrm{mm}\)</span> の正規分布に従う 測定誤差を加えて観測データを模擬したデータを作成します。</p>
-<div id="f2507dac" class="cell" data-execution_count="2">
+<div id="483cdd19" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 梁の物性値と寸法</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>young_modulus <span class="op">=</span> <span class="fl">205e9</span>       <span class="co"># Young率 [Pa]</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>span_length <span class="op">=</span> <span class="fl">3.0</span>           <span class="co"># 支間長 [m]</span></span>
@@ -542,7 +546,7 @@ b^*=\bar{y}-w^*\bar{x}
 <section id="回帰係数と切片を変化させた場合の損失関数" class="level3" data-number="1.5.3">
 <h3 data-number="1.5.3" class="anchored" data-anchor-id="回帰係数と切片を変化させた場合の損失関数"><span class="header-section-number">1.5.3</span> 回帰係数と切片を変化させた場合の損失関数</h3>
 <p>次に、<span class="math inline">\(w\)</span> と <span class="math inline">\(b\)</span> の両方を変化させます。この場合、入力となるパラメータが2つ、出力となる 損失が1つであるため、損失関数 <span class="math inline">\(L(w,b)\)</span> を3次元曲面として表現できます。</p>
-<div id="b18770f1" class="cell" data-execution_count="5">
+<div id="434204e1" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 最小二乗解</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x_mean <span class="op">=</span> np.mean(x)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>y_mean <span class="op">=</span> np.mean(y)</span>
@@ -570,7 +574,7 @@ b^*=\bar{y}-w^*\bar{x}
 <section id="最小二乗解と回帰結果" class="level3" data-number="1.5.4">
 <h3 data-number="1.5.4" class="anchored" data-anchor-id="最小二乗解と回帰結果"><span class="header-section-number">1.5.4</span> 最小二乗解と回帰結果</h3>
 <p><a href="#eq-optimal-slope" class="quarto-xref">式&nbsp;<span>1.6</span></a> と <a href="#eq-optimal-intercept" class="quarto-xref">式&nbsp;<span>1.7</span></a> から得られたパラメータとMSEを確認します。</p>
-<div id="12c0b142" class="cell" data-execution_count="7">
+<div id="fecb7a69" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最適な回帰係数 w*: </span><span class="sc">{</span>w_opt<span class="sc">:.5f}</span><span class="ss"> mm/kN"</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最適な切片 b*: </span><span class="sc">{</span>b_opt<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最小MSE: </span><span class="sc">{</span>mse_opt<span class="sc">:.6f}</span><span class="ss"> mm²"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
@@ -609,6 +613,88 @@ b^*=\bar{y}-w^*\bar{x}
 <li>学習の目的は、損失関数を最小化するパラメータを求めることである。</li>
 <li>単回帰では、MSEを <span class="math inline">\(w\)</span> と <span class="math inline">\(b\)</span> で偏微分することで最適なパラメータを解析的に求められる。</li>
 </ul>
+<hr>
+</section>
+<section id="付録完全な実行コード" class="level2" data-number="1.7">
+<h2 data-number="1.7" class="anchored" data-anchor-id="付録完全な実行コード"><span class="header-section-number">1.7</span> 付録：完全な実行コード</h2>
+<p>本章で解説した一連の処理（観測データの生成、理論値の計算、解析的な最小二乗法のパラメータ推定、および結果の可視化）を、単一のPythonファイル（<code>.py</code>）としてそのまま実行できるようにまとめた完全なコードです。</p>
+<div id="097e92cc" class="cell" data-execution_count="9">
+<details class="code-fold">
+<summary>完全なPythonスクリプトを表示</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"Noto Sans CJK JP"</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 梁の諸元と理論値の計算</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>span_length <span class="op">=</span> <span class="fl">3.0</span>  <span class="co"># 支間長 L [m]</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>young_modulus <span class="op">=</span> <span class="fl">205e9</span>  <span class="co"># Young率 E [Pa]</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>section_width <span class="op">=</span> <span class="fl">0.10</span>        <span class="co"># 断面幅 [m]</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>section_height <span class="op">=</span> <span class="fl">0.20</span>       <span class="co"># 断面高さ [m]</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>second_moment <span class="op">=</span> section_width <span class="op">*</span> section_height<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> <span class="dv">12</span>  <span class="co"># [m^4]</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 集中荷重 P [kN] に対する中央たわみ delta [mm] の理論上の傾き w [mm/kN]</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="co"># delta = (P * 10^3 * L^3) / (48 * E * I) * 10^3 = (L^3 / (48 * E * I)) * 10^6 * P</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>w_theory <span class="op">=</span> (span_length<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> young_modulus <span class="op">*</span> second_moment)) <span class="op">*</span> <span class="fl">1e6</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>b_theory <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"理論上の回帰係数 w: </span><span class="sc">{</span>w_theory<span class="sc">:.5f}</span><span class="ss"> mm/kN"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"理論上の切片 b:     </span><span class="sc">{</span>b_theory<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 観測データの生成（人工データ）</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">42</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 集中荷重 P [kN]</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">11</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co"># 梁理論による中央たわみ + 測定誤差ノイズ</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>noise <span class="op">=</span> rng.normal(<span class="fl">0.0</span>, <span class="fl">0.03</span>, size<span class="op">=</span>x.size)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> w_theory <span class="op">*</span> x <span class="op">+</span> noise</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 最小二乗法によるパラメータの最適化（解析解）</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>x_mean <span class="op">=</span> np.mean(x)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>y_mean <span class="op">=</span> np.mean(y)</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a><span class="co"># 最適な傾き w* と切片 b*</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>w_opt <span class="op">=</span> np.<span class="bu">sum</span>((x <span class="op">-</span> x_mean) <span class="op">*</span> (y <span class="op">-</span> y_mean)) <span class="op">/</span> np.<span class="bu">sum</span>((x <span class="op">-</span> x_mean) <span class="op">**</span> <span class="dv">2</span>)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>b_opt <span class="op">=</span> y_mean <span class="op">-</span> w_opt <span class="op">*</span> x_mean</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 予測値と平均二乗誤差（MSE）</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> w_opt <span class="op">*</span> x <span class="op">+</span> b_opt</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>mse_opt <span class="op">=</span> np.mean((y <span class="op">-</span> y_pred) <span class="op">**</span> <span class="dv">2</span>)</span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- 単回帰の学習結果 ---"</span>)</span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"推定された回帰係数 w*: </span><span class="sc">{</span>w_opt<span class="sc">:.5f}</span><span class="ss"> mm/kN (理論値との誤差: </span><span class="sc">{</span><span class="bu">abs</span>(w_opt <span class="op">-</span> w_theory)<span class="sc">:.5f}</span><span class="ss">)"</span>)</span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"推定された切片 b*:     </span><span class="sc">{</span>b_opt<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"最小平均二乗誤差 MSE:  </span><span class="sc">{</span>mse_opt<span class="sc">:.6f}</span><span class="ss"> mm^2"</span>)</span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 結果のプロット</span></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>x_line <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">52</span>, <span class="dv">200</span>)</span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>y_line_fitted <span class="op">=</span> w_opt <span class="op">*</span> x_line <span class="op">+</span> b_opt</span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>y_line_theory <span class="op">=</span> w_theory <span class="op">*</span> x_line</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="fl">7.5</span>, <span class="fl">4.8</span>))</span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>plt.scatter(x, y, color<span class="op">=</span><span class="st">"tab:blue"</span>, s<span class="op">=</span><span class="dv">45</span>, label<span class="op">=</span><span class="st">"観測データ"</span>)</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>plt.plot(x_line, y_line_fitted, color<span class="op">=</span><span class="st">"tab:orange"</span>, linewidth<span class="op">=</span><span class="fl">2.0</span>, label<span class="op">=</span><span class="ss">f"回帰直線 (w=</span><span class="sc">{</span>w_opt<span class="sc">:.4f}</span><span class="ss">, b=</span><span class="sc">{</span>b_opt<span class="sc">:.4f}</span><span class="ss">)"</span>)</span>
+<span id="cb5-65"><a href="#cb5-65" aria-hidden="true" tabindex="-1"></a>plt.plot(x_line, y_line_theory, color<span class="op">=</span><span class="st">"tab:green"</span>, linestyle<span class="op">=</span><span class="st">"--"</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="ss">f"梁理論 (w=</span><span class="sc">{</span>w_theory<span class="sc">:.4f}</span><span class="ss">)"</span>)</span>
+<span id="cb5-66"><a href="#cb5-66" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"集中荷重 $P$ [kN]"</span>)</span>
+<span id="cb5-67"><a href="#cb5-67" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="vs">r"中央たわみ </span><span class="dv">$\d</span><span class="vs">elta</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[mm]</span><span class="vs">"</span>)</span>
+<span id="cb5-68"><a href="#cb5-68" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">"単回帰による梁の中央たわみ予測"</span>)</span>
+<span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>plt.grid(alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb5-70"><a href="#cb5-70" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb5-71"><a href="#cb5-71" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb5-72"><a href="#cb5-72" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 
 
 </section>

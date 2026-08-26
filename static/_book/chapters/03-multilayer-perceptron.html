@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -12,13 +12,10 @@
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
 */
+code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: 1.5em;}
-div.column{flex: auto;}
-@media screen {
-div.columns{gap: min(4vw, 1.5em);}
-div.column{overflow-x: auto;}
-}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -71,6 +68,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../chapters/04-physics-informed-neural-networks.html" rel="next">
 <link href="../chapters/02-multiple-linear-regression.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -78,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-cdb0db408418ad9d86fa88eebd80e6d4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-3eceaf82ce6a16ee02925bf124246cb7.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,7 +109,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -201,6 +199,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">多層パーセプトロン</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-physics-informed-neural-networks.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Physics-Informed Neural Networks</span></span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -252,6 +256,7 @@ window.Quarto = {
   <li><a href="#学習曲線" id="toc-学習曲線" class="nav-link" data-scroll-target="#学習曲線"><span class="header-section-number">3.8.6</span> 学習曲線</a></li>
   <li><a href="#学習後の予測" id="toc-学習後の予測" class="nav-link" data-scroll-target="#学習後の予測"><span class="header-section-number">3.8.7</span> 学習後の予測</a></li>
   <li><a href="#mlpが学習した応答曲面" id="toc-mlpが学習した応答曲面" class="nav-link" data-scroll-target="#mlpが学習した応答曲面"><span class="header-section-number">3.8.8</span> MLPが学習した応答曲面</a></li>
+  <li><a href="#発展pytorchによるmlpの実装" id="toc-発展pytorchによるmlpの実装" class="nav-link" data-scroll-target="#発展pytorchによるmlpの実装"><span class="header-section-number">3.8.9</span> 発展：PyTorchによるMLPの実装</a></li>
   </ul></li>
   <li><a href="#mlpを利用する際の注意点" id="toc-mlpを利用する際の注意点" class="nav-link" data-scroll-target="#mlpを利用する際の注意点"><span class="header-section-number">3.9</span> MLPを利用する際の注意点</a>
   <ul class="collapse">
@@ -261,6 +266,7 @@ window.Quarto = {
   <li><a href="#データと物理知識" id="toc-データと物理知識" class="nav-link" data-scroll-target="#データと物理知識"><span class="header-section-number">3.9.4</span> データと物理知識</a></li>
   </ul></li>
   <li><a href="#まとめ" id="toc-まとめ" class="nav-link" data-scroll-target="#まとめ"><span class="header-section-number">3.10</span> まとめ</a></li>
+  <li><a href="#付録完全な実行コード" id="toc-付録完全な実行コード" class="nav-link" data-scroll-target="#付録完全な実行コード"><span class="header-section-number">3.11</span> 付録：完全な実行コード</a></li>
   </ul>
 </nav>
     </div>
@@ -551,7 +557,7 @@ h_1 \\ h_2 \\ h_3 \\ h_4
 \frac{\partial L}{\partial z} = \frac{\partial L}{\partial h} \cdot \frac{d\phi(z)}{dz}
 \]</span></p>
 <p>として計算されるため、活性化関数の形状だけでなく、その<strong>導関数 <span class="math inline">\(\phi'(z) = \frac{d\phi(z)}{dz}\)</span> の大きさや性質</strong>がネットワークの学習のしやすさを左右します。</p>
-<p>代表的な3つの活性化関数とその導関数を次に示します。 代表的な活性化関数とその導関数を次に示します。</p>
+<p>代表的な4つの活性化関数とその導関数を次に示します。</p>
 <section id="relurectified-linear-unit" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="relurectified-linear-unit"><span class="header-section-number">3.4.1</span> ReLU（Rectified Linear Unit）</h3>
 <p><span class="math display">\[
@@ -560,7 +566,7 @@ h_1 \\ h_2 \\ h_3 \\ h_4
 <p><span class="math display">\[
 \frac{d}{dz}\operatorname{ReLU}(z) = \begin{cases} 1 &amp; (z &gt; 0) \\ 0 &amp; (z &lt; 0) \end{cases}
 \]</span></p>
-<p><span class="math inline">\(z &gt; 0\)</span> の領域で微分が常に <span class="math inline">\(1\)</span> であるため、<strong>層を深く重ねても勾配が小さくならず</strong>（特に層数の多いモデルを作ろうとすると、これがかなり重要だったりします）、現代の深層学習で標準的に用いられています。</p>
+<p><span class="math inline">\(z &gt; 0\)</span> の領域で微分が常に <span class="math inline">\(1\)</span> であるため、<strong>層を深く重ねても勾配が小さくなりにくく</strong>（特に層数の多いモデルを作ろうとすると、これがかなり重要だったりします）、現代の深層学習で標準的に用いられています。</p>
 <div id="cell-fig-activation-relu" class="cell" data-execution_count="3">
 <div class="cell-output cell-output-display">
 <div id="fig-activation-relu" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -787,11 +793,144 @@ b^{(2)} &amp;\leftarrow b^{(2)} - \eta \frac{\partial L}{\partial b^{(2)}}
 <h3 data-number="3.7.2" class="anchored" data-anchor-id="勾配降下法の直感的理解"><span class="header-section-number">3.7.2</span> 勾配降下法の直感的理解</h3>
 <p><a href="#fig-gradient-descent" class="quarto-xref">図&nbsp;<span>3.7</span></a> に、勾配降下法の直感的な概念図を示します。</p>
 <div id="cell-fig-gradient-descent" class="cell" data-execution_count="7">
+<details class="code-fold">
+<summary>描画コードを表示</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">8</span>))</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># (a) 1次元の勾配降下</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="op">-</span><span class="fl">2.2</span>, <span class="fl">2.2</span>, <span class="dv">200</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>loss_1d <span class="op">=</span> theta<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">0.2</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(theta, loss_1d, color<span class="op">=</span><span class="st">"tab:blue"</span>, linewidth<span class="op">=</span><span class="fl">2.0</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="vs">r"パラメータ </span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="vs">r"損失 </span><span class="dv">$</span><span class="vs">L</span><span class="kw">(</span><span class="ch">\t</span><span class="vs">heta</span><span class="kw">)</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].set_title(<span class="vs">r"</span><span class="kw">(</span><span class="vs">a</span><span class="kw">)</span><span class="vs"> 1次元における勾配降下"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].grid(alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 軌跡のプロット</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>theta_steps <span class="op">=</span> [<span class="fl">1.9</span>]</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>eta_1d <span class="op">=</span> <span class="fl">0.4</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    theta_steps.append(theta_steps[<span class="op">-</span><span class="dv">1</span>] <span class="op">-</span> eta_1d <span class="op">*</span> (<span class="dv">2</span> <span class="op">*</span> theta_steps[<span class="op">-</span><span class="dv">1</span>]))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(theta_steps) <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    t_cur <span class="op">=</span> theta_steps[i]</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    t_next <span class="op">=</span> theta_steps[i <span class="op">+</span> <span class="dv">1</span>]</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>    l_cur <span class="op">=</span> t_cur<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">0.2</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    l_next <span class="op">=</span> t_next<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">0.2</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].scatter(t_cur, l_cur, color<span class="op">=</span><span class="st">"tab:red"</span>, zorder<span class="op">=</span><span class="dv">4</span>, s<span class="op">=</span><span class="dv">36</span>)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">0</span>].annotate(</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        <span class="st">""</span>,</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        xy<span class="op">=</span>(t_next, l_next),</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>        xytext<span class="op">=</span>(t_cur, l_cur),</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        arrowprops<span class="op">=</span><span class="bu">dict</span>(</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>            arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>,</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">"tab:red"</span>,</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>            lw<span class="op">=</span><span class="fl">1.6</span>,</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>            mutation_scale<span class="op">=</span><span class="dv">12</span>,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    theta_steps[<span class="op">-</span><span class="dv">1</span>],</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>    theta_steps[<span class="op">-</span><span class="dv">1</span>]<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">0.2</span>,</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"tab:red"</span>,</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">36</span>,</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].scatter(</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>,</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.2</span>,</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"tab:green"</span>,</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">70</span>,</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">"*"</span>,</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">r"最小点 </span><span class="dv">$</span><span class="ch">\t</span><span class="vs">heta</span><span class="dv">^</span><span class="op">*</span><span class="dv">$</span><span class="vs">"</span>,</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a><span class="co"># 勾配の接線</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>t0 <span class="op">=</span> theta_steps[<span class="dv">0</span>]</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>l0 <span class="op">=</span> t0<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">0.2</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>grad0 <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> t0</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>t_tangent <span class="op">=</span> np.linspace(<span class="fl">1.2</span>, <span class="fl">2.2</span>, <span class="dv">50</span>)</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>l_tangent <span class="op">=</span> l0 <span class="op">+</span> grad0 <span class="op">*</span> (t_tangent <span class="op">-</span> t0)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    t_tangent,</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    l_tangent,</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"0.5"</span>,</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>    linestyle<span class="op">=</span><span class="st">":"</span>,</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="vs">r"接線（傾き </span><span class="dv">$</span><span class="ch">\n</span><span class="vs">abla L &gt; 0</span><span class="dv">$</span><span class="vs">）"</span>,</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].text(</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>    <span class="fl">0.8</span>,</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>    <span class="fl">3.8</span>,</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>    <span class="vs">r"更新方向: </span><span class="dv">$</span><span class="vs">-</span><span class="er">\</span><span class="vs">eta </span><span class="ch">\n</span><span class="vs">abla L</span><span class="dv">$</span><span class="vs">"</span>,</span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"tab:red"</span>,</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>    fontsize<span class="op">=</span><span class="dv">9</span>,</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].legend(loc<span class="op">=</span><span class="st">"upper center"</span>, fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="co"># (b) 2次元等高線</span></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>w1 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>w2 <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">100</span>)</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>W1, W2 <span class="op">=</span> np.meshgrid(w1, w2)</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> W1<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> <span class="fl">1.2</span> <span class="op">*</span> W2<span class="op">**</span><span class="dv">2</span></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>cs <span class="op">=</span> axes[<span class="dv">1</span>].contour(</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>    W1,</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>    W2,</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>    Z,</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a>    levels<span class="op">=</span>[<span class="fl">0.2</span>, <span class="fl">0.8</span>, <span class="fl">1.8</span>, <span class="fl">3.2</span>, <span class="fl">5.0</span>, <span class="fl">7.5</span>],</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>    cmap<span class="op">=</span><span class="st">"Blues_r"</span>,</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].clabel(cs, inline<span class="op">=</span><span class="dv">1</span>, fontsize<span class="op">=</span><span class="dv">8</span>, fmt<span class="op">=</span><span class="st">"</span><span class="sc">%.1f</span><span class="st">"</span>)</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">w_1</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="vs">r"</span><span class="dv">$</span><span class="vs">w_2</span><span class="dv">$</span><span class="vs">"</span>)</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].set_title(<span class="st">"(b) 2次元パラメータ空間の等高線と軌跡"</span>)</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].grid(alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a><span class="co"># 2次元の軌跡</span></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>curr_w <span class="op">=</span> np.array([<span class="fl">2.5</span>, <span class="fl">2.2</span>])</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> [curr_w]</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>eta_2d <span class="op">=</span> <span class="fl">0.35</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">6</span>):</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>    grad <span class="op">=</span> np.array([<span class="fl">1.0</span> <span class="op">*</span> curr_w[<span class="dv">0</span>], <span class="fl">2.4</span> <span class="op">*</span> curr_w[<span class="dv">1</span>]])</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>    curr_w <span class="op">=</span> curr_w <span class="op">-</span> eta_2d <span class="op">*</span> grad</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>    path.append(curr_w)</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>path <span class="op">=</span> np.array(path)</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(path) <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>    axes[<span class="dv">1</span>].annotate(</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>        <span class="st">""</span>,</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>        xy<span class="op">=</span>(path[i <span class="op">+</span> <span class="dv">1</span>, <span class="dv">0</span>], path[i <span class="op">+</span> <span class="dv">1</span>, <span class="dv">1</span>]),</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>        xytext<span class="op">=</span>(path[i, <span class="dv">0</span>], path[i, <span class="dv">1</span>]),</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>        arrowprops<span class="op">=</span><span class="bu">dict</span>(</span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>            arrowstyle<span class="op">=</span><span class="st">"-&gt;"</span>,</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>            color<span class="op">=</span><span class="st">"tab:red"</span>,</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>            lw<span class="op">=</span><span class="fl">1.6</span>,</span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>            mutation_scale<span class="op">=</span><span class="dv">12</span>,</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(path[:, <span class="dv">0</span>], path[:, <span class="dv">1</span>], color<span class="op">=</span><span class="st">"tab:red"</span>, s<span class="op">=</span><span class="dv">30</span>, zorder<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].scatter(</span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>,</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a>    <span class="dv">0</span>,</span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"tab:green"</span>,</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">70</span>,</span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a>    marker<span class="op">=</span><span class="st">"*"</span>,</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"最小点"</span>,</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].legend(loc<span class="op">=</span><span class="st">"upper right"</span>, fontsize<span class="op">=</span><span class="fl">8.5</span>)</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-display">
 <div id="fig-gradient-descent" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-gradient-descent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="03-multilayer-perceptron_files/figure-html/fig-gradient-descent-output-1.png" width="901" height="346" class="figure-img">
+<img src="03-multilayer-perceptron_files/figure-html/fig-gradient-descent-output-1.png" width="557" height="749" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-gradient-descent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 図&nbsp;3.7: 勾配降下法の概念図。(a) 1次元損失曲線における接線の傾きと更新方向、(b) 2次元パラメータ空間における等高線と最小点への降下軌跡
@@ -814,46 +953,46 @@ b^{(2)} &amp;\leftarrow b^{(2)} - \eta \frac{\partial L}{\partial b^{(2)}}
 =
 \frac{PL^3}{48EI}
 \tag{3.22}\]</span></span></p>
-<p>です。説明変数を <span class="math inline">\(P\)</span> と <span class="math inline">\(E\)</span> とすると、<span class="math inline">\(delta\propto P/E\)</span> であるため、前章で説明したように重回帰の平面では 関係全体を表現できません。本章では、梁理論の式をMLPには与えず、観測された <span class="math inline">\((P_i,E_i,\delta_i)\)</span> の組だけから関係を学習します。</p>
+<p>です。説明変数を <span class="math inline">\(P\)</span> と <span class="math inline">\(E\)</span> とすると、<span class="math inline">\(\delta\propto P/E\)</span> であるため、前章で説明したように重回帰の平面では 関係全体を表現できません。本章では、梁理論の式をMLPには与えず、観測された <span class="math inline">\((P_i,E_i,\delta_i)\)</span> の組だけから関係を学習します。</p>
 <section id="データの作成" class="level3" data-number="3.8.1">
 <h3 data-number="3.8.1" class="anchored" data-anchor-id="データの作成"><span class="header-section-number">3.8.1</span> データの作成</h3>
-<p>荷重とYoung率を指定範囲内からランダムに生成し、梁理論から中央たわみを計算します。 ここではMLPの表現能力を確認するため、測定誤差は加えません。</p>
-<div id="b0e04365" class="cell" data-execution_count="8">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">600</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> rng.uniform(<span class="fl">5.0</span>, <span class="fl">50.0</span>, n_samples)       <span class="co"># 集中荷重 [kN]</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> rng.uniform(<span class="fl">100.0</span>, <span class="fl">300.0</span>, n_samples)    <span class="co"># Young率 [GPa]</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>span_length <span class="op">=</span> <span class="fl">3.0</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>section_width <span class="op">=</span> <span class="fl">0.10</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>section_height <span class="op">=</span> <span class="fl">0.20</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>second_moment <span class="op">=</span> section_width <span class="op">*</span> section_height<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> <span class="dv">12</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    (P <span class="op">*</span> <span class="fl">1e3</span>) <span class="op">*</span> span_length<span class="op">**</span><span class="dv">3</span></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> (E <span class="op">*</span> <span class="fl">1e9</span>) <span class="op">*</span> second_moment)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e3</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.column_stack([P, E])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<p>荷重とヤング率を指定範囲内からランダムに生成し、梁理論から中央たわみを計算します。</p>
+<div id="1345e03e" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">600</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> rng.uniform(<span class="fl">5.0</span>, <span class="fl">50.0</span>, n_samples)       <span class="co"># 集中荷重 [kN]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> rng.uniform(<span class="fl">100.0</span>, <span class="fl">300.0</span>, n_samples)    <span class="co"># ヤング率 [GPa]</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>span_length <span class="op">=</span> <span class="fl">3.0</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>section_width <span class="op">=</span> <span class="fl">0.10</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>section_height <span class="op">=</span> <span class="fl">0.20</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>second_moment <span class="op">=</span> section_width <span class="op">*</span> section_height<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> <span class="dv">12</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    (P <span class="op">*</span> <span class="fl">1e3</span>) <span class="op">*</span> span_length<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> (E <span class="op">*</span> <span class="fl">1e9</span>) <span class="op">*</span> second_moment)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e3</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.column_stack([P, E])</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="学習データとテストデータ" class="level3" data-number="3.8.2">
 <h3 data-number="3.8.2" class="anchored" data-anchor-id="学習データとテストデータ"><span class="header-section-number">3.8.2</span> 学習データとテストデータ</h3>
 <p>モデルの学習に使うデータと、学習後の性能を評価するデータを分けます。ここでは全データの 80%を学習データ、20%をテストデータとします。</p>
-<div id="58a2f6d5" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>indices <span class="op">=</span> rng.permutation(n_samples)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>n_train <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> n_samples)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>train_indices <span class="op">=</span> indices[:n_train]</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>test_indices <span class="op">=</span> indices[n_train:]</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X[train_indices]</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y[train_indices]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X[test_indices]</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> y[test_indices]</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"学習データ数: </span><span class="sc">{</span>X_train<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"テストデータ数: </span><span class="sc">{</span>X_test<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="3abf3f13" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>indices <span class="op">=</span> rng.permutation(n_samples)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>n_train <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> n_samples)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>train_indices <span class="op">=</span> indices[:n_train]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>test_indices <span class="op">=</span> indices[n_train:]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X[train_indices]</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y[train_indices]</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X[test_indices]</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> y[test_indices]</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"学習データ数: </span><span class="sc">{</span>X_train<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"テストデータ数: </span><span class="sc">{</span>X_test<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>学習データ数: 480
 テストデータ数: 120</code></pre>
@@ -870,32 +1009,33 @@ x'_{ij}
 \frac{x_{ij}-\mu_j}{\sigma_j}
 \]</span></p>
 <p>平均と標準偏差は学習データだけから計算します。テストデータに対しても、学習データから 得た平均と標準偏差を使用します。</p>
-<div id="a7519f7e" class="cell" data-execution_count="10">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>X_mean <span class="op">=</span> X_train.mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>X_std <span class="op">=</span> X_train.std(axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y_mean <span class="op">=</span> y_train.mean()</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>y_std <span class="op">=</span> y_train.std()</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>X_train_std <span class="op">=</span> (X_train <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>X_test_std <span class="op">=</span> (X_test <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>y_train_std <span class="op">=</span> (y_train <span class="op">-</span> y_mean) <span class="op">/</span> y_std</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="005f2422" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>X_mean <span class="op">=</span> X_train.mean(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>X_std <span class="op">=</span> X_train.std(axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>y_mean <span class="op">=</span> y_train.mean()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>y_std <span class="op">=</span> y_train.std()</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 平均と標準偏差を用いた標準化</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>X_train_std <span class="op">=</span> (X_train <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>X_test_std <span class="op">=</span> (X_test <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>y_train_std <span class="op">=</span> (y_train <span class="op">-</span> y_mean) <span class="op">/</span> y_std</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="パラメータの初期化" class="level3" data-number="3.8.4">
 <h3 data-number="3.8.4" class="anchored" data-anchor-id="パラメータの初期化"><span class="header-section-number">3.8.4</span> パラメータの初期化</h3>
 <p>隠れユニット数を16とし、重みを小さな乱数、バイアスを0で初期化します。</p>
-<div id="5d76dacd" class="cell" data-execution_count="11">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>input_dim <span class="op">=</span> <span class="dv">2</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>hidden_dim <span class="op">=</span> <span class="dv">16</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>W1 <span class="op">=</span> rng.normal(<span class="fl">0.0</span>, <span class="fl">0.3</span>, size<span class="op">=</span>(input_dim, hidden_dim))</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> np.zeros(hidden_dim)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>w2 <span class="op">=</span> rng.normal(<span class="fl">0.0</span>, <span class="fl">0.3</span>, size<span class="op">=</span>hidden_dim)</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> <span class="fl">0.0</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"W1の形状: </span><span class="sc">{</span>W1<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"b1の形状: </span><span class="sc">{</span>b1<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"w2の形状: </span><span class="sc">{</span>w2<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="4a5b6b3a" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>input_dim <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>hidden_dim <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>W1 <span class="op">=</span> rng.normal(<span class="fl">0.0</span>, <span class="fl">0.3</span>, size<span class="op">=</span>(input_dim, hidden_dim))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> np.zeros(hidden_dim)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>w2 <span class="op">=</span> rng.normal(<span class="fl">0.0</span>, <span class="fl">0.3</span>, size<span class="op">=</span>hidden_dim)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"W1の形状: </span><span class="sc">{</span>W1<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"b1の形状: </span><span class="sc">{</span>b1<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"w2の形状: </span><span class="sc">{</span>w2<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>W1の形状: (2, 16)
 b1の形状: (16,)
@@ -905,52 +1045,73 @@ w2の形状: (16,)</code></pre>
 </section>
 <section id="順伝播誤差逆伝播更新" class="level3" data-number="3.8.5">
 <h3 data-number="3.8.5" class="anchored" data-anchor-id="順伝播誤差逆伝播更新"><span class="header-section-number">3.8.5</span> 順伝播・誤差逆伝播・更新</h3>
-<p>全学習データを使って1回パラメータを更新する処理を1エポックとします。ここでは 10000エポック学習します。</p>
-<div id="b0f8d490" class="cell" data-execution_count="12">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">0.03</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n_epochs <span class="op">=</span> <span class="dv">50000</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>loss_history <span class="op">=</span> []</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(n_epochs):</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 順伝播</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    Z1 <span class="op">=</span> X_train_std <span class="op">@</span> W1 <span class="op">+</span> b1</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    H <span class="op">=</span> np.tanh(Z1)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    y_pred_std <span class="op">=</span> H <span class="op">@</span> w2 <span class="op">+</span> b2</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 損失関数（MSE）</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> y_pred_std <span class="op">-</span> y_train_std</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> np.mean(error<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    loss_history.append(loss)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 誤差逆伝播</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    d_y_pred <span class="op">=</span> (<span class="fl">2.0</span> <span class="op">/</span> X_train_std.shape[<span class="dv">0</span>]) <span class="op">*</span> error</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    d_w2 <span class="op">=</span> H.T <span class="op">@</span> d_y_pred</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    d_b2 <span class="op">=</span> np.<span class="bu">sum</span>(d_y_pred)</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    d_H <span class="op">=</span> d_y_pred[:, <span class="va">None</span>] <span class="op">*</span> w2[<span class="va">None</span>, :]</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    d_Z1 <span class="op">=</span> d_H <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> H<span class="op">**</span><span class="dv">2</span>)</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    d_W1 <span class="op">=</span> X_train_std.T <span class="op">@</span> d_Z1</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    d_b1 <span class="op">=</span> np.<span class="bu">sum</span>(d_Z1, axis<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 勾配降下法によるパラメータ更新</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    W1 <span class="op">-=</span> learning_rate <span class="op">*</span> d_W1</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">-=</span> learning_rate <span class="op">*</span> d_b1</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    w2 <span class="op">-=</span> learning_rate <span class="op">*</span> d_w2</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">-=</span> learning_rate <span class="op">*</span> d_b2</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<p>全学習データを使って1回パラメータを更新する処理を1エポックとします。ここでは 50000エポック学習します。</p>
+<div id="3c90a348" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">0.03</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>n_epochs <span class="op">=</span> <span class="dv">50000</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>loss_history <span class="op">=</span> []</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(n_epochs):</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ==========================================</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 1. 順伝播（Forward Propagation）</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ==========================================</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 隠れ層の隠れ状態（線形変換: Z1 = X @ W1 + b1）</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    Z1 <span class="op">=</span> X_train_std <span class="op">@</span> W1 <span class="op">+</span> b1</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 隠れ層の出力（活性化関数: H = tanh(Z1)）</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    H <span class="op">=</span> np.tanh(Z1)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 出力層の計算（線形結合: y_pred = H @ w2 + b2）</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    y_pred_std <span class="op">=</span> H <span class="op">@</span> w2 <span class="op">+</span> b2</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ==========================================</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 2. 損失関数の計算（平均二乗誤差: MSE）</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ==========================================</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>    error <span class="op">=</span> y_pred_std <span class="op">-</span> y_train_std  <span class="co"># 予測誤差 (e = y_pred - y)</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    loss <span class="op">=</span> np.mean(error<span class="op">**</span><span class="dv">2</span>)          <span class="co"># 平均二乗誤差 (MSE)</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    loss_history.append(loss)         <span class="co"># 学習曲線の可視化用に記録</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ==========================================</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 3. 誤差逆伝播（Backpropagation）</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ==========================================</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [ステップ1] 損失Lの予測値y_predに対する勾配: dL/dy_pred = (2/N) * e</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    d_y_pred <span class="op">=</span> (<span class="fl">2.0</span> <span class="op">/</span> X_train_std.shape[<span class="dv">0</span>]) <span class="op">*</span> error</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [ステップ2] 出力層パラメータに対する勾配</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 重みw2の勾配: dL/dw2 = H^T @ d_y_pred</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    d_w2 <span class="op">=</span> H.T <span class="op">@</span> d_y_pred</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># バイアスb2の勾配: dL/db2 = sum(d_y_pred)</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    d_b2 <span class="op">=</span> np.<span class="bu">sum</span>(d_y_pred)</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [ステップ3] 隠れ層出力Hおよび隠れ状態Z1に対する勾配</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 出力層から隠れ層出力Hへの勾配伝播: dL/dH = d_y_pred * w2^T</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>    d_H <span class="op">=</span> d_y_pred[:, <span class="va">None</span>] <span class="op">*</span> w2[<span class="va">None</span>, :]</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># tanhの微分 (1 - H^2) を掛け合わせてZ1の勾配を計算: G1 = dL/dZ1</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    d_Z1 <span class="op">=</span> d_H <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> H<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># [ステップ4] 隠れ層パラメータに対する勾配</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 重みW1の勾配: dL/dW1 = X^T @ G1</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    d_W1 <span class="op">=</span> X_train_std.T <span class="op">@</span> d_Z1</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># バイアスb1の勾配: dL/db1 = sum(G1, axis=0) (axis=0 はデータ方向の総和)</span></span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    d_b1 <span class="op">=</span> np.<span class="bu">sum</span>(d_Z1, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ==========================================</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 4. 勾配降下法によるパラメータ更新</span></span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># ==========================================</span></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    W1 <span class="op">-=</span> learning_rate <span class="op">*</span> d_W1</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    b1 <span class="op">-=</span> learning_rate <span class="op">*</span> d_b1</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    w2 <span class="op">-=</span> learning_rate <span class="op">*</span> d_w2</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>    b2 <span class="op">-=</span> learning_rate <span class="op">*</span> d_b2</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="学習曲線" class="level3" data-number="3.8.6">
 <h3 data-number="3.8.6" class="anchored" data-anchor-id="学習曲線"><span class="header-section-number">3.8.6</span> 学習曲線</h3>
 <div id="cell-fig-mlp-learning-curve" class="cell" data-execution_count="13">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ax.plot(np.arange(<span class="dv">1</span>, n_epochs <span class="op">+</span> <span class="dv">1</span>), loss_history)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"エポック"</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"標準化空間におけるMSE"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>ax.set_yscale(<span class="st">"log"</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>ax.grid(alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ax.plot(np.arange(<span class="dv">1</span>, n_epochs <span class="op">+</span> <span class="dv">1</span>), loss_history)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"エポック"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"標準化空間におけるMSE"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>ax.set_yscale(<span class="st">"log"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>ax.grid(alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div id="fig-mlp-learning-curve" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -969,22 +1130,22 @@ w2の形状: (16,)</code></pre>
 <section id="学習後の予測" class="level3" data-number="3.8.7">
 <h3 data-number="3.8.7" class="anchored" data-anchor-id="学習後の予測"><span class="header-section-number">3.8.7</span> 学習後の予測</h3>
 <p>順伝播を関数として定義し、標準化された予測値を元のたわみの単位へ戻します。</p>
-<div id="1e001c72" class="cell" data-execution_count="14">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict_mlp(X_input):</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    X_input_std <span class="op">=</span> (X_input <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    H <span class="op">=</span> np.tanh(X_input_std <span class="op">@</span> W1 <span class="op">+</span> b1)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    y_output_std <span class="op">=</span> H <span class="op">@</span> w2 <span class="op">+</span> b2</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y_output_std <span class="op">*</span> y_std <span class="op">+</span> y_mean</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> predict_mlp(X_train)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>y_test_pred <span class="op">=</span> predict_mlp(X_test)</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>train_rmse <span class="op">=</span> np.sqrt(np.mean((y_train <span class="op">-</span> y_train_pred) <span class="op">**</span> <span class="dv">2</span>))</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>test_rmse <span class="op">=</span> np.sqrt(np.mean((y_test <span class="op">-</span> y_test_pred) <span class="op">**</span> <span class="dv">2</span>))</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"学習データのRMSE: </span><span class="sc">{</span>train_rmse<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"テストデータのRMSE: </span><span class="sc">{</span>test_rmse<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="4009b62f" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict_mlp(X_input):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    X_input_std <span class="op">=</span> (X_input <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    H <span class="op">=</span> np.tanh(X_input_std <span class="op">@</span> W1 <span class="op">+</span> b1)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    y_output_std <span class="op">=</span> H <span class="op">@</span> w2 <span class="op">+</span> b2</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> y_output_std <span class="op">*</span> y_std <span class="op">+</span> y_mean</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>y_train_pred <span class="op">=</span> predict_mlp(X_train)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>y_test_pred <span class="op">=</span> predict_mlp(X_test)</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>train_rmse <span class="op">=</span> np.sqrt(np.mean((y_train <span class="op">-</span> y_train_pred) <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>test_rmse <span class="op">=</span> np.sqrt(np.mean((y_test <span class="op">-</span> y_test_pred) <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"学習データのRMSE: </span><span class="sc">{</span>train_rmse<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"テストデータのRMSE: </span><span class="sc">{</span>test_rmse<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>学習データのRMSE: 0.01020 mm
 テストデータのRMSE: 0.01248 mm</code></pre>
@@ -995,6 +1156,64 @@ w2の形状: (16,)</code></pre>
 <section id="mlpが学習した応答曲面" class="level3" data-number="3.8.8">
 <h3 data-number="3.8.8" class="anchored" data-anchor-id="mlpが学習した応答曲面"><span class="header-section-number">3.8.8</span> MLPが学習した応答曲面</h3>
 <div id="cell-fig-mlp-response-surface" class="cell" data-execution_count="15">
+<details class="code-fold">
+<summary>描画コードを表示</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>P_surface, E_surface <span class="op">=</span> np.meshgrid(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    np.linspace(<span class="dv">5</span>, <span class="dv">50</span>, <span class="dv">45</span>),</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    np.linspace(<span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">45</span>),</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>X_surface <span class="op">=</span> np.column_stack([P_surface.ravel(), E_surface.ravel()])</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>y_surface_mlp <span class="op">=</span> predict_mlp(X_surface).reshape(P_surface.shape)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>y_surface_theory <span class="op">=</span> (</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    (P_surface <span class="op">*</span> <span class="fl">1e3</span>) <span class="op">*</span> span_length<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> (E_surface <span class="op">*</span> <span class="fl">1e9</span>) <span class="op">*</span> second_moment)</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e3</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="fl">7.6</span>, <span class="fl">5.8</span>))</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">"3d"</span>, computed_zorder<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>ax.plot_surface(</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    P_surface,</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    E_surface,</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    y_surface_theory,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"tab:blue"</span>,</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    alpha<span class="op">=</span><span class="fl">0.48</span>,</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>ax.plot_wireframe(</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    P_surface,</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    E_surface,</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>    y_surface_mlp,</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"tab:red"</span>,</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>    rstride<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>    cstride<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.9</span>,</span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a>    X_test[:, <span class="dv">0</span>],</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a>    X_test[:, <span class="dv">1</span>],</span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>    y_test,</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a>    depthshade<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Patch</span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="vs">r"集中荷重 </span><span class="dv">$</span><span class="vs">P</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[kN]</span><span class="vs">"</span>)</span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="vs">r"Young率 </span><span class="dv">$</span><span class="vs">E</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[GPa]</span><span class="vs">"</span>)</span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="vs">r"中央たわみ </span><span class="dv">$\d</span><span class="vs">elta</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[mm]</span><span class="vs">"</span>)</span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a>ax.view_init(elev<span class="op">=</span><span class="dv">25</span>, azim<span class="op">=-</span><span class="dv">128</span>)</span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>[</span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a>    Patch(facecolor<span class="op">=</span><span class="st">"tab:blue"</span>, alpha<span class="op">=</span><span class="fl">0.48</span>, label<span class="op">=</span><span class="st">"梁理論"</span>),</span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], color<span class="op">=</span><span class="st">"tab:red"</span>, label<span class="op">=</span><span class="st">"MLP"</span>),</span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"black"</span>, linestyle<span class="op">=</span><span class="st">"none"</span>, label<span class="op">=</span><span class="st">"テストデータ"</span>),</span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
 <div class="cell-output cell-output-display">
 <div id="fig-mlp-response-surface" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1009,6 +1228,126 @@ w2の形状: (16,)</code></pre>
 </div>
 </div>
 <p><a href="#fig-mlp-response-surface" class="quarto-xref">図&nbsp;<span>3.9</span></a> では、MLPが学習した赤い曲面が梁理論の曲面に沿っています。 MLPには <span class="math inline">\(P/E\)</span> という特徴量や梁理論からなる数式を与えていませんが、非線形な活性化関数をもつ 隠れユニットの組合せにより、観測データから曲がった応答面を近似しています。</p>
+</section>
+<section id="発展pytorchによるmlpの実装" class="level3" data-number="3.8.9">
+<h3 data-number="3.8.9" class="anchored" data-anchor-id="発展pytorchによるmlpの実装"><span class="header-section-number">3.8.9</span> 発展：PyTorchによるMLPの実装</h3>
+<p>ここまでは、ニューラルネットワークの動作原理（順伝播・誤差逆伝播・勾配降下法）を理解するために、NumPyを用いた実装を行いました。</p>
+<p>しかし、層数が多い深層モデルや複雑なネットワークを扱う場合、手動で連鎖律の数式を導出して勾配を実装するのは非常に手間がかかり、バグの原因にもなります。現代の深層学習の実務や研究開発では、<strong>PyTorch</strong> などの深層学習フレームワークを使用するのが標準です。</p>
+<p>PyTorchの最大の特長は、<strong>自動微分（Autograd）機能</strong>を備えている点です。順伝播の計算フローを記述するだけで、損失関数の勾配計算（誤差逆伝播）を自動的に実行してくれます。</p>
+<p>ここでは、全く同じ梁のたわみ予測問題を PyTorch を用いて実装してみましょう。</p>
+<div id="d80c3bd2" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 乱数シードの設定</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">42</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co"># NumPy配列をPyTorchのTensor型に変換（float32型）</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>X_train_tensor <span class="op">=</span> torch.tensor(X_train_std, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>y_train_tensor <span class="op">=</span> torch.tensor(y_train_std, dtype<span class="op">=</span>torch.float32).unsqueeze(<span class="dv">1</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>X_test_tensor <span class="op">=</span> torch.tensor(X_test_std, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. モデルの定義（2入力 -&gt; 16隠れユニット(tanh) -&gt; 1出力）</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BeamMLP(nn.Module):</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, input_dim<span class="op">=</span><span class="dv">2</span>, hidden_dim<span class="op">=</span><span class="dv">16</span>):</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.network <span class="op">=</span> nn.Sequential(</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>        nn.Linear(input_dim, hidden_dim),</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>        nn.Tanh(),</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>        nn.Linear(hidden_dim, <span class="dv">1</span>),</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.network(x)</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> BeamMLP(input_dim<span class="op">=</span><span class="dv">2</span>, hidden_dim<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. 損失関数と最適化手法の定義</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>criterion <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> optim.SGD(model.parameters(), lr<span class="op">=</span><span class="fl">0.03</span>)</span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. 学習ループ</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>pytorch_loss_history <span class="op">=</span> []</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>n_epochs <span class="op">=</span> <span class="dv">50000</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(n_epochs):</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 順伝播</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  y_pred <span class="op">=</span> model(X_train_tensor)</span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  loss <span class="op">=</span> criterion(y_pred, y_train_tensor)</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 勾配のリセットと誤差逆伝播（自動微分）</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>  optimizer.zero_grad()</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>  loss.backward()</span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># パラメータの更新（勾配降下法）</span></span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>  optimizer.step()</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>  pytorch_loss_history.append(loss.item())</span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. 学習後の評価</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">eval</span>()</span>
+<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a>  y_train_pred_torch <span class="op">=</span> (</span>
+<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a>      model(X_train_tensor).numpy().ravel() <span class="op">*</span> y_std <span class="op">+</span> y_mean</span>
+<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a>  y_test_pred_torch <span class="op">=</span> model(X_test_tensor).numpy().ravel() <span class="op">*</span> y_std <span class="op">+</span> y_mean</span>
+<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-61"><a href="#cb13-61" aria-hidden="true" tabindex="-1"></a>train_rmse_torch <span class="op">=</span> np.sqrt(np.mean((y_train <span class="op">-</span> y_train_pred_torch) <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb13-62"><a href="#cb13-62" aria-hidden="true" tabindex="-1"></a>test_rmse_torch <span class="op">=</span> np.sqrt(np.mean((y_test <span class="op">-</span> y_test_pred_torch) <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"【PyTorch版】学習データのRMSE: </span><span class="sc">{</span>train_rmse_torch<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"【PyTorch版】テストデータのRMSE: </span><span class="sc">{</span>test_rmse_torch<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>【PyTorch版】学習データのRMSE: 0.00783 mm
+【PyTorch版】テストデータのRMSE: 0.01044 mm</code></pre>
+</div>
+</div>
+<section id="numpyスクラッチ実装とpytorchの対応" class="level4" data-number="3.8.9.1">
+<h4 data-number="3.8.9.1" class="anchored" data-anchor-id="numpyスクラッチ実装とpytorchの対応"><span class="header-section-number">3.8.9.1</span> NumPyスクラッチ実装とPyTorchの対応</h4>
+<p>PyTorchのコードは、NumPyで記述した計算と次のように1対1で対応しています。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>処理</th>
+<th>NumPyスクラッチ実装</th>
+<th>PyTorch実装</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>順伝播</strong></td>
+<td><code>Z1 = X @ W1 + b1</code><br><code>H = np.tanh(Z1)</code><br><code>y_pred = H @ w2 + b2</code></td>
+<td><code>y_pred = model(X)</code></td>
+</tr>
+<tr class="even">
+<td><strong>損失計算</strong></td>
+<td><code>loss = np.mean((y_pred - y)**2)</code></td>
+<td><code>loss = criterion(y_pred, y)</code></td>
+</tr>
+<tr class="odd">
+<td><strong>誤差逆伝播</strong></td>
+<td>手動で導出した連鎖律の4ステップ計算</td>
+<td><code>loss.backward()</code> （自動微分）</td>
+</tr>
+<tr class="even">
+<td><strong>勾配降下更新</strong></td>
+<td><code>W1 -= lr * dW1</code>, <code>b1 -= lr * db1</code> …</td>
+<td><code>optimizer.step()</code></td>
+</tr>
+</tbody>
+</table>
+<p>このように、PyTorchを使用することで、手動で複雑な微分計算を行うことなく、数行のシンプルなコードでニューラルネットワークの構築・学習が行えるようになります。</p>
+<p>この<strong>「自動微分（Autograd）」</strong>の仕組みは、次章で学ぶ <strong>Physics-Informed Neural Networks（PINN）</strong> において、ネットワークの出力に対する空間・時間微分の計算（微分方程式の残差計算）を行う際にも中心的な役割を果たします。</p>
+</section>
 </section>
 </section>
 <section id="mlpを利用する際の注意点" class="level2" data-number="3.9">
@@ -1042,6 +1381,239 @@ w2の形状: (16,)</code></pre>
 <li>MLPは、重回帰の平面では表現できない非線形な応答面を近似できる。</li>
 <li>学習範囲内の予測性能が高くても、範囲外の外挿精度は保証されない。</li>
 </ul>
+<hr>
+</section>
+<section id="付録完全な実行コード" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="付録完全な実行コード"><span class="header-section-number">3.11</span> 付録：完全な実行コード</h2>
+<p>本章で解説した多層パーセプトロン（NumPyによるスクラッチ実装およびPyTorchによる実装、3次元応答曲面の可視化）を、単一のPythonファイル（<code>.py</code>）としてそのまま実行できる完全なコードです。</p>
+<div id="0ddfbf9f" class="cell" data-execution_count="17">
+<details class="code-fold">
+<summary>完全なPythonスクリプトを表示</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.lines <span class="im">import</span> Line2D</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.patches <span class="im">import</span> Patch</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.nn <span class="im">as</span> nn</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch.optim <span class="im">as</span> optim</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"font.family"</span>] <span class="op">=</span> <span class="st">"Noto Sans CJK JP"</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">"axes.unicode_minus"</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. 梁の諸元と非線形データの生成 (PとEを変化させる)</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># 学習データの生成</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">2026</span>)</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>n_samples <span class="op">=</span> <span class="dv">600</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> rng.uniform(<span class="fl">5.0</span>, <span class="fl">50.0</span>, n_samples)       <span class="co"># 集中荷重 [kN]</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>E <span class="op">=</span> rng.uniform(<span class="fl">100.0</span>, <span class="fl">300.0</span>, n_samples)    <span class="co"># ヤング率 [GPa]</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>span_length <span class="op">=</span> <span class="fl">3.0</span></span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>section_width <span class="op">=</span> <span class="fl">0.10</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>section_height <span class="op">=</span> <span class="fl">0.20</span></span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>second_moment <span class="op">=</span> section_width <span class="op">*</span> section_height<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> <span class="dv">12</span></span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (</span>
+<span id="cb15-29"><a href="#cb15-29" aria-hidden="true" tabindex="-1"></a>    (P <span class="op">*</span> <span class="fl">1e3</span>) <span class="op">*</span> span_length<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb15-30"><a href="#cb15-30" aria-hidden="true" tabindex="-1"></a>    <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> (E <span class="op">*</span> <span class="fl">1e9</span>) <span class="op">*</span> second_moment)</span>
+<span id="cb15-31"><a href="#cb15-31" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e3</span></span>
+<span id="cb15-32"><a href="#cb15-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-33"><a href="#cb15-33" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.column_stack([P, E])</span>
+<span id="cb15-34"><a href="#cb15-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-35"><a href="#cb15-35" aria-hidden="true" tabindex="-1"></a>indices <span class="op">=</span> rng.permutation(n_samples)</span>
+<span id="cb15-36"><a href="#cb15-36" aria-hidden="true" tabindex="-1"></a>n_train <span class="op">=</span> <span class="bu">int</span>(<span class="fl">0.8</span> <span class="op">*</span> n_samples)</span>
+<span id="cb15-37"><a href="#cb15-37" aria-hidden="true" tabindex="-1"></a>train_indices <span class="op">=</span> indices[:n_train]</span>
+<span id="cb15-38"><a href="#cb15-38" aria-hidden="true" tabindex="-1"></a>test_indices <span class="op">=</span> indices[n_train:]</span>
+<span id="cb15-39"><a href="#cb15-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-40"><a href="#cb15-40" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X[train_indices]</span>
+<span id="cb15-41"><a href="#cb15-41" aria-hidden="true" tabindex="-1"></a>y_train <span class="op">=</span> y[train_indices]</span>
+<span id="cb15-42"><a href="#cb15-42" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X[test_indices]</span>
+<span id="cb15-43"><a href="#cb15-43" aria-hidden="true" tabindex="-1"></a>y_test <span class="op">=</span> y[test_indices]</span>
+<span id="cb15-44"><a href="#cb15-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-45"><a href="#cb15-45" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-46"><a href="#cb15-46" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. データの標準化 (z-score normalization)</span></span>
+<span id="cb15-47"><a href="#cb15-47" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-48"><a href="#cb15-48" aria-hidden="true" tabindex="-1"></a>X_mean, X_std <span class="op">=</span> np.mean(X_train, axis<span class="op">=</span><span class="dv">0</span>), np.std(X_train, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb15-49"><a href="#cb15-49" aria-hidden="true" tabindex="-1"></a>y_mean, y_std <span class="op">=</span> np.mean(y_train), np.std(y_train)</span>
+<span id="cb15-50"><a href="#cb15-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-51"><a href="#cb15-51" aria-hidden="true" tabindex="-1"></a>X_train_std <span class="op">=</span> (X_train <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
+<span id="cb15-52"><a href="#cb15-52" aria-hidden="true" tabindex="-1"></a>y_train_std <span class="op">=</span> (y_train <span class="op">-</span> y_mean) <span class="op">/</span> y_std</span>
+<span id="cb15-53"><a href="#cb15-53" aria-hidden="true" tabindex="-1"></a>X_test_std <span class="op">=</span> (X_test <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
+<span id="cb15-54"><a href="#cb15-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-55"><a href="#cb15-55" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-56"><a href="#cb15-56" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. NumPyによるMLPのスクラッチ学習</span></span>
+<span id="cb15-57"><a href="#cb15-57" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-58"><a href="#cb15-58" aria-hidden="true" tabindex="-1"></a>input_dim <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb15-59"><a href="#cb15-59" aria-hidden="true" tabindex="-1"></a>hidden_dim <span class="op">=</span> <span class="dv">16</span></span>
+<span id="cb15-60"><a href="#cb15-60" aria-hidden="true" tabindex="-1"></a>learning_rate <span class="op">=</span> <span class="fl">0.03</span></span>
+<span id="cb15-61"><a href="#cb15-61" aria-hidden="true" tabindex="-1"></a>n_epochs <span class="op">=</span> <span class="dv">50000</span></span>
+<span id="cb15-62"><a href="#cb15-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-63"><a href="#cb15-63" aria-hidden="true" tabindex="-1"></a><span class="co"># パラメータの初期化</span></span>
+<span id="cb15-64"><a href="#cb15-64" aria-hidden="true" tabindex="-1"></a>W1 <span class="op">=</span> rng.normal(<span class="fl">0.0</span>, <span class="fl">0.3</span>, size<span class="op">=</span>(input_dim, hidden_dim))</span>
+<span id="cb15-65"><a href="#cb15-65" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> np.zeros(hidden_dim)</span>
+<span id="cb15-66"><a href="#cb15-66" aria-hidden="true" tabindex="-1"></a>w2 <span class="op">=</span> rng.normal(<span class="fl">0.0</span>, <span class="fl">0.3</span>, size<span class="op">=</span>hidden_dim)</span>
+<span id="cb15-67"><a href="#cb15-67" aria-hidden="true" tabindex="-1"></a>b2 <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="cb15-68"><a href="#cb15-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-69"><a href="#cb15-69" aria-hidden="true" tabindex="-1"></a>loss_history <span class="op">=</span> []</span>
+<span id="cb15-70"><a href="#cb15-70" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> X_train_std.shape[<span class="dv">0</span>]</span>
+<span id="cb15-71"><a href="#cb15-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-72"><a href="#cb15-72" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(n_epochs):</span>
+<span id="cb15-73"><a href="#cb15-73" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 順伝播</span></span>
+<span id="cb15-74"><a href="#cb15-74" aria-hidden="true" tabindex="-1"></a>  Z1 <span class="op">=</span> X_train_std <span class="op">@</span> W1 <span class="op">+</span> b1</span>
+<span id="cb15-75"><a href="#cb15-75" aria-hidden="true" tabindex="-1"></a>  H <span class="op">=</span> np.tanh(Z1)</span>
+<span id="cb15-76"><a href="#cb15-76" aria-hidden="true" tabindex="-1"></a>  y_pred_std <span class="op">=</span> H <span class="op">@</span> w2 <span class="op">+</span> b2</span>
+<span id="cb15-77"><a href="#cb15-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-78"><a href="#cb15-78" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 損失 (MSE)</span></span>
+<span id="cb15-79"><a href="#cb15-79" aria-hidden="true" tabindex="-1"></a>  error <span class="op">=</span> y_pred_std <span class="op">-</span> y_train_std</span>
+<span id="cb15-80"><a href="#cb15-80" aria-hidden="true" tabindex="-1"></a>  loss <span class="op">=</span> np.mean(error<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb15-81"><a href="#cb15-81" aria-hidden="true" tabindex="-1"></a>  loss_history.append(loss)</span>
+<span id="cb15-82"><a href="#cb15-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-83"><a href="#cb15-83" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 誤差逆伝播</span></span>
+<span id="cb15-84"><a href="#cb15-84" aria-hidden="true" tabindex="-1"></a>  d_y_pred <span class="op">=</span> (<span class="fl">2.0</span> <span class="op">/</span> N) <span class="op">*</span> error</span>
+<span id="cb15-85"><a href="#cb15-85" aria-hidden="true" tabindex="-1"></a>  d_w2 <span class="op">=</span> H.T <span class="op">@</span> d_y_pred</span>
+<span id="cb15-86"><a href="#cb15-86" aria-hidden="true" tabindex="-1"></a>  d_b2 <span class="op">=</span> np.<span class="bu">sum</span>(d_y_pred)</span>
+<span id="cb15-87"><a href="#cb15-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-88"><a href="#cb15-88" aria-hidden="true" tabindex="-1"></a>  d_H <span class="op">=</span> np.outer(d_y_pred, w2)</span>
+<span id="cb15-89"><a href="#cb15-89" aria-hidden="true" tabindex="-1"></a>  d_Z1 <span class="op">=</span> d_H <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> H<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb15-90"><a href="#cb15-90" aria-hidden="true" tabindex="-1"></a>  d_W1 <span class="op">=</span> X_train_std.T <span class="op">@</span> d_Z1</span>
+<span id="cb15-91"><a href="#cb15-91" aria-hidden="true" tabindex="-1"></a>  d_b1 <span class="op">=</span> np.<span class="bu">sum</span>(d_Z1, axis<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb15-92"><a href="#cb15-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-93"><a href="#cb15-93" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 勾配降下法による更新</span></span>
+<span id="cb15-94"><a href="#cb15-94" aria-hidden="true" tabindex="-1"></a>  W1 <span class="op">-=</span> learning_rate <span class="op">*</span> d_W1</span>
+<span id="cb15-95"><a href="#cb15-95" aria-hidden="true" tabindex="-1"></a>  b1 <span class="op">-=</span> learning_rate <span class="op">*</span> d_b1</span>
+<span id="cb15-96"><a href="#cb15-96" aria-hidden="true" tabindex="-1"></a>  w2 <span class="op">-=</span> learning_rate <span class="op">*</span> d_w2</span>
+<span id="cb15-97"><a href="#cb15-97" aria-hidden="true" tabindex="-1"></a>  b2 <span class="op">-=</span> learning_rate <span class="op">*</span> d_b2</span>
+<span id="cb15-98"><a href="#cb15-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-99"><a href="#cb15-99" aria-hidden="true" tabindex="-1"></a><span class="co"># NumPy版MLPの学習曲線</span></span>
+<span id="cb15-100"><a href="#cb15-100" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots()</span>
+<span id="cb15-101"><a href="#cb15-101" aria-hidden="true" tabindex="-1"></a>ax.plot(np.arange(<span class="dv">1</span>, n_epochs <span class="op">+</span> <span class="dv">1</span>), loss_history)</span>
+<span id="cb15-102"><a href="#cb15-102" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"エポック"</span>)</span>
+<span id="cb15-103"><a href="#cb15-103" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"標準化空間におけるMSE"</span>)</span>
+<span id="cb15-104"><a href="#cb15-104" aria-hidden="true" tabindex="-1"></a>ax.set_yscale(<span class="st">"log"</span>)</span>
+<span id="cb15-105"><a href="#cb15-105" aria-hidden="true" tabindex="-1"></a>ax.grid(alpha<span class="op">=</span><span class="fl">0.25</span>)</span>
+<span id="cb15-106"><a href="#cb15-106" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-107"><a href="#cb15-107" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb15-108"><a href="#cb15-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-109"><a href="#cb15-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-110"><a href="#cb15-110" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict_numpy(X_input):</span>
+<span id="cb15-111"><a href="#cb15-111" aria-hidden="true" tabindex="-1"></a>  X_in_std <span class="op">=</span> (X_input <span class="op">-</span> X_mean) <span class="op">/</span> X_std</span>
+<span id="cb15-112"><a href="#cb15-112" aria-hidden="true" tabindex="-1"></a>  H_in <span class="op">=</span> np.tanh(X_in_std <span class="op">@</span> W1 <span class="op">+</span> b1)</span>
+<span id="cb15-113"><a href="#cb15-113" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> (H_in <span class="op">@</span> w2 <span class="op">+</span> b2) <span class="op">*</span> y_std <span class="op">+</span> y_mean</span>
+<span id="cb15-114"><a href="#cb15-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-115"><a href="#cb15-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-116"><a href="#cb15-116" aria-hidden="true" tabindex="-1"></a>train_rmse_np <span class="op">=</span> np.sqrt(np.mean((y_train <span class="op">-</span> predict_numpy(X_train)) <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb15-117"><a href="#cb15-117" aria-hidden="true" tabindex="-1"></a>test_rmse_np <span class="op">=</span> np.sqrt(np.mean((y_test <span class="op">-</span> predict_numpy(X_test)) <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb15-118"><a href="#cb15-118" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"--- [NumPy スクラッチMLP] ---"</span>)</span>
+<span id="cb15-119"><a href="#cb15-119" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"学習データ RMSE: </span><span class="sc">{</span>train_rmse_np<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb15-120"><a href="#cb15-120" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"テストデータ RMSE: </span><span class="sc">{</span>test_rmse_np<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb15-121"><a href="#cb15-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-122"><a href="#cb15-122" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-123"><a href="#cb15-123" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. PyTorchによるMLP学習</span></span>
+<span id="cb15-124"><a href="#cb15-124" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-125"><a href="#cb15-125" aria-hidden="true" tabindex="-1"></a>torch.manual_seed(<span class="dv">42</span>)</span>
+<span id="cb15-126"><a href="#cb15-126" aria-hidden="true" tabindex="-1"></a>X_train_t <span class="op">=</span> torch.tensor(X_train_std, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb15-127"><a href="#cb15-127" aria-hidden="true" tabindex="-1"></a>y_train_t <span class="op">=</span> torch.tensor(y_train_std, dtype<span class="op">=</span>torch.float32).unsqueeze(<span class="dv">1</span>)</span>
+<span id="cb15-128"><a href="#cb15-128" aria-hidden="true" tabindex="-1"></a>X_test_t <span class="op">=</span> torch.tensor(X_test_std, dtype<span class="op">=</span>torch.float32)</span>
+<span id="cb15-129"><a href="#cb15-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-130"><a href="#cb15-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-131"><a href="#cb15-131" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BeamMLP(nn.Module):</span>
+<span id="cb15-132"><a href="#cb15-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-133"><a href="#cb15-133" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb15-134"><a href="#cb15-134" aria-hidden="true" tabindex="-1"></a>    <span class="bu">super</span>().<span class="fu">__init__</span>()</span>
+<span id="cb15-135"><a href="#cb15-135" aria-hidden="true" tabindex="-1"></a>    <span class="va">self</span>.net <span class="op">=</span> nn.Sequential(</span>
+<span id="cb15-136"><a href="#cb15-136" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">2</span>, <span class="dv">16</span>),</span>
+<span id="cb15-137"><a href="#cb15-137" aria-hidden="true" tabindex="-1"></a>        nn.Tanh(),</span>
+<span id="cb15-138"><a href="#cb15-138" aria-hidden="true" tabindex="-1"></a>        nn.Linear(<span class="dv">16</span>, <span class="dv">1</span>),</span>
+<span id="cb15-139"><a href="#cb15-139" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-140"><a href="#cb15-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-141"><a href="#cb15-141" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> forward(<span class="va">self</span>, x):</span>
+<span id="cb15-142"><a href="#cb15-142" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">self</span>.net(x)</span>
+<span id="cb15-143"><a href="#cb15-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-144"><a href="#cb15-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-145"><a href="#cb15-145" aria-hidden="true" tabindex="-1"></a>torch_model <span class="op">=</span> BeamMLP()</span>
+<span id="cb15-146"><a href="#cb15-146" aria-hidden="true" tabindex="-1"></a>criterion <span class="op">=</span> nn.MSELoss()</span>
+<span id="cb15-147"><a href="#cb15-147" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> optim.SGD(torch_model.parameters(), lr<span class="op">=</span><span class="fl">0.03</span>)</span>
+<span id="cb15-148"><a href="#cb15-148" aria-hidden="true" tabindex="-1"></a>pytorch_loss_history <span class="op">=</span> []</span>
+<span id="cb15-149"><a href="#cb15-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-150"><a href="#cb15-150" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> epoch <span class="kw">in</span> <span class="bu">range</span>(n_epochs):</span>
+<span id="cb15-151"><a href="#cb15-151" aria-hidden="true" tabindex="-1"></a>  y_p <span class="op">=</span> torch_model(X_train_t)</span>
+<span id="cb15-152"><a href="#cb15-152" aria-hidden="true" tabindex="-1"></a>  loss_t <span class="op">=</span> criterion(y_p, y_train_t)</span>
+<span id="cb15-153"><a href="#cb15-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-154"><a href="#cb15-154" aria-hidden="true" tabindex="-1"></a>  optimizer.zero_grad()</span>
+<span id="cb15-155"><a href="#cb15-155" aria-hidden="true" tabindex="-1"></a>  loss_t.backward()</span>
+<span id="cb15-156"><a href="#cb15-156" aria-hidden="true" tabindex="-1"></a>  optimizer.step()</span>
+<span id="cb15-157"><a href="#cb15-157" aria-hidden="true" tabindex="-1"></a>  pytorch_loss_history.append(loss_t.item())</span>
+<span id="cb15-158"><a href="#cb15-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-159"><a href="#cb15-159" aria-hidden="true" tabindex="-1"></a>torch_model.<span class="bu">eval</span>()</span>
+<span id="cb15-160"><a href="#cb15-160" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb15-161"><a href="#cb15-161" aria-hidden="true" tabindex="-1"></a>  y_train_pred_t <span class="op">=</span> (</span>
+<span id="cb15-162"><a href="#cb15-162" aria-hidden="true" tabindex="-1"></a>      torch_model(X_train_t).numpy().ravel() <span class="op">*</span> y_std <span class="op">+</span> y_mean</span>
+<span id="cb15-163"><a href="#cb15-163" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-164"><a href="#cb15-164" aria-hidden="true" tabindex="-1"></a>  y_test_pred_t <span class="op">=</span> (</span>
+<span id="cb15-165"><a href="#cb15-165" aria-hidden="true" tabindex="-1"></a>      torch_model(X_test_t).numpy().ravel() <span class="op">*</span> y_std <span class="op">+</span> y_mean</span>
+<span id="cb15-166"><a href="#cb15-166" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb15-167"><a href="#cb15-167" aria-hidden="true" tabindex="-1"></a>train_rmse_torch <span class="op">=</span> np.sqrt(np.mean((y_train <span class="op">-</span> y_train_pred_t) <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb15-168"><a href="#cb15-168" aria-hidden="true" tabindex="-1"></a>test_rmse_torch <span class="op">=</span> np.sqrt(np.mean((y_test <span class="op">-</span> y_test_pred_t) <span class="op">**</span> <span class="dv">2</span>))</span>
+<span id="cb15-169"><a href="#cb15-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-170"><a href="#cb15-170" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">--- [PyTorch MLP] ---"</span>)</span>
+<span id="cb15-171"><a href="#cb15-171" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"学習データ RMSE: </span><span class="sc">{</span>train_rmse_torch<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb15-172"><a href="#cb15-172" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"テストデータ RMSE: </span><span class="sc">{</span>test_rmse_torch<span class="sc">:.5f}</span><span class="ss"> mm"</span>)</span>
+<span id="cb15-173"><a href="#cb15-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-174"><a href="#cb15-174" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-175"><a href="#cb15-175" aria-hidden="true" tabindex="-1"></a><span class="co"># 5. 学習された応答曲面と理論曲面の3D可視化</span></span>
+<span id="cb15-176"><a href="#cb15-176" aria-hidden="true" tabindex="-1"></a><span class="co"># -------------------------------------------------------------</span></span>
+<span id="cb15-177"><a href="#cb15-177" aria-hidden="true" tabindex="-1"></a>P_grid, E_grid <span class="op">=</span> np.meshgrid(</span>
+<span id="cb15-178"><a href="#cb15-178" aria-hidden="true" tabindex="-1"></a>    np.linspace(<span class="dv">5</span>, <span class="dv">50</span>, <span class="dv">45</span>),</span>
+<span id="cb15-179"><a href="#cb15-179" aria-hidden="true" tabindex="-1"></a>    np.linspace(<span class="dv">100</span>, <span class="dv">300</span>, <span class="dv">45</span>),</span>
+<span id="cb15-180"><a href="#cb15-180" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-181"><a href="#cb15-181" aria-hidden="true" tabindex="-1"></a>X_grid <span class="op">=</span> np.column_stack([P_grid.ravel(), E_grid.ravel()])</span>
+<span id="cb15-182"><a href="#cb15-182" aria-hidden="true" tabindex="-1"></a>y_surf_mlp <span class="op">=</span> predict_numpy(X_grid).reshape(P_grid.shape)</span>
+<span id="cb15-183"><a href="#cb15-183" aria-hidden="true" tabindex="-1"></a>y_surf_theory <span class="op">=</span> (</span>
+<span id="cb15-184"><a href="#cb15-184" aria-hidden="true" tabindex="-1"></a>    (P_grid <span class="op">*</span> <span class="fl">1e3</span>) <span class="op">*</span> span_length<span class="op">**</span><span class="dv">3</span> <span class="op">/</span> (<span class="dv">48</span> <span class="op">*</span> (E_grid <span class="op">*</span> <span class="fl">1e9</span>) <span class="op">*</span> second_moment)</span>
+<span id="cb15-185"><a href="#cb15-185" aria-hidden="true" tabindex="-1"></a>) <span class="op">*</span> <span class="fl">1e3</span></span>
+<span id="cb15-186"><a href="#cb15-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-187"><a href="#cb15-187" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="fl">8.0</span>, <span class="fl">6.0</span>))</span>
+<span id="cb15-188"><a href="#cb15-188" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">"3d"</span>)</span>
+<span id="cb15-189"><a href="#cb15-189" aria-hidden="true" tabindex="-1"></a>ax.plot_surface(</span>
+<span id="cb15-190"><a href="#cb15-190" aria-hidden="true" tabindex="-1"></a>    P_grid, E_grid, y_surf_theory, color<span class="op">=</span><span class="st">"tab:blue"</span>, alpha<span class="op">=</span><span class="fl">0.45</span>, label<span class="op">=</span><span class="st">"梁理論"</span></span>
+<span id="cb15-191"><a href="#cb15-191" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-192"><a href="#cb15-192" aria-hidden="true" tabindex="-1"></a>ax.plot_wireframe(</span>
+<span id="cb15-193"><a href="#cb15-193" aria-hidden="true" tabindex="-1"></a>    P_grid,</span>
+<span id="cb15-194"><a href="#cb15-194" aria-hidden="true" tabindex="-1"></a>    E_grid,</span>
+<span id="cb15-195"><a href="#cb15-195" aria-hidden="true" tabindex="-1"></a>    y_surf_mlp,</span>
+<span id="cb15-196"><a href="#cb15-196" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"tab:red"</span>,</span>
+<span id="cb15-197"><a href="#cb15-197" aria-hidden="true" tabindex="-1"></a>    rstride<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb15-198"><a href="#cb15-198" aria-hidden="true" tabindex="-1"></a>    cstride<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb15-199"><a href="#cb15-199" aria-hidden="true" tabindex="-1"></a>    linewidth<span class="op">=</span><span class="fl">0.9</span>,</span>
+<span id="cb15-200"><a href="#cb15-200" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"MLP予測曲面"</span>,</span>
+<span id="cb15-201"><a href="#cb15-201" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-202"><a href="#cb15-202" aria-hidden="true" tabindex="-1"></a>ax.scatter(</span>
+<span id="cb15-203"><a href="#cb15-203" aria-hidden="true" tabindex="-1"></a>    X_test[:, <span class="dv">0</span>],</span>
+<span id="cb15-204"><a href="#cb15-204" aria-hidden="true" tabindex="-1"></a>    X_test[:, <span class="dv">1</span>],</span>
+<span id="cb15-205"><a href="#cb15-205" aria-hidden="true" tabindex="-1"></a>    y_test,</span>
+<span id="cb15-206"><a href="#cb15-206" aria-hidden="true" tabindex="-1"></a>    color<span class="op">=</span><span class="st">"black"</span>,</span>
+<span id="cb15-207"><a href="#cb15-207" aria-hidden="true" tabindex="-1"></a>    s<span class="op">=</span><span class="dv">15</span>,</span>
+<span id="cb15-208"><a href="#cb15-208" aria-hidden="true" tabindex="-1"></a>    label<span class="op">=</span><span class="st">"テストデータ"</span>,</span>
+<span id="cb15-209"><a href="#cb15-209" aria-hidden="true" tabindex="-1"></a>    zorder<span class="op">=</span><span class="dv">5</span>,</span>
+<span id="cb15-210"><a href="#cb15-210" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-211"><a href="#cb15-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-212"><a href="#cb15-212" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"集中荷重 $P$ [kN]"</span>)</span>
+<span id="cb15-213"><a href="#cb15-213" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">"Young率 $E$ [GPa]"</span>)</span>
+<span id="cb15-214"><a href="#cb15-214" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="vs">r"中央たわみ </span><span class="dv">$\d</span><span class="vs">elta</span><span class="dv">$</span><span class="vs"> </span><span class="pp">[mm]</span><span class="vs">"</span>)</span>
+<span id="cb15-215"><a href="#cb15-215" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">"梁理論の曲面とMLPが獲得した非線形応答曲面の比較"</span>)</span>
+<span id="cb15-216"><a href="#cb15-216" aria-hidden="true" tabindex="-1"></a>ax.view_init(elev<span class="op">=</span><span class="dv">25</span>, azim<span class="op">=-</span><span class="dv">128</span>)</span>
+<span id="cb15-217"><a href="#cb15-217" aria-hidden="true" tabindex="-1"></a>ax.legend(handles<span class="op">=</span>[</span>
+<span id="cb15-218"><a href="#cb15-218" aria-hidden="true" tabindex="-1"></a>    Patch(facecolor<span class="op">=</span><span class="st">"tab:blue"</span>, alpha<span class="op">=</span><span class="fl">0.45</span>, label<span class="op">=</span><span class="st">"梁理論"</span>),</span>
+<span id="cb15-219"><a href="#cb15-219" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], color<span class="op">=</span><span class="st">"tab:red"</span>, label<span class="op">=</span><span class="st">"MLP予測曲面"</span>),</span>
+<span id="cb15-220"><a href="#cb15-220" aria-hidden="true" tabindex="-1"></a>    Line2D([<span class="dv">0</span>], [<span class="dv">0</span>], marker<span class="op">=</span><span class="st">"o"</span>, color<span class="op">=</span><span class="st">"black"</span>, linestyle<span class="op">=</span><span class="st">"none"</span>, label<span class="op">=</span><span class="st">"テストデータ"</span>),</span>
+<span id="cb15-221"><a href="#cb15-221" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb15-222"><a href="#cb15-222" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb15-223"><a href="#cb15-223" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
 
 
 </section>
@@ -1454,6 +2026,9 @@ w2の形状: (16,)</code></pre>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../chapters/04-physics-informed-neural-networks.html" class="pagination-link" aria-label="Physics-Informed Neural Networks">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Physics-Informed Neural Networks</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
