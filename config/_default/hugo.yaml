@@ -44,7 +44,7 @@ footnotereturnlinkcontents: <sup>^</sup>
 ignoreFiles: [".ipynb_checkpoints$", "\\.Rmd$", "\\.Rmarkdown$", "_cache$"]
 disableAliases: true
 outputs:
-  home: [HTML, RSS, headers, redirects, backlinks]
+  home: [HTML, RSS, backlinks]  # _redirects and _headers are static files for Cloudflare Pages
   section: [HTML, RSS]
 imaging:
   resampleFilter: lanczos
