@@ -24,6 +24,7 @@ sections:
     id: journal_articles
     content:
       title: Journal Articles
+      text: '[All journal articles »](/publication_types/article-journal/)'
       count: 5
       filters:
         folders:
@@ -40,6 +41,7 @@ sections:
     id: conference_paper
     content:
       title: Conference Papers
+      text: '[All conference papers »](/publication_types/paper-conference/)'
       count: 5
       filters:
         folders:
@@ -52,6 +54,7 @@ sections:
     id: talks
     content:
       title: Conferences
+      text: '[All talks »](/events/)'
       count: 5
       filters:
         folders:

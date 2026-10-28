@@ -31,6 +31,7 @@ To upgrade, change that version, run `pnpm install`, and check the build.
 | Profile, links, education, experience | `data/authors/taisei-saida.yaml` (Japanese overrides: `data/ja/authors/`) |
 | Homepage sections | `content/_index.md` (Japanese: `content/_index.ja.md`) |
 | Publications | `content/publications/<name>/index.md` |
+| Journal / conference paper list pages (title, view) | `content/publication_types/<type>/_index.md` |
 | Talks | `content/events/<name>/index.md` |
 | Blog posts | `content/blog/<name>/index.md` |
 | Site settings, menus, languages | `config/_default/` |
