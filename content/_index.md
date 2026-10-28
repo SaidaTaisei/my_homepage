@@ -54,22 +54,6 @@ sections:
     design:
       view: classic
       css_class: classic-two-col
-  - block: collection
-    id: talks
-    content:
-      title: Conferences
-      text: '[All conferences »](/events/)'
-      count: 5
-      filters:
-        folders:
-          - events
-    design:
-      view: classic-talks
-      css_class: classic-two-col
-      background:
-        color:
-          light: '#f7f7f7'
-          dark: '#161b22'
   - block: classic-contact
     id: contact
     content:
@@ -77,4 +61,9 @@ sections:
       address: Room 138, Building C1-2, C Cluster, Kyoto University Katsura, Nishikyo-ku, Kyoto 615-8530, Japan
       email: saida.taisei.7n@kyoto-u.ac.jp
       map_embed: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d204.3091460320388!2d135.6768095741876!3d34.98300888009332!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6001072ca564105f%3A0xf7d006fe38004bf3!2z5Lqs6YO95aSn5a2mIOahguOCreODo-ODs-ODkeOCuSBDMeajnw!5e0!3m2!1sja!2sjp!4v1775277068771!5m2!1sja!2sjp'
+    design:
+      background:
+        color:
+          light: '#f7f7f7'
+          dark: '#161b22'
 ---

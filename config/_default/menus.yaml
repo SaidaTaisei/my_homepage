@@ -20,3 +20,6 @@ main:
   - name: Google Scholar
     url: https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ
     weight: 60
+  - name: Contact
+    url: /#contact
+    weight: 70
