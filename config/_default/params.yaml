@@ -13,7 +13,7 @@ hugoblox:
   # ────────────────────────────────────────────────────────────────────────────
   identity:
     # Site name - shown in navbar, footer, copyright, and browser title by default
-    name: "Your Name"
+    name: "Taisei Saida"
     # Legal entity for copyright notices (defaults to name if not set)
     organization: ""
     # Schema.org type for structured data
@@ -21,11 +21,11 @@ hugoblox:
     # Short tagline displayed on your site
     tagline: ""
     # Site meta description for search engines and social sharing
-    description: "The highly-customizable Hugo Academic theme powered by HugoBlox
-      Kit. Easily create your personal academic website."
+    description: "Taisei Saida, Assistant Professor at Kyoto University. Research on surrogate
+      modeling, structural reliability, structural health monitoring, and machine learning."
     # Social accounts (used for meta tags like Twitter Cards)
     social:
-      twitter: "GoOwnable" # Twitter/X handle for Twitter Cards (without @)
+      twitter: "" # Twitter/X handle for Twitter Cards (without @)
 
   # ────────────────────────────────────────────────────────────────────────────
   # THEME
@@ -119,7 +119,7 @@ hugoblox:
     license:
       type: cc # cc | custom
       allow_derivatives: false
-      share_alike: true
+      share_alike: false
       allow_commercial: false
 
   # ────────────────────────────────────────────────────────────────────────────
@@ -240,8 +240,8 @@ hugoblox:
   # Regional formatting preferences
   # ────────────────────────────────────────────────────────────────────────────
   locale:
-    date_format: "Jan 2, 2006" # Go time format
-    time_format: "3:04 PM"
+    date_format: "2006-01-02" # Go time format
+    time_format: "15:04"
     address_format: en-us
 
   # ────────────────────────────────────────────────────────────────────────────

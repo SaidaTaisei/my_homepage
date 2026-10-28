@@ -1,0 +1,18 @@
+# Navigation Links (Japanese)
+
+main:
+  - name: ホーム
+    url: /ja/
+    weight: 10
+  - name: 業績
+    url: /publications/
+    weight: 20
+  - name: 講演
+    url: /events/
+    weight: 30
+  - name: 経歴
+    url: /ja/experience/
+    weight: 40
+  - name: Google Scholar
+    url: https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ
+    weight: 60

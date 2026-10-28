@@ -1,0 +1,91 @@
+schema: hugoblox/author/v1
+slug: taisei-saida
+is_owner: true
+name:
+  display: Taisei Saida
+  given: Taisei
+  family: Saida
+  alternate: 才田 大聖
+role: Assistant Professor
+bio: |
+  I am Taisei Saida, an assistant professor at Kyoto University. My research primarily focuses
+  on surrogate modeling, with particular interests in structural reliability, structural health
+  monitoring, and machine learning applications in structural engineering.
+
+affiliations:
+  - name: Kyoto University (Lab's HP)
+    url: https://quake.kuciv.kyoto-u.ac.jp/
+
+links:
+  - icon: at-symbol
+    url: mailto:saida.taisei.7n@kyoto-u.ac.jp
+    label: E-mail
+  - icon: academicons/google-scholar
+    url: https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ
+    label: Google Scholar
+  - icon: brands/github
+    url: https://github.com/SaidaTaisei
+    label: GitHub
+  - icon: academicons/orcid
+    url: https://orcid.org/0000-0002-2678-5286
+    label: ORCID
+  - icon: academicons/researchgate
+    url: https://www.researchgate.net/profile/Taisei-Saida
+    label: ResearchGate
+  - icon: academicons/clarivate
+    url: https://www.webofscience.com/wos/author/record/JRY-4837-2023
+    label: Web of Science
+  - icon: hero/academic-cap
+    url: https://researchmap.jp/taisei_saida
+    label: researchmap
+  - icon: academicons/cv
+    url: /author/Taisei-Saida/cv.pdf
+    label: CV
+
+interests:
+  - 🤖 Surrogate Modeling
+  - 🖥️ Machine Learning
+  - 🌉 Structural Reliability
+
+education:
+  - degree: Ph.D. in Engineering
+    institution: University of Tsukuba, Tsukuba in Japan
+    end: 2026-03-31
+  - degree: Master of Engineering
+    institution: University of Tsukuba, Tsukuba in Japan
+    end: 2023-03-31
+  - degree: Bachelor of Engineering
+    institution: University of Tsukuba, Tsukuba in Japan
+    end: 2021-03-31
+
+experience:
+  - role: JSPS Research Fellowship DC2
+    org: Japan Society for the Promotion of Science
+    start: 2024-04-01
+    end: 2026-03-31
+    summary: Japan · [Website](https://www.jsps.go.jp/english/e-pd/)
+  - role: Data Science Summer Institute (Research Internship)
+    org: Lawrence Livermore National Laboratories
+    start: 2023-06-26
+    end: 2023-09-15
+    summary: CA, USA · [Website](https://www.llnl.gov/)
+  - role: Research Internship
+    org: Taisei Company Technology Center
+    start: 2021-09-10
+    end: 2021-09-15
+    summary: Kanagawa · [Website](https://www.taisei-techsolu.jp/english/solution/o_technology/)
+  - role: Research Internship
+    org: NTT Access Network Service Systems Laboratories
+    start: 2021-08-01
+    end: 2021-09-01
+    summary: Ibaraki · [Website](https://www.rd.ntt/e/as/)
+  - role: Research Assistant
+    org: AIS Lab in University of Tsukuba
+    start: 2021-06-01
+    end: 2026-03-31
+    summary: Ibaraki · [Website](https://www.kz.tsukuba.ac.jp/~nishio/english.html)
+  - role: Research Assistant
+    org: National Agriculture and Food Research Organization
+    start: 2019-05-01
+    end: 2022-12-01
+    summary: Ibaraki · [Website](https://www.naro.go.jp/english/index.html)

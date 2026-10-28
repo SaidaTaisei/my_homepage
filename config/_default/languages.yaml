@@ -1,22 +1,21 @@
 # Languages
-#   Create a section for each of your site's languages.
 #   Documentation: https://docs.hugoblox.com/reference/language/
+#   Japanese pages live next to the English ones with a `.ja.md` suffix (e.g. `content/_index.ja.md`).
+#   Japanese author profile overrides live in `data/ja/authors/`.
 
 # Default language
 en:
   locale: en-us
-  # Uncomment for multi-lingual sites, and move English content into `en` sub-folder.
-  #contentDir: content/en
+  weight: 1
 
-# Uncomment the lines below to configure your website in a second language.
-#zh:
-#  locale: zh-Hans
-#  contentDir: content/zh
-#  title: Chinese website title...
-#  params:
-#    description: Site description in Chinese...
-#  menu:
-#    main:
-#      - name: 传
-#        url: '#about'
-#        weight: 1
+ja:
+  locale: ja
+  label: 日本語
+  weight: 2
+  params:
+    hugoblox:
+      identity:
+        name: 才田 大聖
+        description: 才田大聖のホームページ。京都大学 助教。サロゲートモデリング、構造信頼性、構造ヘルスモニタリング、機械学習の研究。
+      locale:
+        address_format: ja
