@@ -5,25 +5,21 @@ summary: ''
 date: 2022-10-24
 type: landing
 
+# Classic look (old Academic theme): see layouts/_partials/hooks/head-end/classic-style.html
 sections:
-  - block: resume-biography-3
+  - block: classic-biography
     content:
-      # Choose a user profile to display (a file name within `data/authors/`)
+      # A file name within `data/authors/` (Japanese overrides in `data/ja/authors/`)
       username: taisei-saida
-      text: ''
-      button:
-        text: CV（PDF）
-        url: /author/Taisei-Saida/cv.pdf
+      text: |-
+        - researchmap: [https://researchmap.jp/taisei_saida](https://researchmap.jp/taisei_saida)
+        - Google Scholar: [https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ](https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ)
+        - Web of Science: [https://www.webofscience.com/wos/author/record/JRY-4837-2023](https://www.webofscience.com/wos/author/record/JRY-4837-2023)
+        - CV: [PDF File](/author/Taisei-Saida/cv.pdf)
       headings:
         about: プロフィール
-        education: ''
-        interests: ''
-    design:
-      name:
-        size: md # Options: xs, sm, md, lg (default), xl
-      avatar:
-        size: medium # Options: small (150px), medium (200px, default), large (320px), xl (400px), xxl (500px)
-        shape: circle # Options: circle (default), square, rounded
+        interests: 興味・関心
+        education: 学歴
   - block: collection
     id: journal_articles
     content:
@@ -34,11 +30,12 @@ sections:
           - publications
         publication_type: article-journal
     design:
+      view: classic
+      css_class: classic-two-col
       background:
         color:
           light: '#f7f7f7'
           dark: '#161b22'
-      view: citation
   - block: collection
     id: conference_paper
     content:
@@ -49,21 +46,23 @@ sections:
           - publications
         publication_type: paper-conference
     design:
-      view: citation
+      view: classic
+      css_class: classic-two-col
   - block: collection
     id: talks
     content:
-      title: 最近の講演
+      title: 講演
       count: 5
       filters:
         folders:
           - events
     design:
+      view: classic-talks
+      css_class: classic-two-col
       background:
         color:
           light: '#f7f7f7'
           dark: '#161b22'
-      view: date-title-summary
   - block: markdown
     id: contact
     content:
@@ -75,4 +74,5 @@ sections:
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d204.3091460320388!2d135.6768095741876!3d34.98300888009332!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6001072ca564105f%3A0xf7d006fe38004bf3!2z5Lqs6YO95aSn5a2mIOahguOCreODo-ODs-ODkeOCuSBDMeajnw!5e0!3m2!1sja!2sjp!4v1775277068771!5m2!1sja!2sjp" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     design:
       columns: '1'
+      css_class: classic-two-col
 ---

@@ -1,0 +1,23 @@
+{{/* Author list for classic views. The site owner (is_owner in data/authors/) is shown in bold,
+     matched by profile slug or by any of the owner's names (display / alternate, e.g. 才田 大聖).
+     Input: a page. */}}
+{{ $owner_names := slice }}
+{{ range $slug, $data := hugo.Data.authors }}
+  {{ if $data.is_owner }}
+    {{ $owner_names = $owner_names | append $data.name.display $data.name.alternate }}
+  {{ end }}
+{{ end }}
+
+{{ with .Params.authors }}
+  <div class="classic-item-authors">
+    {{- range $i, $name := . -}}
+      {{- if $i }}, {{ end -}}
+      {{- $profile := partial "functions/get_author_profile" (dict "slug" ($name | urlize) "title" $name) -}}
+      {{- if or $profile.is_owner (in $owner_names $name) -}}
+        <strong>{{ $name }}</strong>
+      {{- else -}}
+        {{ $profile.title | default $name }}
+      {{- end -}}
+    {{- end -}}
+  </div>
+{{ end }}

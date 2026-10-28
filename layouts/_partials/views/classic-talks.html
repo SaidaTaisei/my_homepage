@@ -1,0 +1,29 @@
+{{/* Classic talks view: old Academic-theme style talk list grouped by year.
+     The year is shown on the first item of each year: lists are sorted newest first, so the item
+     rendered just before this one is .NextInSection (the next newer talk).
+     Styles: layouts/_partials/hooks/head-end/classic-style.html */}}
+{{ $item := .item }}
+{{ $start := time ($item.Params.event_start | default $item.Date) }}
+{{ $year := $start.Format "2006" }}
+{{ $show_year := eq .index 0 }}
+{{ with $item.NextInSection }}
+  {{ if ne ((time (.Params.event_start | default .Date)).Format "2006") $year }}{{ $show_year = true }}{{ end }}
+{{ else }}
+  {{ $show_year = true }}
+{{ end }}
+{{ $summary := $item.Params.abstract | default $item.Summary | plainify | truncate 160 }}
+
+<div class="classic-talk">
+  <div class="classic-talk-year">{{ if $show_year }}{{ $year }}{{ end }}</div>
+  <div class="classic-item-body">
+    <a class="classic-item-title" href="{{ $item.RelPermalink }}">{{ $item.Title }}</a>
+    {{ with $summary }}<div class="classic-item-summary">{{ . }}</div>{{ end }}
+    <div class="classic-item-meta">
+      {{ $start.Format "2006-01-02 15:04" }}{{ with $item.Params.location }} · {{ . }}{{ end }}
+    </div>
+    {{ partial "classic/authors.html" $item }}
+    {{ if partial "functions/has_attachments" $item }}
+      <div class="classic-item-links">{{ partial "page_links" (dict "page" $item "is_list" 1) }}</div>
+    {{ end }}
+  </div>
+</div>

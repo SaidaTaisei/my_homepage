@@ -1,0 +1,81 @@
+{{/* Classic biography block: old Academic-theme style "about" section.
+     Left: avatar, name, role, affiliations, link icons. Right: bio, optional text, interests and education.
+     Usage in a landing page:
+       - block: classic-biography
+         content:
+           username: taisei-saida      # file name in data/authors/
+           text: ''                    # optional Markdown shown under the bio
+           headings: { about: Biography, interests: Interests, education: Education }
+     Styles: layouts/_partials/hooks/head-end/classic-style.html */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+{{ $content := $block.content | default dict }}
+{{ $headings := $content.headings | default dict }}
+
+{{ $profile := partial "functions/get_author_profile" ($content.username | default "me") }}
+
+<div class="classic-bio">
+  <div class="classic-bio-profile">
+    {{ with $profile.avatar }}
+      {{ $img := .Fill "540x540 Center" }}
+      <img class="classic-bio-avatar" src="{{ $img.RelPermalink }}" width="270" height="270" alt="{{ $profile.title }}">
+    {{ end }}
+    <div class="classic-bio-name">{{ $profile.title }}</div>
+    {{ with $profile.role }}<div class="classic-bio-role">{{ . | markdownify }}</div>{{ end }}
+    {{ range $profile.affiliations }}
+      <div class="classic-bio-affiliation">
+        {{ if .url }}<a href="{{ .url }}" target="_blank" rel="noopener">{{ .name }}</a>{{ else }}{{ .name }}{{ end }}
+      </div>
+    {{ end }}
+    {{ with $profile.links }}
+      <ul class="classic-bio-links">
+        {{ range . }}
+          {{ $url := .url }}
+          {{ $external := (urls.Parse $url).Scheme }}
+          {{ if and (not $external) (not (hasPrefix $url "#")) }}{{ $url = $url | relLangURL }}{{ end }}
+          <li>
+            <a href="{{ $url | safeURL }}" {{ if or $external (eq (path.Ext $url) ".pdf") }}target="_blank" rel="noopener"{{ end }}
+               aria-label="{{ .label | default .icon }}" title="{{ .label | default .icon }}">
+              {{ partial "functions/get_icon" (dict "name" (.icon | default "hero/link") "attributes" "class=\"classic-bio-icon\"") }}
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    {{ end }}
+  </div>
+
+  <div class="classic-bio-text">
+    <h1 class="classic-heading">{{ $headings.about | default (i18n "biography") | default "Biography" }}</h1>
+    {{ with $profile.bio }}<div class="classic-prose">{{ . | $page.RenderString }}</div>{{ end }}
+    {{ with $content.text }}<div class="classic-prose">{{ . | $page.RenderString }}</div>{{ end }}
+
+    <div class="classic-bio-columns">
+      {{ with $profile.interests }}
+        <div>
+          <h3 class="classic-subheading">{{ $headings.interests | default (i18n "interests") | default "Interests" }}</h3>
+          <ul class="classic-bio-interests">
+            {{ range . }}<li>{{ . | markdownify | emojify }}</li>{{ end }}
+          </ul>
+        </div>
+      {{ end }}
+      {{ with $profile.education }}
+        <div>
+          <h3 class="classic-subheading">{{ $headings.education | default (i18n "education") | default "Education" }}</h3>
+          <ul class="classic-bio-education">
+            {{ range . }}
+              {{ $year := "" }}
+              {{ with .end }}{{ $year = (time .).Format "2006" }}{{ end }}
+              <li>
+                {{ partial "functions/get_icon" (dict "name" "academic-cap" "attributes" "class=\"classic-bio-edu-icon\"") }}
+                <div>
+                  <div>{{ .degree }}{{ with $year }}, {{ . }}{{ end }}</div>
+                  {{ with .institution }}<div class="classic-bio-institution">{{ . }}</div>{{ end }}
+                </div>
+              </li>
+            {{ end }}
+          </ul>
+        </div>
+      {{ end }}
+    </div>
+  </div>
+</div>

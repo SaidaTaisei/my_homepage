@@ -38,6 +38,12 @@ To upgrade, change that version, run `pnpm install`, and check the build.
 | Deep learning / PINN book (Quarto output) | `static/_book/` |
 | Redirects from the old Academic-theme URLs | `static/_redirects` |
 | Theme override (Japanese author names in cards) | `layouts/_partials/views/card.html` |
+| Old-site look: styles and fonts | `layouts/_partials/hooks/head-end/classic-style.html`, `data/fonts/classic.yaml` |
+| Old-site look: biography block | `layouts/_partials/hbx/blocks/classic-biography/block.html` |
+| Old-site look: list views (`view: classic`, `view: classic-talks`) | `layouts/_partials/views/classic*.html`, `layouts/_partials/classic/` |
+
+Homepage sections use `design.css_class: classic-two-col` for the old two-column
+layout (title on the left, list on the right).
 
 Publications and talks are written once and published in both languages
 (`cascade.sites.matrix` in their section `_index.md`).

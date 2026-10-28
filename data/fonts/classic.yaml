@@ -1,6 +1,6 @@
 # Font pack matching the old Academic-theme site (data/fonts/my_noto_fonts.toml).
 # Nav font is set in the hook below (listing it here duplicates Merriweather in the Google Fonts URL, which then fails).
-# Bold weights and the Japanese fallback (Noto Sans JP) are loaded in layouts/_partials/hooks/head-end/classic-fonts.html.
+# Bold weights and the Japanese fallback (Noto Sans JP) are loaded in layouts/_partials/hooks/head-end/classic-style.html.
 
 hugoblox:
   meta:

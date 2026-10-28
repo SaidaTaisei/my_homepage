@@ -1,0 +1,136 @@
+{{/* Styles that bring the site close to the old Academic-theme look.
+     Used by: data/fonts/classic.yaml (fonts), views/classic*.html, hbx/blocks/classic-biography,
+     and sections with `design.css_class: classic-two-col`. */}}
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Fira+Sans:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  /* ---- Fonts: complete the Classic font pack (bold weights, Japanese fallback) ---- */
+  :root {
+    --hb-font-body: 'Fira Sans', 'Noto Sans JP', sans-serif;
+    --hb-font-heading: 'Merriweather', 'Noto Sans JP', serif;
+    --hb-font-nav: 'Merriweather', 'Noto Sans JP', serif;
+    --classic-muted: #6c757d;
+    --classic-primary: #2962ff;
+  }
+  .dark {
+    --classic-muted: #9ca3af;
+    --classic-primary: #82a8ff;
+  }
+  /* Section titles of homepage blocks are <div>s, not headings; give them the heading font. */
+  .max-w-prose > .mb-6.text-3xl.font-bold {
+    font-family: var(--hb-font-heading);
+  }
+
+  /* ---- Two-column sections: title on the left, content on the right ---- */
+  .classic-two-col {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: 2.5rem;
+    align-content: start;
+    padding-inline: max(1.5rem, calc((100% - 1140px) / 2));
+  }
+  /* The background layer stays out of the grid so it still covers the whole section. */
+  .classic-two-col > :not(.home-section-bg) { grid-column: 2; }
+  .classic-two-col > .max-w-prose {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0;
+  }
+  .classic-two-col > .max-w-prose > .mb-6.text-3xl.font-bold {
+    font-weight: 400;
+    font-size: 2.1rem;
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+  }
+  .classic-two-col > .flex.flex-col.items-center { align-items: stretch; padding: 0; }
+  .classic-two-col > .container { padding: 0; margin: 0; max-width: none; }
+  .classic-two-col > .container > div { justify-content: flex-start; margin-top: 1.5rem; }
+  @media (max-width: 767px) {
+    .classic-two-col { grid-template-columns: minmax(0, 1fr); }
+    .classic-two-col > :not(.home-section-bg), .classic-two-col > .max-w-prose { grid-column: 1; grid-row: auto; }
+    .classic-two-col > .max-w-prose { margin-bottom: 1.5rem; }
+  }
+
+  /* ---- Classic list views (publications, talks) ---- */
+  .classic-list { width: 100%; max-width: 760px; margin: 4rem auto 0; display: flex; flex-direction: column; gap: 2rem; }
+  .classic-two-col .classic-list { max-width: none; margin: 0; }
+  .classic-item { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .classic-item-body { flex: 1; min-width: 0; }
+  .classic-item-title {
+    display: block;
+    font-family: var(--hb-font-heading);
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.35;
+    color: inherit;
+    text-decoration: none;
+  }
+  .classic-item-title:hover { color: var(--classic-primary); }
+  .classic-item-meta, .classic-item-authors { font-size: 0.8rem; color: var(--classic-muted); margin-top: 0.3rem; }
+  .classic-item-authors strong { color: #34495e; font-weight: 700; }
+  .dark .classic-item-authors strong { color: #e5e7eb; }
+  .classic-item-summary { font-size: 0.9rem; margin-top: 0.3rem; }
+  .classic-item-links { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.6rem; }
+  .classic-item-links .hb-attachment-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    border: 1px solid var(--classic-primary);
+    border-radius: 0.2rem;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.7rem;
+    color: var(--classic-primary);
+    text-transform: none;
+    letter-spacing: 0;
+    background: transparent;
+  }
+  .classic-item-links .hb-attachment-link:hover { background: var(--classic-primary); color: #fff; }
+  .classic-item-thumb { flex: 0 0 150px; }
+  .classic-item-thumb img { width: 150px; height: auto; border-radius: 0.2rem; }
+  @media (max-width: 575px) { .classic-item-thumb { display: none; } }
+
+  .classic-talk { display: grid; grid-template-columns: 8rem minmax(0, 1fr); column-gap: 1.5rem; }
+  .classic-talk-year { font-family: var(--hb-font-heading); font-size: 1.5rem; padding-top: 0.1rem; }
+  .classic-two-col .classic-talk { grid-template-columns: 5rem minmax(0, 1fr); }
+  @media (max-width: 575px) {
+    .classic-talk { grid-template-columns: minmax(0, 1fr); }
+    .classic-talk-year:empty { display: none; }
+  }
+
+  /* ---- Classic biography block ---- */
+  .classic-bio {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: 2.5rem;
+    max-width: 1140px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+  .classic-bio-profile { text-align: center; }
+  .classic-bio-avatar { width: 270px; height: 270px; border-radius: 9999px; object-fit: cover; margin: 0 auto 1rem; }
+  .classic-bio-name { font-family: var(--hb-font-heading); font-size: 2rem; line-height: 1.3; }
+  .classic-bio-role { font-size: 1.1rem; color: var(--classic-muted); margin-top: 0.25rem; }
+  .classic-bio-affiliation { margin-top: 0.25rem; }
+  .classic-bio-affiliation a { color: var(--classic-primary); }
+  .classic-bio-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.6rem; margin-top: 1rem; padding: 0; list-style: none; }
+  .classic-bio-links a { color: var(--classic-primary); }
+  .classic-bio-links a:hover { opacity: 0.7; }
+  .classic-bio-icon { width: 2rem; height: 2rem; }
+  .classic-heading { font-family: var(--hb-font-heading); font-weight: 400; font-size: 2.5rem; line-height: 1.2; margin-bottom: 0.75rem; }
+  .classic-subheading { font-family: var(--hb-font-heading); font-weight: 400; font-size: 1.4rem; margin-bottom: 0.5rem; }
+  .classic-prose { margin-bottom: 1rem; overflow-wrap: anywhere; }
+  .classic-prose a { color: var(--classic-primary); }
+  .classic-prose ul { list-style: disc; padding-left: 1.5rem; }
+  .classic-bio-columns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+  .classic-bio-interests { list-style: disc; padding-left: 1.5rem; }
+  .classic-bio-education { list-style: none; padding: 0; }
+  .classic-bio-education li { display: flex; gap: 0.6rem; margin-bottom: 0.6rem; }
+  .classic-bio-edu-icon { width: 1.2rem; height: 1.2rem; flex: 0 0 auto; margin-top: 0.15rem; }
+  .classic-bio-institution { font-size: 0.8rem; color: var(--classic-muted); }
+  @media (max-width: 767px) {
+    .classic-bio, .classic-bio-columns { grid-template-columns: minmax(0, 1fr); }
+    .classic-bio-profile { margin-bottom: 2rem; }
+  }
+</style>
