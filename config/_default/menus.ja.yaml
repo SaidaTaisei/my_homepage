@@ -7,7 +7,7 @@ main:
   - name: 業績
     url: /ja/publications/
     weight: 20
-  - name: 講演
+  - name: 学会発表
     url: /ja/events/
     weight: 30
   - name: 経歴

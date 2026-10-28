@@ -53,8 +53,8 @@ sections:
   - block: collection
     id: talks
     content:
-      title: 講演
-      text: '[すべての講演 »](/ja/events/)'
+      title: 学会発表
+      text: '[すべての学会発表 »](/ja/events/)'
       count: 5
       filters:
         folders:

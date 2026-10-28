@@ -54,7 +54,7 @@ sections:
     id: talks
     content:
       title: Conferences
-      text: '[All talks »](/events/)'
+      text: '[All conferences »](/events/)'
       count: 5
       filters:
         folders:
