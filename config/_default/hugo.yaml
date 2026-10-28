@@ -16,6 +16,7 @@ defaultContentLanguage: en
 hasCJKLanguage: true
 defaultContentLanguageInSubdir: false
 removePathAccents: true
+disablePathToLower: true  # Keep the same URLs as the old site (e.g. /events/IABSE2025/)
 
 ############################
 ## PAGE OPTIONS

@@ -10,4 +10,9 @@ view: card
 image:
   caption: ''
   filename: ''
+# Publish these pages in every language (the content itself is not translated).
+cascade:
+  sites:
+    matrix:
+      languages: ["**"]
 ---

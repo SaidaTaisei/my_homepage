@@ -59,6 +59,10 @@ education:
     end: 2021-03-31
 
 experience:
+  - role: Assistant Professor
+    org: Graduate School of Engineering, Kyoto University
+    start: 2026-04-01
+    summary: Kyoto · [Lab website](https://quake.kuciv.kyoto-u.ac.jp/)
   - role: JSPS Research Fellowship DC2
     org: Japan Society for the Promotion of Science
     start: 2024-04-01

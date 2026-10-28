@@ -1,0 +1,6 @@
+/* Jupyterで生成した図を本文カラムの横幅に合わせる */
+.cell-output-display .quarto-figure .figure-img {
+  display: block;
+  width: 90%;
+  height: auto;
+}

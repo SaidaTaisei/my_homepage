@@ -5,10 +5,10 @@ main:
     url: /ja/
     weight: 10
   - name: 業績
-    url: /publications/
+    url: /ja/publications/
     weight: 20
   - name: 講演
-    url: /events/
+    url: /ja/events/
     weight: 30
   - name: 経歴
     url: /ja/experience/
