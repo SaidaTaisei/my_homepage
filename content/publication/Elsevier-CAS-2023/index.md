@@ -10,6 +10,7 @@ authors:
 tags: [surrogate model, Gaussian process regression, structural reliability analysis]
 categories: []
 featured: false
+math: true
 draft: false
 
 # Featured image
