@@ -40,7 +40,8 @@ To upgrade, change that version, run `pnpm install`, and check the build.
 | Redirects from the old Academic-theme URLs | `static/_redirects` |
 | Theme override (Japanese author names in cards) | `layouts/_partials/views/card.html` |
 | Old-site look: styles and fonts | `layouts/_partials/hooks/head-end/classic-style.html`, `data/fonts/classic.yaml` |
-| Old-site look: biography block | `layouts/_partials/hbx/blocks/classic-biography/block.html` |
+| Old-site look: biography and contact blocks | `layouts/_partials/hbx/blocks/classic-biography/`, `layouts/_partials/hbx/blocks/classic-contact/` |
+| Homepage browser title | `seo.title` in `content/_index.md` / `content/_index.ja.md` |
 | Old-site look: list views (`view: classic`, `view: classic-talks`) | `layouts/_partials/views/classic*.html`, `layouts/_partials/classic/` |
 
 Homepage sections use `design.css_class: classic-two-col` for the old two-column

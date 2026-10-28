@@ -1,0 +1,35 @@
+{{/* Classic contact block: old Academic-theme style contact section.
+     Left: title. Right: address and e-mail with icons, then an embedded map.
+     Usage in a landing page:
+       - block: classic-contact
+         id: contact
+         content:
+           title: Contact me
+           address: Room 138, ...
+           email: name@example.com
+           map_embed: https://www.google.com/maps/embed?pb=...   # optional
+     Styles: layouts/_partials/hooks/head-end/classic-style.html */}}
+{{ $content := .wcBlock.content | default dict }}
+
+<div class="classic-contact">
+  <div class="classic-contact-title">{{ $content.title | default "Contact" }}</div>
+  <div>
+    <ul class="classic-contact-list">
+      {{ with $content.address }}
+        <li>
+          {{ partial "functions/get_icon" (dict "name" "map-pin-solid" "attributes" "class=\"classic-contact-icon\"") }}
+          <span>{{ . }}</span>
+        </li>
+      {{ end }}
+      {{ with $content.email }}
+        <li>
+          {{ partial "functions/get_icon" (dict "name" "envelope-solid" "attributes" "class=\"classic-contact-icon\"") }}
+          <a href="mailto:{{ . }}">{{ . }}</a>
+        </li>
+      {{ end }}
+    </ul>
+    {{ with $content.map_embed }}
+      <iframe class="classic-contact-map" src="{{ . }}" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Map"></iframe>
+    {{ end }}
+  </div>
+</div>
