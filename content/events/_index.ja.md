@@ -1,4 +1,4 @@
 ---
 title: 講演
-view: card
+view: date-title-summary
 ---

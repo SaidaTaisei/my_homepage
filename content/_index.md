@@ -19,9 +19,6 @@ sections:
         education: ''
         interests: ''
     design:
-      background:
-        gradient_mesh:
-          enable: true
       name:
         size: md # Options: xs, sm, md, lg (default), xl
       avatar:
@@ -37,6 +34,10 @@ sections:
           - publications
         publication_type: article-journal
     design:
+      background:
+        color:
+          light: '#f7f7f7'
+          dark: '#161b22'
       view: citation
   - block: collection
     id: conference_paper
@@ -58,7 +59,11 @@ sections:
         folders:
           - events
     design:
-      view: card
+      background:
+        color:
+          light: '#f7f7f7'
+          dark: '#161b22'
+      view: date-title-summary
   - block: markdown
     id: contact
     content:

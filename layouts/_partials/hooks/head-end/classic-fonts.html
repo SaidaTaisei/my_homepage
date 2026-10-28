@@ -1,0 +1,13 @@
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Fira+Sans:wght@400;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  /* Completes the Classic font pack (data/fonts/classic.yaml): bold weights and Japanese fallback. */
+  :root {
+    --hb-font-body: 'Fira Sans', 'Noto Sans JP', sans-serif;
+    --hb-font-heading: 'Merriweather', 'Noto Sans JP', serif;
+    --hb-font-nav: 'Merriweather', 'Noto Sans JP', serif;
+  }
+  /* Section titles of homepage blocks are <div>s, not headings; give them the heading font like the old site. */
+  .max-w-prose > .mb-6.text-3xl.font-bold {
+    font-family: var(--hb-font-heading);
+  }
+</style>
