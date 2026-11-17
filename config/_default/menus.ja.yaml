@@ -5,17 +5,8 @@ main:
     url: /ja/
     weight: 10
   - name: 出版物
-    identifier: publications
     url: /ja/publications/
     weight: 20
-  - name: 学術雑誌論文
-    parent: publications
-    url: /ja/publications/#journal_articles
-    weight: 21
-  - name: 会議論文
-    parent: publications
-    url: /ja/publications/#conference_paper
-    weight: 22
   - name: 学会発表
     url: /ja/events/
     weight: 30
