@@ -35,7 +35,7 @@ links:
   - icon: academicons/clarivate
     url: https://www.webofscience.com/wos/author/record/JRY-4837-2023
     label: Web of Science
-  - icon: hero/academic-cap
+  - icon: custom/researchmap
     url: https://researchmap.jp/taisei_saida
     label: researchmap
   - icon: academicons/cv

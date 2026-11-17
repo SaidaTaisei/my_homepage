@@ -29,6 +29,7 @@ To upgrade, change that version, run `pnpm install`, and check the build.
 | What | Where |
 |---|---|
 | Profile, links, education, experience | `data/authors/taisei-saida.yaml` (Japanese overrides: `data/ja/authors/`) |
+| Custom link icons (e.g. researchmap, used as `icon: custom/researchmap`) | `assets/media/icons/custom/` |
 | Homepage sections | `content/_index.md` (Japanese: `content/_index.ja.md`) |
 | Publications | `content/publications/<name>/index.md` |
 | Journal / conference paper list pages (title, view) | `content/publication_types/<type>/_index.md` |
