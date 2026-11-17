@@ -13,9 +13,6 @@ main:
   - name: 経歴
     url: /ja/experience/
     weight: 40
-  - name: Google Scholar
-    url: https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ
-    weight: 60
   - name: 連絡先
     url: /ja/#contact
     weight: 70
