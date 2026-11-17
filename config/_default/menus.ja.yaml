@@ -1,18 +1,31 @@
-# Navigation Links (Japanese)
+# Navigation Links (Japanese) — names follow the old site's Japanese menu.
 
 main:
-  - name: ホーム
+  - name: Home
     url: /ja/
     weight: 10
-  - name: 業績
+  - name: 出版物
+    identifier: publications
     url: /ja/publications/
     weight: 20
+  - name: 学術雑誌論文
+    parent: publications
+    url: /ja/publications/#journal_articles
+    weight: 21
+  - name: 会議論文
+    parent: publications
+    url: /ja/publications/#conference_paper
+    weight: 22
   - name: 学会発表
     url: /ja/events/
     weight: 30
-  - name: 経歴
+  - name: 経験
     url: /ja/experience/
     weight: 40
+  # Blog posts are English only, but published under /ja/ too (cascade in content/blog/_index.md).
+  - name: ブログ
+    url: /ja/blog/
+    weight: 50
   - name: 連絡先
     url: /ja/#contact
     weight: 70

@@ -1,7 +1,7 @@
 ---
-title: 業績
+title: 出版物
 
-# 業績ページ: 学術雑誌論文と会議論文を別セクションで表示（count 0 = 全件）
+# 出版物ページ: 学術雑誌論文と会議論文を別セクションで表示（count 0 = 全件）
 type: landing
 sections:
   - block: collection
