@@ -32,7 +32,10 @@
         {{ range . }}
           {{ $url := .url }}
           {{ $external := (urls.Parse $url).Scheme }}
-          {{ if and (not $external) (not (hasPrefix $url "#")) }}{{ $url = $url | relLangURL }}{{ end }}
+          {{/* Pages get the language prefix (/ja/...); files such as the CV PDF exist only once, so no prefix. */}}
+          {{ if and (not $external) (not (hasPrefix $url "#")) }}
+            {{ if path.Ext $url }}{{ $url = $url | relURL }}{{ else }}{{ $url = $url | relLangURL }}{{ end }}
+          {{ end }}
           <li>
             <a href="{{ $url | safeURL }}" {{ if or $external (eq (path.Ext $url) ".pdf") }}target="_blank" rel="noopener"{{ end }}
                aria-label="{{ .label | default .icon }}" title="{{ .label | default .icon }}">
