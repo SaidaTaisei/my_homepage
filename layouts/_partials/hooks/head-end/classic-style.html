@@ -35,6 +35,10 @@
      Below lg its right margin separates it from the hamburger button, so keep it there. */
   @media (min-width: 1024px) {
     #site-header > .navbar > .ml-auto > :last-child { margin-right: 0; }
+    /* Old site: menu items packed together next to the header icons (no gaps between items,
+       no gap before the icons); the menu stays right-aligned via its ml-auto. */
+    #nav-menu { margin-right: 0; }
+    #nav-menu > li { margin-inline: 0; }
   }
 
   /* ---- Two-column sections: title on the left, content on the right ---- */
