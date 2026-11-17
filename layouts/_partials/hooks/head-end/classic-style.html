@@ -14,6 +14,8 @@
     --hb-font-nav: 'Merriweather', 'Noto Sans JP', serif;
     --classic-muted: #6c757d;
     --classic-primary: #2962ff;
+    /* Left/right edge of header and sections: centered 1170px content, as on the old site */
+    --classic-edge: max(1.5rem, calc((100% - 1170px) / 2));
   }
   .dark {
     --classic-muted: #9ca3af;
@@ -28,14 +30,20 @@
   .navbar-brand { font-family: var(--hb-font-heading); font-weight: 700; font-size: 1.2rem; }
   .nav-link { font-family: var(--hb-font-nav); font-weight: 400; font-size: 0.77rem; }
   .nav-link.active { color: var(--classic-primary); }
+  #site-header > .navbar { padding-inline: var(--classic-edge); }
+  /* Let the last header item (language switcher) touch the right content edge on wide screens.
+     Below lg its right margin separates it from the hamburger button, so keep it there. */
+  @media (min-width: 1024px) {
+    #site-header > .navbar > .ml-auto > :last-child { margin-right: 0; }
+  }
 
   /* ---- Two-column sections: title on the left, content on the right ---- */
   .classic-two-col {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-    column-gap: 2.5rem;
+    column-gap: 1.5rem;
     align-content: start;
-    padding-inline: max(1.5rem, calc((100% - 1140px) / 2));
+    padding-inline: var(--classic-edge);
   }
   /* The background layer stays out of the grid so it still covers the whole section. */
   .classic-two-col > :not(.home-section-bg) { grid-column: 2; }
@@ -118,8 +126,8 @@
   .classic-contact {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-    column-gap: 2.5rem;
-    padding-inline: max(1.5rem, calc((100% - 1140px) / 2)); /* same edges as .classic-two-col */
+    column-gap: 1.5rem;
+    padding-inline: var(--classic-edge);
   }
   .classic-contact-title { font-family: var(--hb-font-heading); font-size: 2.25rem; line-height: 1.25; }
   .classic-contact-list { list-style: none; padding: 0; margin: 0 0 1rem; }
@@ -137,8 +145,8 @@
   .classic-bio {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-    column-gap: 2.5rem;
-    padding-inline: max(1.5rem, calc((100% - 1140px) / 2)); /* same edges as .classic-two-col */
+    column-gap: 1.5rem;
+    padding-inline: var(--classic-edge);
   }
   .classic-bio-profile { text-align: center; }
   .classic-bio-avatar { width: 270px; height: 270px; border-radius: 9999px; object-fit: cover; margin: 0 auto 1rem; }
