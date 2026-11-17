@@ -17,9 +17,6 @@ affiliations:
     url: https://quake.kuciv.kyoto-u.ac.jp/
 
 links:
-  - icon: at-symbol
-    url: mailto:saida.taisei.7n@kyoto-u.ac.jp
-    label: E-mail
   - icon: academicons/google-scholar
     url: https://scholar.google.co.jp/citations?user=4GNJ8SUAAAAJ
     label: Google Scholar
@@ -35,9 +32,6 @@ links:
   - icon: academicons/clarivate
     url: https://www.webofscience.com/wos/author/record/JRY-4837-2023
     label: Web of Science
-  - icon: custom/researchmap
-    url: https://researchmap.jp/taisei_saida
-    label: researchmap
   - icon: academicons/cv
     url: /author/Taisei-Saida/cv.pdf
     label: CV
