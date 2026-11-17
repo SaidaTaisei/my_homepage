@@ -28,7 +28,7 @@ sections:
     id: journal_articles
     content:
       title: Journal Articles
-      text: '[All journal articles »](/publication_types/article-journal/)'
+      text: '[All journal articles »](/publications/#journal_articles)'
       count: 5
       filters:
         folders:
@@ -45,7 +45,7 @@ sections:
     id: conference_paper
     content:
       title: Conference Papers
-      text: '[All conference papers »](/publication_types/paper-conference/)'
+      text: '[All conference papers »](/publications/#conference_paper)'
       count: 5
       filters:
         folders:

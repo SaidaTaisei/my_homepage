@@ -28,7 +28,7 @@ sections:
     id: journal_articles
     content:
       title: 学術雑誌論文
-      text: '[すべての学術雑誌論文 »](/ja/publication_types/article-journal/)'
+      text: '[すべての学術雑誌論文 »](/ja/publications/#journal_articles)'
       count: 5
       filters:
         folders:
@@ -45,7 +45,7 @@ sections:
     id: conference_paper
     content:
       title: 会議論文
-      text: '[すべての会議論文 »](/ja/publication_types/paper-conference/)'
+      text: '[すべての会議論文 »](/ja/publications/#conference_paper)'
       count: 5
       filters:
         folders:
