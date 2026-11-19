@@ -1,0 +1,13 @@
+# Japanese overrides for data/authors/taisei-saida.yaml (unlisted fields are inherited).
+name:
+  display: 才田 大聖
+  alternate: Taisei Saida
+role: 助教
+bio: |
+  京都大学 工学研究科の助教です。
+  研究では主にサロゲートモデリングに焦点を当てており、特に構造信頼性、構造ヘルスモニタリング、構造工学における機械学習の応用に興味があります。
+  最近は、構造物の地震応答を深層学習モデルで予測する研究に興味があります。
+
+affiliations:
+  - name: 京都大学（研究室ホームページ）
+    url: https://quake.kuciv.kyoto-u.ac.jp/

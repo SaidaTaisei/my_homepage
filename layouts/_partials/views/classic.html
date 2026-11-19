@@ -1,0 +1,25 @@
+{{/* Classic view: old Academic-theme style list item.
+     Title, venue and year, authors (site owner in bold), small link buttons, thumbnail on the right.
+     Used for publications. Styles: layouts/_partials/hooks/head-end/classic-style.html */}}
+{{ $item := .item }}
+{{ $year := (time ($item.Params.event_start | default $item.Date)).Format "2006" }}
+{{ $pub := partial "functions/resolve_publication.html" $item }}
+{{ $venue := $pub.short_name | default $pub.name }}
+{{ $image := partial "functions/get_featured_image.html" $item }}
+
+<div class="classic-item">
+  <div class="classic-item-body">
+    <a class="classic-item-title" href="{{ $item.RelPermalink }}">{{ $item.Title }}</a>
+    <div class="classic-item-meta">{{ with $venue }}{{ . | markdownify }}, {{ end }}{{ $year }}</div>
+    {{ partial "classic/authors.html" $item }}
+    {{ if partial "functions/has_attachments" $item }}
+      <div class="classic-item-links">{{ partial "page_links" (dict "page" $item "is_list" 1) }}</div>
+    {{ end }}
+  </div>
+  {{ with $image }}
+    {{ $thumb := .Fit "300x300" }}
+    <a class="classic-item-thumb" href="{{ $item.RelPermalink }}">
+      <img src="{{ $thumb.RelPermalink }}" width="{{ $thumb.Width }}" height="{{ $thumb.Height }}" alt="" loading="lazy">
+    </a>
+  {{ end }}
+</div>

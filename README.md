@@ -1,46 +1,51 @@
-<p align="center"><a href="https://sourcethemes.com/academic/" target="_blank" rel="noopener"><img src="https://sourcethemes.com/academic/img/logo_200px.png" alt="Academic logo"></a></p>
+# profile.tsaida.net
 
-# Academic Kickstart: The Template for [Academic Website Builder](https://sourcethemes.com/academic/)
+Personal homepage of Taisei Saida, built with [Hugo](https://gohugo.io/) and the
+[Hugo Blox Academic CV](https://github.com/HugoBlox/theme-academic-cv) template,
+deployed on Cloudflare Pages.
 
-[**Academic**](https://github.com/gcushen/hugo-academic) makes it easy to create a beautiful website for free using Markdown, Jupyter, or RStudio. Customize anything on your site with widgets, themes, and language packs. [Check out the latest demo](https://academic-demo.netlify.app/) of what you'll get in less than 10 minutes, or [view the showcase](https://sourcethemes.com/academic/#expo).
+## Requirements
 
-**Academic Kickstart** provides a minimal template to kickstart your new website.
+- Node.js and [pnpm](https://pnpm.io/) (Hugo itself is installed by pnpm, see below)
+- [Go](https://go.dev/) and Git (used by Hugo Modules to fetch the theme)
 
-- 👉 [**Get Started**](#install)
-- 📚 [View the **documentation**](https://sourcethemes.com/academic/docs/)
-- 💬 [Chat with the **Academic community**](https://spectrum.chat/academic) or [**Hugo community**](https://discourse.gohugo.io)
-- 🐦 Twitter: [@source_themes](https://twitter.com/source_themes) [@GeorgeCushen](https://twitter.com/GeorgeCushen) [#MadeWithAcademic](https://twitter.com/search?q=%23MadeWithAcademic&src=typd)
-- 💡 [Request a **feature** or report a **bug**](https://github.com/gcushen/hugo-academic/issues)
-- ⬆️ **Updating?** View the [Update Guide](https://sourcethemes.com/academic/docs/update/) and [Release Notes](https://sourcethemes.com/academic/updates/)
-- :heart: **Support development** of Academic:
-  - ☕️ [**Donate a coffee**](https://paypal.me/cushen)
-  - 💵 [Become a backer on **Patreon** and **unlock rewards**](https://www.patreon.com/cushen)
-  - 🖼️ [Decorate your laptop or journal with an Academic **sticker**](https://www.redbubble.com/people/neutreno/works/34387919-academic)
-  - 👕 [Wear the **T-shirt**](https://academic.threadless.com/)
-  - :woman_technologist: [**Contribute**](https://sourcethemes.com/academic/docs/contribute/)
+## Local development
 
-[![Screenshot](https://raw.githubusercontent.com/gcushen/hugo-academic/master/academic.png)](https://github.com/gcushen/hugo-academic/)
+```bash
+pnpm install   # installs Hugo (hugo-extended) and Tailwind CSS
+pnpm dev       # http://localhost:1313/
+```
 
-## Install
+## Build and deploy
 
-You can choose from one of the following four methods to install:
+Cloudflare Pages runs `bash build.sh`, which installs dependencies, builds the
+site with Hugo, and indexes it with Pagefind. Output goes to `public/`.
 
-* [**one-click install using your web browser (recommended)**](https://sourcethemes.com/academic/docs/install/#install-with-web-browser)
-* [install on your computer using **Git** with the Command Prompt/Terminal app](https://sourcethemes.com/academic/docs/install/#install-with-git)
-* [install on your computer by downloading the **ZIP files**](https://sourcethemes.com/academic/docs/install/#install-with-zip)
-* [install on your computer with **RStudio**](https://sourcethemes.com/academic/docs/install/#install-with-rstudio)
+The Hugo version is pinned by `hugo-extended` in `package.json` (currently 0.164.0).
+To upgrade, change that version, run `pnpm install`, and check the build.
 
-Then [personalize your new site](https://sourcethemes.com/academic/docs/get-started/).
+## Where things are
 
-## Ecosystem
+| What | Where |
+|---|---|
+| Profile, links, education, experience | `data/authors/taisei-saida.yaml` (Japanese overrides: `data/ja/authors/`) |
+| Homepage sections | `content/_index.md` (Japanese: `content/_index.ja.md`) |
+| Publications | `content/publications/<name>/index.md` |
+| Journal / conference paper list pages (title, view) | `content/publication_types/<type>/_index.md` |
+| Talks | `content/events/<name>/index.md` |
+| Blog posts | `content/blog/<name>/index.md` |
+| Site settings, menus, languages | `config/_default/` |
+| CV | `static/author/Taisei-Saida/cv.pdf` |
+| Deep learning / PINN book (Quarto output) | `static/_book/` |
+| Redirects from the old Academic-theme URLs | `static/_redirects` |
+| Theme override (Japanese author names in cards) | `layouts/_partials/views/card.html` |
+| Old-site look: styles and fonts | `layouts/_partials/hooks/head-end/classic-style.html`, `data/fonts/classic.yaml` |
+| Old-site look: biography and contact blocks | `layouts/_partials/hbx/blocks/classic-biography/`, `layouts/_partials/hbx/blocks/classic-contact/` |
+| Homepage browser title | `seo.title` in `content/_index.md` / `content/_index.ja.md` |
+| Old-site look: list views (`view: classic`, `view: classic-talks`) | `layouts/_partials/views/classic*.html`, `layouts/_partials/classic/` |
 
-* **[Academic Admin](https://github.com/sourcethemes/academic-admin):** An admin tool to import publications from BibTeX or import assets for an offline site
-* **[Academic Scripts](https://github.com/sourcethemes/academic-scripts):** Scripts to help migrate content to new versions of Academic
+Homepage sections use `design.css_class: classic-two-col` for the old two-column
+layout (title on the left, list on the right).
 
-## License
-
-Copyright 2017-present [George Cushen](https://georgecushen.com).
-
-Released under the [MIT](https://github.com/sourcethemes/academic-kickstart/blob/master/LICENSE.md) license.
-
-[![Analytics](https://ga-beacon.appspot.com/UA-78646709-2/academic-kickstart/readme?pixel)](https://github.com/igrigorik/ga-beacon)
+Publications and talks are written once and published in both languages
+(`cascade.sites.matrix` in their section `_index.md`).

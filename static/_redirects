@@ -1,0 +1,53 @@
+# Cloudflare Pages redirects: https://developers.cloudflare.com/pages/configuration/redirects/
+# Redirects apply even when a file exists at the same path, so never redirect a prefix
+# that contains real files (e.g. /author/Taisei-Saida/cv.pdf, /author/Taisei-Saida/avatar.jpg).
+# Non-ASCII paths (e.g. /ja/author/才田-大聖/) are matched with placeholders, not literally.
+# Static rules first, then dynamic (splat / placeholder) rules.
+
+# Old CV locations -> current CV
+/files/cv.pdf                       /author/Taisei-Saida/cv.pdf  301
+/ja/authors/Taisei-Saida/cv.pdf     /author/Taisei-Saida/cv.pdf  301
+
+# Old profile photo locations -> same photo at the English path
+/ja/authors/Taisei-Saida/avatar.jpg /author/Taisei-Saida/avatar.jpg  301
+
+# Old author profile pages
+/author/Taisei-Saida/               /                            301
+/author/Taisei-Saida                /                            301
+/ja/author/Taisei-Saida/            /ja/                         301
+/ja/author/Taisei-Saida             /ja/                         301
+
+# Old publication type pages (Academic used numeric types)
+/publication-type/1/                /publication_types/paper-conference/  301
+/publication-type/2/                /publication_types/article-journal/   301
+
+# Old Netlify CMS admin
+/admin/                             /                            301
+
+# Old sections (Academic theme) -> new sections (Hugo Blox)
+/talk/*                             /events/:splat               301
+/publication/*                      /publications/:splat         301
+/post/*                             /blog/:splat                 301
+/tag/*                              /tags/                       301
+/category/*                         /blog/                       301
+/categories/*                       /blog/                       301
+/ja/categories/*                    /ja/                         301
+/authors/*                          /                            301
+/ja/authors/*                       /ja/                         301
+/publication-type/1/*               /publication_types/paper-conference/  301
+/publication-type/2/*               /publication_types/article-journal/   301
+
+# Old list pagination (/page/1/ etc.) -> list top
+/ja/page/*                          /ja/                         301
+/tags/page/*                        /tags/                       301
+/ja/tags/page/*                     /ja/tags/                    301
+/publication_types/page/*           /publication_types/          301
+/ja/publication_types/page/*        /ja/publication_types/       301
+
+# Old author pages, feeds and files (one path segment for the author name)
+/author/:name/index.xml             /index.xml                   301
+/author/:name/                      /                            301
+/ja/author/:name/index.xml          /ja/index.xml                301
+/ja/author/:name/cv.pdf             /author/Taisei-Saida/cv.pdf  301
+/ja/author/:name/avatar.jpg         /author/Taisei-Saida/avatar.jpg  301
+/ja/author/:name/                   /ja/                         301

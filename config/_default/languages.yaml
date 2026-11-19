@@ -1,0 +1,19 @@
+# Languages
+#   Documentation: https://docs.hugoblox.com/reference/language/
+#   Japanese pages live next to the English ones with a `.ja.md` suffix (e.g. `content/_index.ja.md`).
+#   Japanese author profile overrides live in `data/ja/authors/`.
+
+# Default language
+en:
+  locale: en-us
+  weight: 1
+
+ja:
+  locale: ja
+  label: 日本語
+  weight: 2
+  params:
+    hugoblox:
+      identity:
+        name: 才田 大聖
+        description: 才田大聖のホームページ。京都大学 助教。サロゲートモデリング、構造信頼性、構造ヘルスモニタリング、機械学習の研究。
