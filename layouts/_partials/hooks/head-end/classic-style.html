@@ -4,14 +4,17 @@
 {{/* Fonts. Latin fonts are self-hosted (static/fonts/, SIL Open Font License, from Google Fonts) and preloaded,
      so they are usually ready before the first paint. `font-display: optional` keeps the fallback font for that
      page view if they are late, instead of swapping fonts mid-load (which moved the whole page: CLS).
-     Noto Sans JP is large, so it is loaded without blocking rendering. */}}
+     Noto Sans JP is large, so it is loaded only on Japanese pages, without blocking rendering. Font files were
+     made smaller with fontTools (pyftsubset --no-hinting; Merriweather also limited to Latin-1 and common punctuation). */}}
 <link rel="preload" href="{{ "fonts/merriweather-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="{{ "fonts/fira-sans-400-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
 <link rel="preload" href="{{ "fonts/fira-sans-700-latin.woff2" | relURL }}" as="font" type="font/woff2" crossorigin />
+{{ if eq site.Language.Lang "ja" }}
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" media="print" onload="this.media='all'" />
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" /></noscript>
+{{ end }}
 <style>
   /* ---- Base size: the old site used 18px (the theme default is the browser's 16px).
      Sizes below are the old site's computed sizes, in rem relative to 18px. ---- */
