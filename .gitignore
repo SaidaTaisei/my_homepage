@@ -5,3 +5,6 @@
 resources/
 public/
 .Rproj.user
+
+# pnpm (package.json exists only for the Cloudflare Pages install step)
+node_modules/

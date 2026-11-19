@@ -1,0 +1,5 @@
+{
+  "name": "my-homepage-academic",
+  "private": true,
+  "description": "Old Academic-theme site. No npm dependencies; this file exists so the Cloudflare Pages automatic `pnpm install` step succeeds."
+}
