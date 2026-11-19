@@ -1,6 +1,7 @@
 # Font pack matching the old Academic-theme site (data/fonts/my_noto_fonts.toml).
-# Nav font is set in the hook below (listing it here duplicates Merriweather in the Google Fonts URL, which then fails).
-# Bold weights and the Japanese fallback (Noto Sans JP) are loaded in layouts/_partials/hooks/head-end/classic-style.html.
+# The real fonts (Merriweather, Fira Sans, Source Code Pro) are self-hosted from static/fonts/ and set in
+# layouts/_partials/hooks/head-end/classic-style.html. The families here are system stacks only so that the
+# theme does not add a render-blocking Google Fonts request.
 
 hugoblox:
   meta:
@@ -13,13 +14,11 @@ hugoblox:
     description: "Merriweather headings with Fira Sans body, as on the old site"
 
   families:
-    heading: "Merriweather"
-    body: "Fira Sans"
-    code: "Source Code Pro"
+    heading: "system-serif"
+    body: "system-sans"
+    code: "system-mono"
 
   weights:
-    # Single weights only: for static fonts the theme joins weights with ",", which Google Fonts
-    # rejects (HTTP 400). Bold weights are loaded by the head-end hook instead.
     heading: [400]
     body: [400]
     code: [400]

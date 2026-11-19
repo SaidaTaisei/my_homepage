@@ -39,7 +39,7 @@ To upgrade, change that version, run `pnpm install`, and check the build.
 | Deep learning / PINN book (Quarto output) | `static/_book/` |
 | Redirects from the old Academic-theme URLs | `static/_redirects` |
 | Theme override (Japanese author names in cards) | `layouts/_partials/views/card.html` |
-| Old-site look: styles and fonts | `layouts/_partials/hooks/head-end/classic-style.html`, `data/fonts/classic.yaml` |
+| Old-site look: styles and fonts | `layouts/_partials/hooks/head-end/classic-style.html`, `data/fonts/classic.yaml`, font files in `static/fonts/` (self-hosted latin subsets from Google Fonts, SIL Open Font License) |
 | Old-site look: biography and contact blocks | `layouts/_partials/hbx/blocks/classic-biography/`, `layouts/_partials/hbx/blocks/classic-contact/` |
 | Homepage browser title | `seo.title` in `content/_index.md` / `content/_index.ja.md` |
 | Old-site look: list views (`view: classic`, `view: classic-talks`) | `layouts/_partials/views/classic*.html`, `layouts/_partials/classic/` |

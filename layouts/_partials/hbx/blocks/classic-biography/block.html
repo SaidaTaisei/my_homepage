@@ -17,8 +17,13 @@
 <div class="classic-bio">
   <div class="classic-bio-profile">
     {{ with $profile.avatar }}
-      {{ $img := .Fill "540x540 Center" }}
-      <img class="classic-bio-avatar" src="{{ $img.RelPermalink }}" width="270" height="270" alt="{{ $profile.title }}">
+      {{/* Shown at 270 CSS px: offer 1x, 1.5x and 2x WebP. It is the largest image above the fold (LCP), so load it first. */}}
+      {{ $x1 := .Fill "270x270 Center webp q80" }}
+      {{ $x15 := .Fill "405x405 Center webp q80" }}
+      {{ $x2 := .Fill "540x540 Center webp q80" }}
+      <img class="classic-bio-avatar" src="{{ $x2.RelPermalink }}"
+           srcset="{{ $x1.RelPermalink }} 270w, {{ $x15.RelPermalink }} 405w, {{ $x2.RelPermalink }} 540w" sizes="270px"
+           width="270" height="270" fetchpriority="high" alt="{{ $profile.title }}">
     {{ end }}
     <div class="classic-bio-name">{{ $profile.title }}</div>
     {{ with $profile.role }}<div class="classic-bio-role">{{ . | markdownify }}</div>{{ end }}
