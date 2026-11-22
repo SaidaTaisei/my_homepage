@@ -1,0 +1,44 @@
+{{/* Event structured data (JSON-LD). Overrides the theme's jsonld/event.html to fix:
+     - performer: the theme looked the first author up by urlized name, so Japanese names came out
+       percent-encoded ("% E6%89%8 D..."). Use the name as written in `authors`.
+     - image: pages without a featured image had none (Search Console: missing "image").
+       Fall back to the site icon, the same image used for og:image.
+     - address: skip empty address fields instead of emitting "" values. */}}
+{{ $page := .page }}
+{{ $summary := .summary }}
+
+{{ $image := partial "functions/get_featured_image" $page }}
+{{ if not $image }}
+  {{ with resources.Get "media/icon.png" }}{{ $image = .Resize "720x jpg q85" }}{{ end }}
+{{ end }}
+
+{{ $performer := "" }}
+{{ with $page.Params.authors }}{{ $performer = index . 0 }}{{ end }}
+
+{{ $address := dict }}
+{{ with $page.Params.address }}
+  {{ range $key, $field := dict "street" "streetAddress" "city" "addressLocality" "postcode" "postalCode" "region" "addressRegion" "country" "addressCountry" }}
+    {{ with index $.page.Params.address $key }}{{ $address = merge $address (dict $field (string .)) }}{{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $data := dict
+  "@context" "https://schema.org"
+  "@type" "Event"
+  "mainEntityOfPage" (dict "@type" "WebPage" "@id" $page.Permalink)
+  "name" $page.Title
+  "startDate" ((time ($page.Params.event_start | default $page.Date)).Format "2006-01-02T15:04:05Z07:00")
+  "description" (string $summary)
+}}
+{{ with $page.Params.location }}
+  {{ $place := dict "@type" "Place" "name" (. | plainify) }}
+  {{ if $address }}{{ $place = merge $place (dict "address" (merge (dict "@type" "PostalAddress") $address)) }}{{ end }}
+  {{ $data = merge $data (dict "location" $place) }}
+{{ end }}
+{{ with ($page.Params.event_end | default $page.Params.date_end) }}
+  {{ $data = merge $data (dict "endDate" ((time .).Format "2006-01-02T15:04:05Z07:00")) }}
+{{ end }}
+{{ with $image }}{{ $data = merge $data (dict "image" (slice .Permalink)) }}{{ end }}
+{{ with $performer }}{{ $data = merge $data (dict "performer" (dict "@type" "Person" "name" .)) }}{{ end }}
+
+<script type="application/ld+json">{{ $data | jsonify | safeJS }}</script>
