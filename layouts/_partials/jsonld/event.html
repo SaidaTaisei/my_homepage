@@ -3,7 +3,9 @@
        percent-encoded ("% E6%89%8 D..."). Use the name as written in `authors`.
      - image: pages without a featured image had none (Search Console: missing "image").
        Fall back to the site icon, the same image used for og:image.
-     - address: skip empty address fields instead of emitting "" values. */}}
+     - location: Google expects location.address. Use the address fields when filled in, otherwise derive
+       city and country from `location` ("Kyoto in Japan", "Tokyo, Japan", "Vancouver").
+       "Online" events get a VirtualLocation (the event's web site) and the online attendance mode. */}}
 {{ $page := .page }}
 {{ $summary := .summary }}
 
@@ -30,10 +32,21 @@
   "startDate" ((time ($page.Params.event_start | default $page.Date)).Format "2006-01-02T15:04:05Z07:00")
   "description" (string $summary)
 }}
-{{ with $page.Params.location }}
-  {{ $place := dict "@type" "Place" "name" (. | plainify) }}
-  {{ if $address }}{{ $place = merge $place (dict "address" (merge (dict "@type" "PostalAddress") $address)) }}{{ end }}
-  {{ $data = merge $data (dict "location" $place) }}
+{{ with $page.Params.location | plainify }}
+  {{ if eq (lower .) "online" }}
+    {{ $data = merge $data (dict
+      "eventAttendanceMode" "https://schema.org/OnlineEventAttendanceMode"
+      "location" (dict "@type" "VirtualLocation" "url" ($page.Params.event_url | default $page.Permalink))) }}
+  {{ else }}
+    {{ if not $address }}
+      {{ $parts := split (replace . " in " ", ") ", " }}
+      {{ $address = dict "addressLocality" (index $parts 0) }}
+      {{ if gt (len $parts) 1 }}{{ $address = merge $address (dict "addressCountry" (index $parts (sub (len $parts) 1))) }}{{ end }}
+    {{ end }}
+    {{ $data = merge $data (dict
+      "eventAttendanceMode" "https://schema.org/OfflineEventAttendanceMode"
+      "location" (dict "@type" "Place" "name" . "address" (merge (dict "@type" "PostalAddress") $address))) }}
+  {{ end }}
 {{ end }}
 {{ with ($page.Params.event_end | default $page.Params.date_end) }}
   {{ $data = merge $data (dict "endDate" ((time .).Format "2006-01-02T15:04:05Z07:00")) }}
